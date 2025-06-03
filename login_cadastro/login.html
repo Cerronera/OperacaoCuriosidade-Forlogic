@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operação Comunidade - Login</title>
+    <link rel="stylesheet" href="style_login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="shortcut icon" href="/imagens/icon.png" type="image/x-icon">
+
+    <style>
+        body {
+            background-color: rgb(236, 232, 232);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        h1 {
+            font-family: 'Montserrat', Helvetica, sans-serif;
+            font-weight: normal;
+            font-size: 3em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login">
+        <form id="form_login" autocomplete="off" action="" method="post">
+            <div style="display: flex;justify-content: center;">
+                <!-- div para imagens-->
+            </div>
+            <div class="oc">
+                <h1>OC</h1>
+                <p>Operação Curiosidade</p>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <h1>LOGIN</h1>
+            </div>
+            <div class="input-box">
+                <input type="email" placeholder="Email" id="iemail" name="email" required>
+            </div>
+            <div class="input-box">
+                <input type="password" placeholder="Senha" id="isenha" name="senha" required>
+            </div>
+            <div class="btn">
+                <button type="submit" class="btn" id="submitbtn">ENTRAR</button>
+            </div>
+        </form>
+        <div class="link">
+            <p><a href="/login_cadastro/cadastro.html">Registre-se</a></p>
+        </div>
+    </div>
+    <script src="script_login.js"></script>
+</body>
+
+</html>
