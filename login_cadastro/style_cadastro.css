@@ -65,12 +65,20 @@ body::before {
     height: 16px;
 }
 
-.form_cadastro input {
+.form_cadastro input:not([type="checkbox"]){
     display: block;
     width: 100%;
     padding: 8px;
     border: 2px solid black;
+}
 
+.form_cadastro input[type="checkbox"]{
+    width: auto;
+    margin: 2px 8px 0 0;;
+    accent-color: green;
+    transform: scale(1.2);
+    border-radius: 50%;
+    border: 0.5px solid black
 }
 
 .cadastro .btn {
