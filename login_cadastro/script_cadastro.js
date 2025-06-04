@@ -1,4 +1,3 @@
-
 const form = document.getElementById('form_dados')
 const nome = document.getElementById('inome')
 const idade = document.getElementById('iidade')
@@ -8,6 +7,7 @@ const endereco = document.getElementById('iendereco')
 const outros = document.getElementById('ioutros')
 const senha = document.getElementById('isenha')
 const confirmar_senha = document.getElementById('iconfirmarsenha')
+const ativo = document.getElementById('iativo')
 
 form.addEventListener('submit', async (event) => {
 
@@ -190,7 +190,8 @@ async function submitForm() {
         email: email.value,
         endereco: endereco.value,
         outros: outros.value,
-        senha: senha.value
+        senha: senha.value,
+        status: ativo.checked? "Ativo" : "Inativo"
     };
     //Verifica se já há usuários cadastrados
     const dadosExistentes = JSON.parse(localStorage.getItem('usuarios')) || []
