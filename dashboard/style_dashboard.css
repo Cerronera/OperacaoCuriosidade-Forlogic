@@ -11,6 +11,7 @@ body {
     background-color: #f2f2f2;
 }
 
+/* Nav sidebar*/
 .sidebar {
     width: 320px;
     background-color: white;
@@ -69,12 +70,14 @@ body {
     ;
 }
 
+/* configuração geral da pagina*/
 .principal {
     margin-left: 330px;
     width: 100%;
     padding: 20px;
 }
 
+/*Header*/
 .dashboard {
     display: flex;
     justify-content: space-between;
@@ -86,7 +89,7 @@ body {
     margin-bottom: 20px;
 }
 
-.dashboard .usuario a:hover{
+.dashboard .usuario a:hover {
     background-color: #f2f2f2;
 }
 
@@ -116,6 +119,7 @@ body {
     border-left: 0.5px solid lightgray;
 }
 
+/*main do dashboard*/
 .todos_blocos {
     display: flex;
     justify-content: space-between;
@@ -158,11 +162,12 @@ body {
     margin: 0;
 }
 
+/*Configuração Tabela*/
 .tabela {
-    /*div*/
     background-color: white;
     padding: 20px;
     border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .tabela h2 {
@@ -199,4 +204,162 @@ td {
 
 tr:hover {
     background-color: #f1f1f1;
+}
+
+/*main da listagem de cadastros*/
+.cadastros {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.cadastros_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.cadastros h2 {
+    color: rgb(136, 133, 133);
+    margin: 10px;
+    font-size: 18px;
+
+}
+
+.cadastros .btn button {
+    display: flex;
+    padding: 10px;
+    width: 200px;
+    justify-content: center;
+    background-color: rgb(53, 156, 53);
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+/*main do adicionar novo cadastro*/
+.novo_cadastro {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+
+}
+
+.novo_cadastro h2 {
+    color: rgb(136, 133, 133);
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.novo_cadastro h3 {
+    font-size: 16px;
+    border-bottom: 2px solid lightgray;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    margin-top:30px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkbox{
+    display: flex;
+    justify-content: end;
+}
+
+.checkbox label{
+    font-family: 'Roboto', 'sans-serif';
+    font-size: 14px;
+    padding: 10px;
+    color: rgb(95, 93, 93);
+}
+
+.checkbox input {
+    accent-color: green;
+    transform: scale(1.2);
+}
+
+.form label {
+    font-family: 'Roboto', 'sans-serif';
+    font-size: 14px;
+    padding: 10px;
+    color: rgb(95, 93, 93);
+}
+
+.form input {
+    text-align: justify;
+    margin-left: 10px;
+    width: 98%;
+    height: 35px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: rgba(238, 233, 233, 0.329);
+    padding-left: 5px;
+}
+.form a{
+    margin-left: 12px;
+    font-size: 12px;
+    visibility: hidden;
+    transition: color 0.1s ease;
+}
+
+.form.erro a{
+    visibility: visible;
+    color: rgb(236, 42, 42);
+}
+
+#idoutros {
+    height: 60px;
+    text-align: justify;
+    margin-left: 10px;
+    width: 98%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: rgba(238, 233, 233, 0.329);
+    resize: none;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+/*FAZER O USUARIO NAO CONSEGUIR REDIMENSIONAR*/
+.form .textarea {
+    height: 90px;
+    text-align: justify;
+    margin-left: 10px;
+    width: 98%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: rgba(238, 233, 233, 0.329);
+    resize: none;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+.novo_cadastro .btn {
+    display: flex;
+    justify-content: center;
+}
+
+.novo_cadastro .btn button {
+    align-items: center;
+    padding: 10px;
+    width: 200px;
+    justify-content: center;
+    background-color: rgb(53, 156, 53);
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
 }
