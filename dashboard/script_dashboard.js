@@ -25,26 +25,35 @@ function abrirNovoCadastro() {
     window.location.href = '/dashboard/novocadastro.html'
 }
 
-//puxar dados do localstorage para a tabela:
-document.addEventListener('DOMContentLoaded', () => {
-    const tabela = document.querySelector('#tabela_usuarios tbody')
-    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || []
 
-    usuarios.forEach(usuario => {
-        const tr = document.createElement('tr')
-        tr.innerHTML = `
+document.addEventListener('DOMContentLoaded', () => {
+
+    if(document.getElementById('bloco_1')){
+        atualizarBlocos();
+    }
+
+    //puxar dados do localstorage para a tabela:
+    const tabela = document.querySelector('#tabela_usuarios tbody')
+    if (tabela) {
+        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || []
+
+        usuarios.forEach((usuario, index) => {
+            const tr = document.createElement('tr')
+            tr.innerHTML = `
             <td>${usuario.nome}</td>
             <td>${usuario.email}</td>
             <td>${usuario.telefone}</td>
             <td>${usuario.status}</td>
         `;
-        tabela.appendChild(tr);
-    });
-});
+            tabela.appendChild(tr);
 
-// Armazenar dados de cadastro no localstorage
-document.addEventListener('DOMContentLoaded', () => {
+        });
+
+    }
+
+    // Armazenar dados de cadastro no localstorage
     const form = document.getElementById('form_novo_cadastro')
+    if (!form) return;
     const ativo = document.getElementById('idativo')
     const nome = document.getElementById('idnome')
     const idade = document.getElementById('ididade')
@@ -115,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const idadeValor = idade.value
         if (idadeValor === '') {
             erroinput(idade, "Campo obrigatório")
-        } else if(!validarIdade(idadeValor)){
+        } else if (!validarIdade(idadeValor)) {
             erroinput(idade, "Valor não aceito")
         } else {
             const formItem = idade.parentElement
@@ -123,14 +132,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function validarIdade(idade){
-        if(idade <16 || idade > 80){
+    function validarIdade(idade) {
+        if (idade < 16 || idade > 80) {
             return false;
-        } else{
+        } else {
             return true
         }
     }
-    
+
     //criar função para validar email com regex - desafio
     function checkEmail() {
         const emailValor = email.value
@@ -146,26 +155,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const telefoneValor = telefone.value
         if (telefoneValor === '') {
             erroinput(telefone, "Campo obrigatório")
-        } else if(!validarTelefone(telefoneValor)){
+        } else if (!validarTelefone(telefoneValor)) {
             erroinput(telefone, "Formato incorreto")
-        }else {
+        } else {
             const formItem = telefone.parentElement
             formItem.className = "form"
         }
     }
 
-        function validarTelefone(telefone){
-            telefone = telefone.replace(/\D/g,'') //retira todos caracteres menos numeros
-            if(!(telefone.length >= 10 && telefone.length <= 11)) return false
+    function validarTelefone(telefone) {
+        telefone = telefone.replace(/\D/g, '') //retira todos caracteres menos numeros
+        if (!(telefone.length >= 10 && telefone.length <= 11)) return false
 
-            if(telefone.length == 11 && parseInt(telefone.substring(2,3)) !=9) return false //com 11 numeros, verifica se começa com 9
+        if (telefone.length == 11 && parseInt(telefone.substring(2, 3)) != 9) return false //com 11 numeros, verifica se começa com 9
 
-            for(var n = 0; n<10; n++){
-                if(telefone == new Array(11).join(n) || telefone == new Array(12).join(n)) return false
-            }
-            //se passar pelas validações acima retorna true
-            return true;
+        for (var n = 0; n < 10; n++) {
+            if (telefone == new Array(11).join(n) || telefone == new Array(12).join(n)) return false
         }
+        //se passar pelas validações acima retorna true
+        return true;
+    }
 
     function checkEndereco() {
         const enderecoValor = endereco.value
@@ -241,6 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
             //adiciona a classe sucesso e remove a de erro se o formulario for válido
             submitButton.classList.add('sucesso')
             submitButton.classList.remove('erro')
+
             return true;
         } else {
             //Alert caso passe pela validação dos campos vazios porém com dados inválidos
@@ -270,7 +280,9 @@ document.addEventListener('DOMContentLoaded', () => {
             outros: outros.value.trim(),
             interesses: interesses.value.trim(),
             sentimentos: sentimentos.value.trim(),
-            valores: valores.value.trim()
+            valores: valores.value.trim(),
+            dataCadastro: new Date().toISOString(), //armazenar a data em que o cadastro foi feito
+            revisado: false //  novos cadastros começam como não revisado
         };
         //Verifica se já há usuários cadastrados
         const dadosExistentes = JSON.parse(localStorage.getItem('usuarios')) || []
@@ -289,9 +301,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 
-})
 
-
-
-
-
+});
