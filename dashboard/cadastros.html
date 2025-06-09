@@ -27,14 +27,17 @@
             </li>
         </ul>
     </nav>
-    <div class="principal">
+   <div class="principal">
         <header class="dashboard">
-            <input type="text" placeholder="Pesquisar..." class="pesquisa">
+            <div class="posicao_resultado">
+                <input type="text" placeholder="Pesquisar..." class="pesquisa" id="campoPesquisa">
+                <div id="resultadosPesquisa" class="resultados"></div>
+            </div>
 
             <div class="usuario">
                 <img src="/imagens/user.png" alt="Usuario">
                 <span class="usuario_nome">Nome do Usuário</span>
-                <spac class="sair"><a href="#" onclick="voltar_login()"><img src="/imagens/logout.png"
+                <span class="sair"><a href="#" onclick="voltar_login()"><img src="/imagens/logout.png"
                             alt="Sair"></span></a>
             </div>
         </header>
@@ -125,6 +128,10 @@
                         <div class="btn">
                             <button type="button" id="salvar">Salvar Alterações</button>
                             <button type="button" id="cancelar">Cancelar</button>
+                        </div>
+                        <div class="btn_excluir">
+                            <button type="button" id="excluir" id="excluir"><img src="/imagens/delete.png"
+                                    alt="deletar"></a></button>
                         </div>
                     </div>
             </div>

@@ -93,12 +93,25 @@ body {
     background-color: #f2f2f2;
 }
 
-.pesquisa {
-    width: 50%;
+.posicao_resultado{
+    position: relative;
+    width: 65%;
+}
+
+ .pesquisa {
+    width: 70%;
     padding: 8px 14px;
     font-size: 1em;
     border: 1px solid #ccc;
     border-radius: 8px;
+}
+
+.resultados{
+    display: none;
+    background-color: white;
+    border: 1px solid #ccc;
+    position: absolute;
+    z-index: 10;
 }
 
 .usuario {
@@ -458,7 +471,20 @@ tr:hover {
     transition: color 0.1s ease;
 }
 
-.form_modal.erro a{
+.form_modal.erro a {
     visibility: visible;
     color: rgb(236, 42, 42);
+}
+
+.form_modal .btn_excluir button {
+    position: absolute;
+    right: 5px;
+    border: none;
+    padding: 5px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.form_modal .btn_excluir button:hover {
+    background-color: rgb(182, 182, 182);
 }

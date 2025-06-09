@@ -28,9 +28,85 @@ function abrirNovoCadastro() {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    if(document.getElementById('bloco_1')){
+    if (document.getElementById('bloco_1')) {
         atualizarBlocos();
     }
+
+    //barra de pesquisa do header:
+    const campoPesquisa = document.getElementById('campoPesquisa')
+    const resultadosPesquisa = document.getElementById('resultadosPesquisa')
+    
+
+    campoPesquisa.addEventListener('input', function () {
+        const termo = this.value.toLowerCase().trim(); //para nao ter diferença entre maiusculas e minusculas
+        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+
+        resultadosPesquisa.innerHTML = ''
+
+        if (!termo) {
+            resultadosPesquisa.style.display = 'none'
+            //quando a pesquisa estiver vazia, todas as tr voltam a ficar visíveis.
+            const linhas = tabela.getElementsByTagName('tr')
+            for (let i = 0; i< linhas.length; i++){
+                linhas[i].style.display='';
+            }
+
+            return;
+        }
+
+        const resultados = usuarios.filter(usuario =>
+            usuario.nome && usuario.nome.toLowerCase().includes(termo) // filter percorre a array e mantem resultados cujo nome contem o termo digitado
+        );
+
+        if (resultados.length === 0) {
+            resultadosPesquisa.style.display = 'none'
+            return;
+        }
+
+        //cria uma div dinamicamente e coloca o nome do usuario dentro dessa div
+        resultados.forEach(usuario => {
+            const item = document.createElement('div');
+            item.textContent = usuario.nome
+            item.style.padding = '8px';
+            item.style.cursor = 'pointer'
+
+            item.addEventListener('click', () => {
+                //configuração caso clique no resultado da pesquisa
+                alert(`${usuario.nome} selecionado`)
+                campoPesquisa.value = ''
+                resultadosPesquisa.style.display = 'none'
+            });
+
+            resultadosPesquisa.appendChild(item); //adiciona ao resultadosPesquisa
+        });
+
+        resultadosPesquisa.style.display = 'block'
+
+        //Filtra a tabela com os usuarios que combinam com a barra de pesquisa
+        const linhas = tabela.getElementsByTagName('tr')
+        for (let i = 0; i < linhas.length; i++){
+            const linha = linhas[i]
+            const nomeCelula = linha.cells[0]
+
+            if(nomeCelula){
+                const nome = nomeCelula.textContent.toLowerCase()
+
+                if(nome.includes(termo)){
+                    linha.style.display = '';
+                } else{
+                    linha.style.display= 'none'
+                }
+            }
+        }
+
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!campoPesquisa.contains(e.target)) {
+            resultadosPesquisa.style.display = 'none'
+        }
+    });
+
 
     //puxar dados do localstorage para a tabela:
     const tabela = document.querySelector('#tabela_usuarios tbody')
