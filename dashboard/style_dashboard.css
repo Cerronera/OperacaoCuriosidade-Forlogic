@@ -219,28 +219,29 @@ tr:hover {
     background-color: #f1f1f1;
 }
 
-/*main da listagem de cadastros*/
-.cadastros {
+/*main da listagem de cadastros e de relatórios*/
+.cadastros-relatorios {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
 }
 
-.cadastros_header {
+.cadastros-relatorios-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 
 }
 
-.cadastros h2 {
+.cadastros-relatorios h2 {
     color: rgb(136, 133, 133);
     margin-bottom: 20px;
     font-size: 18px;
 }
 
-.cadastros .btn button {
+/*botao de cadastro*/
+.cadastros-relatorios .btn_cad button {
     display: flex;
     padding: 10px;
     width: 200px;
@@ -255,10 +256,33 @@ tr:hover {
     cursor: pointer;
 }
 
-.cadastros .btn button:hover {
+.cadastros-relatorios .btn_cad button:hover {
     border: 2px solid gray;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
+
+/*botao de imprimir*/
+.cadastros-relatorios .btn_imp button {
+    display: flex;
+    padding: 10px;
+    width: 200px;
+    justify-content: center;
+    background-color: rgb(53, 86, 156);
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.cadastros-relatorios .btn_imp button:hover {
+    border: 2px solid gray;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+
 
 /*main do adicionar novo cadastro*/
 .novo_cadastro {

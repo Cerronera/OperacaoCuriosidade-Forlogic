@@ -12,7 +12,9 @@ function voltar_home() {
 }
 
 function ir_relatorios() {
-    // Implementação futura
+     setTimeout(() => {
+        window.location.href = '/dashboard/relatorios.html'
+    }, 200);
 }
 
 function ir_cadastros() {
