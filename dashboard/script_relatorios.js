@@ -27,14 +27,10 @@ function abrirNovoCadastro() {
     window.location.href = '/dashboard/novocadastro.html'
 }
 
+document.addEventListener('DOMContentLoaded', () =>{
 
-document.addEventListener('DOMContentLoaded', () => {
+    //barra de pesquisa do header igual ao da tela de dashboard (por enquanto):
 
-    if (document.getElementById('bloco_1')) {
-        atualizarBlocos();
-    }
-
-    //barra de pesquisa do header:
     const campoPesquisa = document.getElementById('campoPesquisa')
     const resultadosPesquisa = document.getElementById('resultadosPesquisa')
 
@@ -116,22 +112,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    //puxar dados do localstorage para a tabela:
+    //reproduz a tabela como nas outras páginas.
+    
+    document.addEventListener('click', function (e) {
+        if (!campoPesquisa.contains(e.target)) {
+            resultadosPesquisa.style.display = 'none'
+        }
+    });
+
     const tabela = document.querySelector('#tabela_usuarios tbody')
     if (tabela) {
         const usuarios = JSON.parse(localStorage.getItem('usuarios')) || []
 
         usuarios.forEach((usuario, index) => {
             const tr = document.createElement('tr')
+            tr.dataset.index = index
             tr.innerHTML = `
-            <td>${usuario.nome}</td>
-            <td>${usuario.email}</td>
-            <td>${usuario.telefone}</td>
-            <td>${usuario.status}</td>
-        `;
+                <td>${usuario.nome}</td>
+                <td>${usuario.email}</td>
+                <td>${usuario.telefone}</td>
+                <td>${usuario.status}</td>
+            `;
             tabela.appendChild(tr);
-
         });
-
     }
 });
+
+
+
