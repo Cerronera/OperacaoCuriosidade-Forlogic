@@ -85,6 +85,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     const modal = document.getElementById('modal_edicao')
                     modal.dataset.index = index
                     modal.classList.remove('oculto')
+
+                    const usuarioSelecionado = usuarios[index]
+                    document.getElementById('edit_nome').value = usuarioSelecionado.nome
+                    document.getElementById('edit_idade').value = usuarioSelecionado.idade
+                    document.getElementById('edit_email').value = usuarioSelecionado.email
+                    document.getElementById('edit_telefone').value = usuarioSelecionado.telefone
+                    document.getElementById('edit_endereco').value = usuarioSelecionado.endereco
+                    document.getElementById('edit_outros').value = usuarioSelecionado.outros
+                    document.getElementById('edit_interesses').value = usuarioSelecionado.interesses
+                    document.getElementById('edit_sentimentos').value = usuarioSelecionado.sentimentos
+                    document.getElementById('edit_valores').value = usuarioSelecionado.valores
+                    document.getElementById('edit_ativo').checked = usuario.status
                 }
 
                 resultadosPesquisa.style.display = 'none'
@@ -156,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('edit_interesses').value = usuario.interesses
             document.getElementById('edit_sentimentos').value = usuario.sentimentos
             document.getElementById('edit_valores').value = usuario.valores
+            document.getElementById('edit_ativo').checked = usuario.status
 
             document.getElementById('modal_edicao').dataset.index = index
             document.getElementById('modal_edicao').classList.remove('oculto')
