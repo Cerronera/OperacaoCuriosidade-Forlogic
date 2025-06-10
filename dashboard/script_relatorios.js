@@ -12,7 +12,7 @@ function voltar_home() {
 }
 
 function ir_relatorios() {
-     setTimeout(() => {
+    setTimeout(() => {
         window.location.href = '/dashboard/relatorios.html'
     }, 200);
 }
@@ -27,7 +27,7 @@ function abrirNovoCadastro() {
     window.location.href = '/dashboard/novocadastro.html'
 }
 
-document.addEventListener('DOMContentLoaded', () =>{
+document.addEventListener('DOMContentLoaded', () => {
 
     //barra de pesquisa do header igual ao da tela de dashboard (por enquanto):
 
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () =>{
                 //configuração caso clique no resultado da pesquisa
                 alert(`${usuario.nome} selecionado`)
                 campoPesquisa.value = ''
-                
+
                 //quando a pesquisa estiver vazia, todas as tr voltam a ficar visíveis.
                 const linhas = tabela.getElementsByTagName('tr')
                 for (let i = 0; i < linhas.length; i++) {
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () =>{
 
 
     //reproduz a tabela como nas outras páginas.
-    
+
     document.addEventListener('click', function (e) {
         if (!campoPesquisa.contains(e.target)) {
             resultadosPesquisa.style.display = 'none'
@@ -135,6 +135,93 @@ document.addEventListener('DOMContentLoaded', () =>{
             `;
             tabela.appendChild(tr);
         });
+    }
+
+    //abre outra pagina copiando apenas o conteudo da tabela para impressão
+    const btn_imp = document.getElementById('btn_imp')
+
+    if (btn_imp) {
+        btn_imp.addEventListener('click', (evt) => {
+            //clona a tabela para nao afetar a original
+            const conteudo = document.getElementById('tabela_usuarios').cloneNode(true)
+            conteudo.querySelectorAll('tr').forEach(tr => {
+                tr.style; hover = 'none'
+            });
+
+            const estilo = `
+             <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 18px;
+                }
+                table {
+                    width: 98%;
+                    border-collapse: collapse;
+                    margin-bottom: 20px;
+                }
+                th {
+                    background-color: #f2f2f2;
+                    color: #333;
+                    font-weight: bold;
+                    padding: 10px;
+                    border: 1px solid #ddd;
+                }
+                td {
+                    padding: 8px 10px;
+                    border: 1px solid #ddd;
+                }
+                tr:nth-child(even) {
+                    background-color: #f9f9f9;
+                }
+                .no-print {
+                    display: none;
+                }
+                @page {
+                    size: A4;
+                    margin: 10mm;
+                }
+                @page { 
+                    @bottom-right {
+                        content: "Página " counter(page) " de " counter(pages);
+                        font-size: 10px;
+                        color: #666;
+                     }
+                }
+                @media print {
+                    body {
+                        margin: 0;
+                        padding: 0;
+                    }
+                }
+            </style>
+            `
+
+            const cabecalho = `
+                <div style = "margin-botton: 20px; text-align: center;">
+                <h1 style = "color: #333; margin-botton: 5px;"> Operação Curiosidade</h1>
+                <p style = "color: #666;"> Relatórios > Lista de Usuários - ${new Date().toLocaleDateString()}</p>
+                </div>
+            `
+
+            const win = window.open('', '_blank', 'height:800', 'width:600')
+
+            win.document.head.innerHTML = `<title>Operação Curiosidade - Impressão</title>
+            ${estilo}`
+
+            win.document.body.innerHTML = `
+            ${cabecalho}
+            ${conteudo.outerHTML}
+            <div style = "margin-top: 20px; text-align: right; color: #666; font-size: 12px;>
+                Gerado em ${new Date().toLocaleString()}
+                </div>
+            `
+
+            setTimeout(() => {
+                win.print()
+                win.close()
+            }, 200);
+
+        })
     }
 });
 
