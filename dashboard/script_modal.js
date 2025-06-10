@@ -12,7 +12,7 @@ function voltar_home() {
 }
 
 function ir_relatorios() {
-     setTimeout(() => {
+    setTimeout(() => {
         window.location.href = '/dashboard/relatorios.html'
     }, 200);
 }
@@ -77,13 +77,13 @@ document.addEventListener('DOMContentLoaded', () => {
             item.addEventListener('click', () => {
                 //configuração caso clique no resultado da pesquisa
                 const usuarios = JSON.parse(localStorage.getItem('usuarios')) || []
-                
+
                 const index = usuarios.findIndex(u =>
                     u.nome === usuario.nome
                     //isso ta estranho  
                 );
 
-                if(index !== -1){
+                if (index !== -1) {
                     const modal = document.getElementById('modal_edicao')
                     modal.dataset.index = index
                     modal.classList.remove('oculto')
@@ -344,9 +344,28 @@ document.addEventListener('DOMContentLoaded', () => {
             const botaoSalvar = document.getElementById('salvar')
 
             if (valido) {
+
+                //verifica se o email já existe, com exceção do usuario que esta sendo editado
+                const modal = document.getElementById('modal_edicao')
+                const index = modal.dataset.index
+                const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+                const emailAtual = document.getElementById('edit_email').value.trim().toLowerCase()
+
+                const emailJaCadastrado = usuarios.some((user, i) =>
+                    i !== parseInt(index) && user.email.toLowerCase() === emailAtual
+                );
+
+                if (emailJaCadastrado) {
+                    alert("Este E-mail já está cadastrado para outro usuário")
+                    botaoSalvar.classList.add('erro');
+                    botaoSalvar.classList.remove('sucesso');
+                    return false;
+                }
+
                 botaoSalvar.classList.add('sucesso');
                 botaoSalvar.classList.remove('erro');
                 return true;
+                
             } else {
                 alert("Preencha os campos corretamente");
                 botaoSalvar.classList.add('erro');
