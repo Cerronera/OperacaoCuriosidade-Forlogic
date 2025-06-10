@@ -12,7 +12,7 @@ function voltar_home() {
 }
 
 function ir_relatorios() {
-     setTimeout(() => {
+    setTimeout(() => {
         window.location.href = '/dashboard/relatorios.html'
     }, 200);
 }
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Armazenar dados de cadastro no localstorage
     const form = document.getElementById('form_novo_cadastro');
     if (!form) return;
-    
+
     const ativo = document.getElementById('idativo');
     const nome = document.getElementById('idnome');
     const idade = document.getElementById('ididade');
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         telefone = telefone.replace(/\D/g, '');
         if (!(telefone.length >= 10 && telefone.length <= 11)) return false;
         if (telefone.length == 11 && parseInt(telefone.substring(2, 3)) != 9) return false;
-        
+
         for (var n = 0; n < 10; n++) {
             if (telefone == new Array(11).join(n) || telefone == new Array(12).join(n)) return false;
         }
@@ -184,14 +184,24 @@ document.addEventListener('DOMContentLoaded', () => {
         checkInteresses();
         checkSentimentos();
         checkValores();
-        
+
         const formItems = form.querySelectorAll(".form");
         const validar = [...formItems].every((item) => item.className === 'form');
 
         const submitButton = form.querySelector('button[type = "submit"]');
 
         if (validar) {
-            alert("Cadastro Realizado!");
+            const emailValor = email.value.toLowerCase().trim()
+            const dadosExistentes = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const emailJaCadastrado = dadosExistentes.some(user => user.email === emailValor);
+
+            if (emailJaCadastrado) {
+                alert("Este e-mail já está cadastrado.");
+                submitButton.classList.add('erro');
+                submitButton.classList.remove('sucesso');
+                return false;
+            }
+            //se passou nas validações:
             submitButton.classList.add('sucesso');
             submitButton.classList.remove('erro');
             return true;
@@ -225,15 +235,8 @@ document.addEventListener('DOMContentLoaded', () => {
             dataCadastro: new Date().toISOString(),
             revisado: false
         };
-        
+
         const dadosExistentes = JSON.parse(localStorage.getItem('usuarios')) || [];
-        const emailJaCadastrado = dadosExistentes.some(user => user.email === novoUsuario.email);
-        
-        if (emailJaCadastrado) {
-            alert("Este e-mail já está cadastrado.");
-            return;
-        }
-        
         dadosExistentes.push(novoUsuario);
         localStorage.setItem('usuarios', JSON.stringify(dadosExistentes));
 
