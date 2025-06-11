@@ -137,91 +137,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    //abre outra pagina copiando apenas o conteudo da tabela para impressão
+    //abre a págine de impressão
     const btn_imp = document.getElementById('btn_imp')
 
     if (btn_imp) {
         btn_imp.addEventListener('click', (evt) => {
-            //clona a tabela para nao afetar a original
-            const conteudo = document.getElementById('tabela_usuarios').cloneNode(true)
-            conteudo.querySelectorAll('tr').forEach(tr => {
-                tr.style; hover = 'none'
-            });
+            const agora = new Date()
 
-            const estilo = `
-             <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    margin: 18px;
-                }
-                table {
-                    width: 98%;
-                    border-collapse: collapse;
-                    margin-bottom: 20px;
-                }
-                th {
-                    background-color: #f2f2f2;
-                    color: #333;
-                    font-weight: bold;
-                    padding: 10px;
-                    border: 1px solid #ddd;
-                }
-                td {
-                    padding: 8px 10px;
-                    border: 1px solid #ddd;
-                }
-                tr:nth-child(even) {
-                    background-color: #f9f9f9;
-                }
-                .no-print {
-                    display: none;
-                }
-                @page {
-                    size: A4;
-                    margin: 10mm;
-                }
-                @page { 
-                    @bottom-right {
-                        content: "Página " counter(page) " de " counter(pages);
-                        font-size: 10px;
-                        color: #666;
-                     }
-                }
-                @media print {
-                    body {
-                        margin: 0;
-                        padding: 0;
-                    }
-                }
-            </style>
-            `
+            document.documentElement.setAttribute('data-print-date', agora.toLocaleDateString())
+            document.documentElement.setAttribute('data-print-datetime', agora.toLocaleString())
 
-            const cabecalho = `
-                <div style = "margin-botton: 20px; text-align: center;">
-                <h1 style = "color: #333; margin-botton: 5px;"> Operação Curiosidade</h1>
-                <p style = "color: #666;"> Relatórios > Lista de Usuários - ${new Date().toLocaleDateString()}</p>
-                </div>
-            `
+            // Chama a impressão
+            window.print()
 
-            const win = window.open('', '_blank', 'height:800', 'width:600')
-
-            win.document.head.innerHTML = `<title>Operação Curiosidade - Impressão</title>
-            ${estilo}`
-
-            win.document.body.innerHTML = `
-            ${cabecalho}
-            ${conteudo.outerHTML}
-            <div style = "margin-top: 20px; text-align: right; color: #666; font-size: 12px;>
-                Gerado em ${new Date().toLocaleString()}
-                </div>
-            `
-
-            setTimeout(() => {
-                win.print()
-                win.close()
-            }, 200);
-
-        })
+            // Remove os atributos customizados após a impressão
+            document.documentElement.removeAttribute('data-print-date')
+            document.documentElement.removeAttribute('data-print-datetime')
+        });
     }
 });
 

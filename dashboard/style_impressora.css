@@ -1,0 +1,80 @@
+/*chega aqui e para */
+/*esconde nav, header e a tabela na hora da impressão. A tabela é clonada a partir do js*/
+
+
+
+@media print {
+
+    #btn_imp,
+    .dashboard,
+    .sidebar,
+    .cadastros-relatorios-header h2 {
+        display: none;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 18px;
+    }
+
+    .principal{
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    table {
+        width: 98%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        color: #333;
+        font-weight: bold;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+    td {
+        padding: 8px 10px;
+        border: 1px solid #ddd;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    
+    body, table{
+        font-size: 10pt;
+    }
+}
+
+
+@page {
+    size: A4;
+    margin: 10mm; 
+
+    /* Cabeçalho de página (aparecerá em todas as páginas) */
+    @top-center {
+        content: "Relatórios > Lista de Usuários - " attr(data-print-date); 
+        font-size: 10px;
+        color: #666;
+        padding-top: 5mm; 
+    }
+
+    /* Rodapé de página com numeração */
+    @bottom-right {
+        content: "Página " counter(page) " de " counter(pages);
+        font-size: 10px;
+        color: #666;
+    }
+
+    /* Rodapé de página com data/hora de geração */
+    @bottom-left {
+        content: "Gerado em " attr(data-print-datetime); 
+        font-size: 10px;
+        color: #666;
+    }
+}
