@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${usuario.nome}</td>
                 <td>${usuario.email}</td>
                 <td>${usuario.telefone}</td>
-                <td>${usuario.status}</td>
+                <td>${usuario.status ? 'Ativo' : 'Inativo'}</td>
             `;
             tabela.appendChild(tr);
         });

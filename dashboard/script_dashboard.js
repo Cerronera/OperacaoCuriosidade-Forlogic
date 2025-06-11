@@ -12,7 +12,7 @@ function voltar_home() {
 }
 
 function ir_relatorios() {
-     setTimeout(() => {
+    setTimeout(() => {
         window.location.href = '/dashboard/relatorios.html'
     }, 200);
 }
@@ -41,18 +41,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     campoPesquisa.addEventListener('input', function () {
         const termo = this.value.toLowerCase().trim(); //para nao ter diferença entre maiusculas e minusculas
+        state.termoPesquisaAtual = termo
         const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
 
         resultadosPesquisa.innerHTML = ''
 
         if (!termo) {
             resultadosPesquisa.style.display = 'none'
-            //quando a pesquisa estiver vazia, todas as tr voltam a ficar visíveis.
-            const linhas = tabela.getElementsByTagName('tr')
-            for (let i = 0; i < linhas.length; i++) {
-                linhas[i].style.display = '';
-            }
-
+            state.querySet = usuarios
+            state.paginaAtual = 1
+            renderizarTabela()
             return;
         }
 
@@ -62,6 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (resultados.length === 0) {
             resultadosPesquisa.style.display = 'none'
+            tabela.innerHTML = '<tr><td colspan="4">Nenhum usuário encontrado.</td></tr>';
+            paginacaoContainer.innerHTML = ''
             return;
         }
 
@@ -76,19 +76,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 //configuração caso clique no resultado da pesquisa
                 alert(`${usuario.nome} selecionado`)
                 campoPesquisa.value = ''
-                
-                //quando a pesquisa estiver vazia, todas as tr voltam a ficar visíveis.
-                const linhas = tabela.getElementsByTagName('tr')
-                for (let i = 0; i < linhas.length; i++) {
-                    linhas[i].style.display = '';
-                }
                 resultadosPesquisa.style.display = 'none'
+                
+                state.termoPesquisaAtual = ''
+                state.querySet = usuarios
+                state.paginaAtual = 1
+                renderizarTabela()
             });
 
-            resultadosPesquisa.appendChild(item); //adiciona ao resultadosPesquisa
+             resultadosPesquisa.style.display = 'block'
+             
+             state.querySet = resultados
+             state.paginaAtual = 1
+             renderizarTabela(true)
         });
-
-        resultadosPesquisa.style.display = 'block'
+       
 
         //Filtra a tabela com os usuarios que combinam com a barra de pesquisa
         const linhas = tabela.getElementsByTagName('tr')
@@ -115,23 +117,141 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-
     //puxar dados do localstorage para a tabela:
     const tabela = document.querySelector('#tabela_usuarios tbody')
-    if (tabela) {
-        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || []
+    const paginacaoContainer = document.getElementById('paginacao')
 
-        usuarios.forEach((usuario, index) => {
-            const tr = document.createElement('tr')
-            tr.innerHTML = `
-            <td>${usuario.nome}</td>
-            <td>${usuario.email}</td>
-            <td>${usuario.telefone}</td>
-            <td>${usuario.status}</td>
-        `;
-            tabela.appendChild(tr);
 
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || []
+
+    let state = {
+        'querySet': usuarios,
+        'paginaAtual': 1,
+        'linhasPorPagina': 10,
+        'termoPesquisaAtual': '',
+    };
+
+    function calcularPaginacao() {
+        const startIndex = (state.paginaAtual - 1) * state.linhasPorPagina
+        const endIndex = startIndex + state.linhasPorPagina
+
+        //subarray com os usuarios da pagina atual
+        const usuariosDaPagina = state.querySet.slice(startIndex, endIndex)
+
+        const totalPaginas = Math.ceil(state.querySet.length / state.linhasPorPagina)
+
+        return {
+            'usuariosDaPagina': usuariosDaPagina,
+            'totalPaginas': totalPaginas
+        };
+    }
+
+    function botoesPagina(totalPaginas) {
+        paginacaoContainer.innerHTML = ''
+
+        //funcao para controlar o scroll após mudar de pagina
+        const scrollTabela = () => {
+            tabela.scrollIntoView({behavior: 'smooth', block: 'start'})
+        }
+
+        //botão primeira pagina
+        const btn_primeiro = document.createElement('button')
+        btn_primeiro.textContent = '<<'
+        btn_primeiro.disabled = (state.paginaAtual === 1) //desabilita se tiver na primeira pagina
+        btn_primeiro.addEventListener('click', (e) => {
+            e.preventDefault() //previne comportamento padrão
+            state.paginaAtual = 1
+            renderizarTabela()
+            scrollTabela()
         });
 
+        paginacaoContainer.appendChild(btn_primeiro)
+
+        //botao anterior
+        const btn_anterior = document.createElement('button')
+        btn_anterior.textContent = '<'
+        btn_anterior.disabled = (state.paginaAtual === 1) //desabilita se nao tiver como voltar
+        btn_anterior.addEventListener('click', (e) => {
+            e.preventDefault()
+            state.paginaAtual--
+            renderizarTabela()
+            scrollTabela()
+        });
+        paginacaoContainer.appendChild(btn_anterior)
+
+        //botao proximo
+        const btn_proximo = document.createElement('button')
+        btn_proximo.textContent = '>'
+        btn_proximo.disabled = (state.paginaAtual === totalPaginas || totalPaginas === 0) //desabilita se estiver na ultima ou nao tiver paginas para avançar
+        btn_proximo.addEventListener('click', (e) => {
+            e.preventDefault()
+            state.paginaAtual++
+            renderizarTabela()
+            scrollTabela()
+        });
+        paginacaoContainer.appendChild(btn_proximo)
+
+        //botao ultima pagina
+        const btn_ultima = document.createElement('button')
+        btn_ultima.textContent = '>>'
+        btn_ultima.disabled = (state.paginaAtual === totalPaginas || totalPaginas === 0) //desabilita se estiver na ultima
+        btn_ultima.addEventListener('click', (e) => {
+            e.preventDefault
+            state.paginaAtual = totalPaginas
+            renderizarTabela()
+            scrollTabela()
+        });
+        paginacaoContainer.appendChild(btn_ultima)
+
+        const info = document.createElement('span')
+        info.textContent = `Página ${state.paginaAtual} de ${totalPaginas}`
+        paginacaoContainer.appendChild(info)
+
+        //classes para estilização:
+        paginacaoContainer.querySelectorAll('button').forEach(button => {
+            button.classList.add('paginacao-btn')
+        });
     }
+
+    function renderizarTabela( mostrarTodos = false) {
+        tabela.innerHTML = ''
+
+        let usuariosParaMostrar = []
+
+        if(state.termoPesquisaAtual && mostrarTodos){
+            usuariosParaMostrar = state.querySet
+            totalPaginas = 1
+        } else{
+            const paginacao = calcularPaginacao()
+            usuariosParaMostrar = paginacao.usuariosDaPagina
+            totalPaginas = paginacao.totalPaginas
+        }
+
+
+        if (usuariosParaMostrar.length > 0) {
+            usuariosParaMostrar.forEach(usuario => {
+                const tr = document.createElement('tr')
+                tr.innerHTML = `
+                    <td>${usuario.nome}</td>
+                    <td>${usuario.email}</td>
+                    <td>${usuario.telefone}</td>
+                    <td>${usuario.status ? 'Ativo' : 'Inativo'}</td>
+        `;
+                tabela.appendChild(tr);
+            });
+        } else {
+            const tr = document.createElement('tr')
+            tr.innerHTML = `<td colspan="4">Nenhum usuário encontrado.</td>`;
+            tabelaBody.appendChild(tr);
+        }
+
+        if(!state.termoPesquisaAtual || !mostrarTodos){
+            botoesPagina(totalPaginas)
+        } else{
+            paginacaoContainer.innerHTML = `<span>${usuariosParaMostrar.length} resultados encontrados</span>`;
+        }
+    }
+
+    renderizarTabela();
+
 });
