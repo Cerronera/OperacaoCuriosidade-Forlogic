@@ -204,10 +204,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function validarTelefone(telefone) {
-            telefone = telefone.replace(/\D/g, '');
-            if (!(telefone.length >= 10 && telefone.length <= 11)) return false;
-            if (telefone.length == 11 && parseInt(telefone.substring(2, 3)) != 9) return false;
-            return true;
+            const regexTelefone = /^\(?([1-9]{2})\)? ?(9?[0-9]{4})-?([0-9]{4})$/
+            //aceita ddd a partir de 1, e aceita telefones fixos (8 numeros) e celulares (9 numeros)
+            return regexTelefone.test(telefone)
+        }
+
+        function validarEmail(email) {
+            const regexEmail = /^[_.]?[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}(?:\.br)?$/i; //aceita . _ numeros no inicio, aceita .br no final
+
+            return regexEmail.test(email)
         }
 
         //função para validar email com regex
@@ -246,7 +251,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (emailValor === '') {
                 erroinput(email, "Campo obrigatório");
                 return false;
-            } else {
+            } else if(!validarEmail(emailValor)){
+                erroinput(email, "Formato incorreto")
+                return false;
+            }
+            else {
                 const formItem = email.parentElement;
                 formItem.className = "form_modal";
                 return true;
@@ -365,7 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 botaoSalvar.classList.add('sucesso');
                 botaoSalvar.classList.remove('erro');
                 return true;
-                
+
             } else {
                 alert("Preencha os campos corretamente");
                 botaoSalvar.classList.add('erro');
