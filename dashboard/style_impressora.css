@@ -1,15 +1,42 @@
-/*chega aqui e para */
-/*esconde nav, header e a tabela na hora da impressão. A tabela é clonada a partir do js*/
+/*Apresenta apenas a tabela*/
+#paginacao {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
 
+.paginacao-btn {
+    padding: 2px 3px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: 'Roboto', Helvetica, sans-serif;
+    cursor: pointer;
+}
 
+.paginacao-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.paginacao-btn:hover:not(:disabled) {
+    background-color: #e8e8e8;
+}
 
 @media print {
 
+    #paginacao,
     #btn_imp,
     .dashboard,
     .sidebar,
     .cadastros-relatorios-header h2 {
         display: none;
+    }
+
+    tr{
+        display: table-row;
     }
 
     body {

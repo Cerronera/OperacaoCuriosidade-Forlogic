@@ -87,18 +87,19 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+
 }
 
 .dashboard .usuario a:hover {
     background-color: #f2f2f2;
 }
 
-.posicao_resultado{
+.posicao_resultado {
     position: relative;
     width: 65%;
 }
 
- .pesquisa {
+.pesquisa {
     width: 70%;
     padding: 8px 14px;
     font-size: 1em;
@@ -106,7 +107,7 @@ body {
     border-radius: 8px;
 }
 
-.resultados{
+.resultados {
     display: none;
     background-color: white;
     border: 1px solid #ccc;
@@ -192,10 +193,18 @@ body {
 table {
     width: 100%;
     border-collapse: collapse;
+    position: relative;
+}
+/*Configuração parar manter o header da tabela -- uso nos relatórios*/
+thead>tr>th {
+    position: sticky;
+    top: -1px;
+    background-color: rgb(231, 228, 228);
 }
 
 thead {
     color: rgb(136, 133, 133);
+    background-color: rgb(231, 228, 228);
 }
 
 th {
@@ -482,6 +491,7 @@ tr:hover {
     border: 1px solid #ccc;
     border-radius: 8px;
     margin-right: 5px;
+    cursor:pointer
 }
 
 .form_modal .btn button:hover {
@@ -511,4 +521,41 @@ tr:hover {
 
 .form_modal .btn_excluir button:hover {
     background-color: rgb(182, 182, 182);
+}
+
+/*Paginação*/
+
+.paginacao-container {
+    margin-top: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: rgb(136, 133, 133);
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.paginacao-btn {
+    padding: 2px 3px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: 'Roboto', Helvetica, sans-serif;
+    cursor: pointer;
+}
+
+.paginacao-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.paginacao-btn:hover:not(:disabled) {
+    background-color: #e8e8e8;
+}
+
+
+.paginacao-container span {
+    margin-left: 15px;
+
 }

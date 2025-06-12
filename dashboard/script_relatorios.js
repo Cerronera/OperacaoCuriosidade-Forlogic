@@ -29,133 +29,161 @@ function abrirNovoCadastro() {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    //barra de pesquisa do header igual ao da tela de dashboard (por enquanto):
-
     const campoPesquisa = document.getElementById('campoPesquisa')
     const resultadosPesquisa = document.getElementById('resultadosPesquisa')
-
-
-    campoPesquisa.addEventListener('input', function () {
-        const termo = this.value.toLowerCase().trim(); //para nao ter diferença entre maiusculas e minusculas
-        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-
-        resultadosPesquisa.innerHTML = ''
-
-        if (!termo) {
-            resultadosPesquisa.style.display = 'none'
-            //quando a pesquisa estiver vazia, todas as tr voltam a ficar visíveis.
-            const linhas = tabela.getElementsByTagName('tr')
-            for (let i = 0; i < linhas.length; i++) {
-                linhas[i].style.display = '';
-            }
-
-            return;
-        }
-
-        const resultados = usuarios.filter(usuario =>
-            usuario.nome && usuario.nome.toLowerCase().includes(termo) // filter percorre a array e mantem resultados cujo nome contem o termo digitado
-        );
-
-        if (resultados.length === 0) {
-            resultadosPesquisa.style.display = 'none'
-            return;
-        }
-
-        //cria uma div dinamicamente e coloca o nome do usuario dentro dessa div
-        resultados.forEach(usuario => {
-            const item = document.createElement('div');
-            item.textContent = usuario.nome
-            item.style.padding = '8px';
-            item.style.cursor = 'pointer'
-
-            item.addEventListener('click', () => {
-                //configuração caso clique no resultado da pesquisa
-                alert(`${usuario.nome} selecionado`)
-                campoPesquisa.value = ''
-
-                //quando a pesquisa estiver vazia, todas as tr voltam a ficar visíveis.
-                const linhas = tabela.getElementsByTagName('tr')
-                for (let i = 0; i < linhas.length; i++) {
-                    linhas[i].style.display = '';
-                }
-                resultadosPesquisa.style.display = 'none'
-            });
-
-            resultadosPesquisa.appendChild(item); //adiciona ao resultadosPesquisa
-        });
-
-        resultadosPesquisa.style.display = 'block'
-
-        //Filtra a tabela com os usuarios que combinam com a barra de pesquisa
-        const linhas = tabela.getElementsByTagName('tr')
-        for (let i = 0; i < linhas.length; i++) {
-            const linha = linhas[i]
-            const nomeCelula = linha.cells[0]
-
-            if (nomeCelula) {
-                const nome = nomeCelula.textContent.toLowerCase()
-
-                if (nome.includes(termo)) {
-                    linha.style.display = '';
-                } else {
-                    linha.style.display = 'none'
-                }
-            }
-        }
-
-    });
-
-    document.addEventListener('click', function (e) {
-        if (!campoPesquisa.contains(e.target)) {
-            resultadosPesquisa.style.display = 'none'
-        }
-    });
-
-
-    //reproduz a tabela como nas outras páginas.
-
-    document.addEventListener('click', function (e) {
-        if (!campoPesquisa.contains(e.target)) {
-            resultadosPesquisa.style.display = 'none'
-        }
-    });
-
     const tabela = document.querySelector('#tabela_usuarios tbody')
-    if (tabela) {
-        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || []
-
-        usuarios.forEach((usuario, index) => {
-            const tr = document.createElement('tr')
-            tr.dataset.index = index
-            tr.innerHTML = `
-                <td>${usuario.nome}</td>
-                <td>${usuario.email}</td>
-                <td>${usuario.telefone}</td>
-                <td>${usuario.status}</td>
-            `;
-            tabela.appendChild(tr);
-        });
-    }
-
-    //abre a págine de impressão
+    const paginacaoContainer = document.getElementById('paginacao')
     const btn_imp = document.getElementById('btn_imp')
 
-    if (btn_imp) {
-        btn_imp.addEventListener('click', (evt) => {
-            const agora = new Date()
+    resultadosPesquisa.style.display = 'none'
 
-            document.documentElement.setAttribute('data-print-date', agora.toLocaleDateString())
-            document.documentElement.setAttribute('data-print-datetime', agora.toLocaleString())
+    let state = {
+        'querySet': JSON.parse(localStorage.getItem('usuarios')) || [],
+        'paginaAtual': 1,
+        'linhasPorPagina': 20,
+        'termoPesquisaAtual': '',
+    };
 
-            // Chama a impressão
-            window.print()
+    function calcularPaginacao() {
+        const startIndex = (state.paginaAtual - 1) * state.linhasPorPagina;
+        const endIndex = startIndex + state.linhasPorPagina;
 
-            // Remove os atributos customizados após a impressão
-            document.documentElement.removeAttribute('data-print-date')
-            document.documentElement.removeAttribute('data-print-datetime')
+        let usuariosFiltrados = state.querySet;
+        if (state.termoPesquisaAtual) {
+            usuariosFiltrados = usuariosFiltrados.filter(usuario =>
+                usuario.nome && usuario.nome.toLowerCase().includes(state.termoPesquisaAtual)
+            );
+        }
+
+        const usuariosDaPagina = usuariosFiltrados.slice(startIndex, endIndex);
+        const totalPaginas = Math.ceil(usuariosFiltrados.length / state.linhasPorPagina);
+
+        return {
+            'usuariosDaPagina': usuariosDaPagina,
+            'totalPaginas': totalPaginas,
+            'totalUsuarios': usuariosFiltrados.length
+        };
+    }
+
+    function botoesPagina(totalPaginas) {
+        paginacaoContainer.innerHTML = ''
+
+        const btn_primeiro = document.createElement('button')
+        btn_primeiro.textContent = '<<'
+        btn_primeiro.disabled = (state.paginaAtual === 1)
+        btn_primeiro.addEventListener('click', () => {
+            state.paginaAtual = 1
+            renderizarTabela()
+        });
+
+        const btn_anterior = document.createElement('button')
+        btn_anterior.textContent = '<'
+        btn_anterior.disabled = (state.paginaAtual === 1)
+        btn_anterior.addEventListener('click', () => {
+            state.paginaAtual--
+            renderizarTabela()
+        });
+
+        const btn_proximo = document.createElement('button')
+        btn_proximo.textContent = '>'
+        btn_proximo.disabled = (state.paginaAtual === totalPaginas || totalPaginas === 0)
+        btn_proximo.addEventListener('click', () => {
+            state.paginaAtual++
+            renderizarTabela()
+
+        });
+
+        const btn_ultima = document.createElement('button')
+        btn_ultima.textContent = '>>'
+        btn_ultima.disabled = (state.paginaAtual === totalPaginas || totalPaginas === 0);
+        btn_ultima.addEventListener('click', () => {
+            state.paginaAtual = totalPaginas
+            renderizarTabela()
+        });
+
+        const info = document.createElement('span')
+        info.textContent = `Página ${state.paginaAtual} de ${totalPaginas} -- ${state.querySet.length} registros`
+
+        paginacaoContainer.appendChild(btn_primeiro)
+        paginacaoContainer.appendChild(btn_anterior)
+        paginacaoContainer.appendChild(info)
+        paginacaoContainer.appendChild(btn_proximo)
+        paginacaoContainer.appendChild(btn_ultima)
+
+        paginacaoContainer.querySelectorAll('button').forEach(button => {
+            button.classList.add('paginacao-btn')
         });
     }
+
+    function renderizarTabela() {
+        tabela.innerHTML = '';
+        const { usuariosDaPagina, totalPaginas } = calcularPaginacao();
+
+        if (usuariosDaPagina.length > 0) {
+            usuariosDaPagina.forEach((usuario, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${usuario.nome}</td>
+                    <td>${usuario.email}</td>
+                    <td>${usuario.telefone}</td>
+                    <td>${usuario.status}</td>
+                `;
+                tabela.appendChild(tr);
+            });
+        } else {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td colspan="4">${state.termoPesquisaAtual ? 'Nenhum usuário encontrado' : 'Nenhum usuário cadastrado'}</td>`;
+            tabela.appendChild(tr);
+        }
+
+        botoesPagina(totalPaginas);
+    }
+    // Barra de pesquisa
+    campoPesquisa.addEventListener('input', function () {
+        const termo = this.value.toLowerCase().trim();
+        state.termoPesquisaAtual = termo;
+        state.paginaAtual = 1; // Reset para primeira página ao pesquisar
+        renderizarTabela();
+    });
+
+    if (btn_imp) {
+        btn_imp.addEventListener('click', () => {
+            // Salva o estado atual
+            const linhasPorPaginaOriginal = state.linhasPorPagina;
+            const paginaAtualOriginal = state.paginaAtual;
+
+            // Mostra todos os registros na hora de imprimir
+            state.linhasPorPagina = state.querySet.length;
+            state.paginaAtual = 1;
+            renderizarTabela();
+
+            const agora = new Date();
+            document.documentElement.setAttribute('data-print-date', agora.toLocaleDateString());
+            document.documentElement.setAttribute('data-print-datetime', agora.toLocaleString());
+
+            // Espera um pouco para renderizar antes de imprimir
+            setTimeout(() => {
+                window.print();
+
+                // Restaura o estado original
+                state.linhasPorPagina = linhasPorPaginaOriginal;
+                state.paginaAtual = paginaAtualOriginal;
+                renderizarTabela();
+
+                // Remove os atributos 
+                document.documentElement.removeAttribute('data-print-date');
+                document.documentElement.removeAttribute('data-print-datetime');
+            }, 100);
+        });
+    }
+
+    // Inicialização
+    renderizarTabela();
 });
+
+
+
+
 
 
 
