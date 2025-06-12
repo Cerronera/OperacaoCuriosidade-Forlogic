@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${usuario.nome}</td>
                     <td>${usuario.email}</td>
                     <td>${usuario.telefone}</td>
-                    <td>${usuario.status ? 'Ativo' : 'Inativo'}</td>
+                    <td>${usuario.status}</td>
                 `;
                 // Adiciona evento de clique para abrir o modal
                 tr.addEventListener('click', () => abrirModalEdicao(usuario));
@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('edit_interesses').value = usuario.interesses || ''
             document.getElementById('edit_sentimentos').value = usuario.sentimentos || ''
             document.getElementById('edit_valores').value = usuario.valores || ''
-            document.getElementById('edit_ativo').checked = usuario.status || false
+            document.getElementById('edit_ativo').checked = (usuario.status === "Ativo")
             document.getElementById('modal_edicao').scrollTop = 0;
         }
     }
@@ -272,6 +272,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const modal = document.getElementById('modal_edicao');
             const index = modal.dataset.index;
             let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const checkboxEdit = document.getElementById('edit_ativo')
+            const novoStatus = checkboxEdit.checked ? "Ativo" : "Inativo"
 
             if (index < 0 || index >= usuarios.length) {
                 alert("Erro: índice de usuário inválido")
@@ -289,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 interesses: document.getElementById('edit_interesses').value.trim(),
                 sentimentos: document.getElementById('edit_sentimentos').value.trim(),
                 valores: document.getElementById('edit_valores').value.trim(),
-                status: document.getElementById('edit_ativo').checked,
+                status: novoStatus,   
                 revisado: true //ao salvar coloca como true
             };
 

@@ -545,6 +545,16 @@ tr:hover {
     cursor: pointer;
 }
 
+.paginacao-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.paginacao-btn:hover:not(:disabled) {
+    background-color: #e8e8e8;
+}
+
+
 .paginacao-container span {
     margin-left: 15px;
 

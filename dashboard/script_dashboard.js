@@ -77,20 +77,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert(`${usuario.nome} selecionado`)
                 campoPesquisa.value = ''
                 resultadosPesquisa.style.display = 'none'
-                
+
                 state.termoPesquisaAtual = ''
                 state.querySet = usuarios
                 state.paginaAtual = 1
                 renderizarTabela()
             });
 
-             resultadosPesquisa.style.display = 'block'
-             
-             state.querySet = resultados
-             state.paginaAtual = 1
-             renderizarTabela(true)
+            resultadosPesquisa.style.display = 'block'
+
+            state.querySet = resultados
+            state.paginaAtual = 1
+            renderizarTabela(true)
         });
-       
+
 
         //Filtra a tabela com os usuarios que combinam com a barra de pesquisa
         const linhas = tabela.getElementsByTagName('tr')
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //funcao para controlar o scroll após mudar de pagina
         const scrollTabela = () => {
-            tabela.scrollIntoView({behavior: 'smooth', block: 'start'})
+            tabela.scrollIntoView({ behavior: 'smooth', block: 'start' })
         }
 
         //botão primeira pagina
@@ -165,8 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
             scrollTabela()
         });
 
-        paginacaoContainer.appendChild(btn_primeiro)
-
         //botao anterior
         const btn_anterior = document.createElement('button')
         btn_anterior.textContent = '<'
@@ -177,7 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
             renderizarTabela()
             scrollTabela()
         });
-        paginacaoContainer.appendChild(btn_anterior)
 
         //botao proximo
         const btn_proximo = document.createElement('button')
@@ -189,7 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
             renderizarTabela()
             scrollTabela()
         });
-        paginacaoContainer.appendChild(btn_proximo)
 
         //botao ultima pagina
         const btn_ultima = document.createElement('button')
@@ -201,11 +197,16 @@ document.addEventListener('DOMContentLoaded', () => {
             renderizarTabela()
             scrollTabela()
         });
-        paginacaoContainer.appendChild(btn_ultima)
 
         const info = document.createElement('span')
         info.textContent = `Página ${state.paginaAtual} de ${totalPaginas}`
+
+        //coloca os botões na página
+        paginacaoContainer.appendChild(btn_primeiro)
+        paginacaoContainer.appendChild(btn_anterior)
         paginacaoContainer.appendChild(info)
+        paginacaoContainer.appendChild(btn_proximo)
+        paginacaoContainer.appendChild(btn_ultima)
 
         //classes para estilização:
         paginacaoContainer.querySelectorAll('button').forEach(button => {
@@ -213,15 +214,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function renderizarTabela( mostrarTodos = false) {
+    function renderizarTabela(mostrarTodos = false) {
         tabela.innerHTML = ''
 
         let usuariosParaMostrar = []
 
-        if(state.termoPesquisaAtual && mostrarTodos){
+        if (state.termoPesquisaAtual && mostrarTodos) {
             usuariosParaMostrar = state.querySet
             totalPaginas = 1
-        } else{
+        } else {
             const paginacao = calcularPaginacao()
             usuariosParaMostrar = paginacao.usuariosDaPagina
             totalPaginas = paginacao.totalPaginas
@@ -235,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${usuario.nome}</td>
                     <td>${usuario.email}</td>
                     <td>${usuario.telefone}</td>
-                    <td>${usuario.status ? 'Ativo' : 'Inativo'}</td>
+                    <td>${usuario.status}</td>
         `;
                 tabela.appendChild(tr);
             });
@@ -245,9 +246,9 @@ document.addEventListener('DOMContentLoaded', () => {
             tabelaBody.appendChild(tr);
         }
 
-        if(!state.termoPesquisaAtual || !mostrarTodos){
+        if (!state.termoPesquisaAtual || !mostrarTodos) {
             botoesPagina(totalPaginas)
-        } else{
+        } else {
             paginacaoContainer.innerHTML = `<span>${usuariosParaMostrar.length} resultados encontrados</span>`;
         }
     }

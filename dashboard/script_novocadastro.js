@@ -47,6 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const sentimentos = document.getElementById('idsentimentos');
     const valores = document.getElementById('idvalores');
 
+    console.log('status:',ativo.checked)
+
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
         if (checkForm()) {
@@ -239,6 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dataCadastro: new Date().toISOString(),
             revisado: false
         };
+          console.log('status:',novoUsuario.status)
 
         const dadosExistentes = JSON.parse(localStorage.getItem('usuarios')) || [];
         dadosExistentes.push(novoUsuario);
