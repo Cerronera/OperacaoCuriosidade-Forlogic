@@ -47,8 +47,7 @@
                 <div class="cadastros-relatorios-header">
                     <h2>Cadastros</h2>
                     <div class=btn_cad>
-                        <button type="submit" class="btn" id="submitbtn" onclick="abrirNovoCadastro()">NOVO
-                            CADASTRO</button>
+                        <button type="button" class="btn" id="btn_cad">NOVO CADASTRO</button>
                     </div>
                 </div>
                 <table id="tabela_usuarios">
@@ -66,6 +65,83 @@
                 </table>
                 <div id="paginacao" class="paginacao-container"></div>
             </div>
+
+            <!--MODAL CADASTRO-->
+            <div id="modal_cadastro" class="modal oculto">
+
+                <h2>Novo Cadastro</h2>
+
+                <form id="modal_novocadastro">
+
+                    <h3>1° Fatos e Dados</h3>
+
+                    <div class="checkbox">
+                        <button type="button" class="fechar" onclick="fecharModal()"><img src="/imagens/fechar.png"
+                                alt="fechar"></button>
+                        <label><input type="checkbox" id="cadastro_ativo">Ativo</label>
+                    </div>
+
+                    <div class="form_cadastro">
+                        <label for="idnome">Nome:</label>
+                        <input type="text" id="idnome" name="nome" required>
+                        <a>erro</a>
+                    </div>
+
+                    <div class="form_cadastro">
+                        <label for="ididade">Idade:</label>
+                        <input type="number" id="ididade" name="idade" required>
+                        <a>erro</a>
+                    </div>
+
+                    <div class="form_cadastro">
+                        <label for="idemail">E-mail:</label>
+                        <input type="email" id="idemail" name="email" required>
+                        <a>erro</a>
+                    </div>
+
+                    <div class="form_cadastro">
+                        <label for="idtelefone">Telefone:</label>
+                        <input type="text" id="idtelefone" name="telefone" maxlength="15" placeholder="(99) 99999-9999">
+                        <a>erro</a>
+                    </div>
+
+                    <div class="form_cadastro">
+                        <label for="idendereco">Endereço:</label>
+                        <input type="text" name="endereo" id="idendereco" required>
+                        <a>erro</a>
+                    </div>
+
+                    <div class="form_cadastro">
+                        <label for="idoutros">Outras Informações:</label>
+                        <textarea name="outrasinformacoes" id="idoutros" required></textarea>
+                        <a>erro</a>
+                    </div>
+
+                    <h3>2° Interesses</h3>
+                    <div class="form_cadastro">
+                        <textarea name="interesses" id="idinteresses" required></textarea>
+                        <a>erro</a>
+                    </div>
+
+                    <h3>3° Sentimentos</h3>
+                    <div class="form_cadastro">
+                        <textarea name="Sentimentos" id="idsentimentos" required></textarea>
+                        <a>erro</a>
+                    </div>
+
+                    <h3>4° Valores</h3>
+                    <div class="form_cadastro">
+                        <textarea name="valores" id="idvalores" required></textarea>
+                        <a>erro</a>
+                    </div>
+                    <div class="modal_actions">
+                        <button type="submit" class="btn btn_primary" id="submit" style="width: 200px;">GRAVAR</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- MODAL EDIÇÃO-->
+
             <div id="modal_edicao" class="modal oculto">
                 <form id="form_edicao">
                     <div class="form_modal">
@@ -73,69 +149,70 @@
                                 alt="fechar"></button>
                         <label for="edit_nome">Nome:</label>
                         <input type="text" id="edit_nome" required>
-                        <p><a>erro</a></p>
+                        <a>erro</a>
                     </div>
 
                     <div class="form_modal">
                         <label for="edit_idade">Idade:</label>
                         <input type="number" id="edit_idade" required>
-                        <p><a>erro</a></p>
+                        <a>erro</a>
                     </div>
 
                     <div class="form_modal">
                         <label for="edit_email">E-mail:</label>
                         <input type="email" id="edit_email" required>
-                        <p><a>erro</a></p>
+                        <a>erro</a>
                     </div>
 
                     <div class="form_modal">
                         <label for="edit_telefone">Telefone:</label>
                         <input type="text" id="edit_telefone" placeholder="(99) 9999-9999" required>
-                        <p><a>erro</a></p>
+                        <a>erro</a>
                     </div>
 
                     <div class="form_modal">
                         <label for="edit_endereco">Endereço:</label>
                         <input type="text" id="edit_endereco" required>
-                        <p><a>erro</a></p>
+                        <a>erro</a>
                     </div>
 
                     <div class="form_modal">
                         <label for="edit_outros">Outras Informações :</label>
                         <textarea id="edit_outros" required></textarea>
-                        <p><a>erro</a></p>
+                        <a>erro</a>
                     </div>
                     <div class="form_modal">
                         <label for="edit_interesses">Interesses:</label>
                         <textarea id="edit_interesses" required></textarea>
-                        <p><a>erro</a></p>
+                        <a>erro</a>
                     </div>
 
                     <div class="form_modal">
                         <label for="edit_sentimentos">Sentimentos:</label>
                         <textarea id="edit_sentimentos" required></textarea>
-                        <p><a>erro</a></p>
+                        <a>erro</a>
                     </div>
                     <div class="form_modal">
                         <label for="edit_valores">Valores:</label>
                         <textarea id="edit_valores" required></textarea>
-                        <p><a>erro</a></p>
+                        <a>erro</a>
                     </div>
 
                     <div class="checkbox">
                         <label><input type="checkbox" id="edit_ativo">Ativo</label>
                     </div>
-                    <div class="form_modal">
-                        <div class="btn">
-                            <button type="button" id="salvar">Salvar Alterações</button>
-                            <button type="button" id="cancelar">Cancelar</button>
-                        </div>
-                        <div class="btn_excluir">
-                            <button type="button" id="excluir" id="excluir"><img src="/imagens/delete.png"
-                                    alt="deletar"></a></button>
+
+                    <div class="modal_actions">
+                        <button type="button" id="excluir" class="btn_delete"><img src="/imagens/delete.png"
+                                alt="deletar"></button>
+                        <div class="btn_group">
+                            <button type="button" id="cancelar" class="btn btn_secondary">Cancelar</button>
+                            <button type="button" id="salvar" class="btn btn_primary">Salvar Alterações</button>
                         </div>
                     </div>
-                </form>
+
+            </div>
+            </form>
         </main>
     </div>
     <script src="script_modal.js"></script>

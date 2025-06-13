@@ -195,6 +195,7 @@ table {
     border-collapse: collapse;
     position: relative;
 }
+
 /*Configuração parar manter o header da tabela -- uso nos relatórios*/
 thead>tr>th {
     position: sticky;
@@ -291,236 +292,195 @@ tr:hover {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
-
-
-/*main do adicionar novo cadastro*/
-.novo_cadastro {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-
-}
-
-.novo_cadastro h2 {
-    color: rgb(136, 133, 133);
-    font-size: 18px;
-    margin-bottom: 30px;
-}
-
-.novo_cadastro h3 {
-    font-size: 16px;
-    border-bottom: 2px solid lightgray;
-    margin-bottom: 20px;
-    margin-left: 10px;
-    margin-top: 30px;
-}
-
-.form {
-    display: flex;
-    flex-direction: column;
-}
-
-.checkbox {
-    display: flex;
-    justify-content: end;
-}
-
-.checkbox label {
-    font-family: 'Roboto', 'sans-serif';
-    font-size: 14px;
-    padding: 10px;
-    color: rgb(95, 93, 93);
-
-}
-
-.checkbox input {
-    accent-color: green;
-    transform: scale(1.2);
-    margin-right: 5px;
-}
-
-.form label {
-    font-family: 'Roboto', 'sans-serif';
-    font-size: 14px;
-    padding: 10px;
-    color: rgb(95, 93, 93);
-
-}
-
-.form input {
-    text-align: justify;
-    margin-left: 10px;
-    width: 98%;
-    height: 35px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    background-color: rgba(238, 233, 233, 0.329);
-    padding-left: 5px;
-}
-
-.form a {
-    margin-left: 12px;
-    font-size: 12px;
-    visibility: hidden;
-    transition: color 0.1s ease;
-}
-
-.form.erro a {
-    visibility: visible;
-    color: rgb(236, 42, 42);
-}
-
-#idoutros {
-    height: 60px;
-    text-align: justify;
-    margin-left: 10px;
-    width: 98%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: rgba(238, 233, 233, 0.329);
-    resize: none;
-    padding-left: 5px;
-    padding-top: 5px;
-}
-
-.form textarea {
-    height: 90px;
-    text-align: justify;
-    margin-left: 10px;
-    width: 98%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: rgba(238, 233, 233, 0.329);
-    resize: none;
-    padding-left: 5px;
-    padding-top: 5px;
-}
-
-.novo_cadastro .btn {
-    display: flex;
-    justify-content: center;
-}
-
-.novo_cadastro .btn button {
-    align-items: center;
-    padding: 10px;
-    width: 200px;
-    justify-content: center;
-    background-color: rgb(53, 156, 53);
-    color: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.novo_cadastro .btn button:hover {
-    border: 2px solid gray;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-}
-
-/*Modal edição*/
+/* Modais*/
 .oculto {
     display: none;
 }
 
-#modal_edicao {
-    overflow-y: auto;
+.modal {
     position: fixed;
-    top: 20%;
-    left: 62%;
-    transform: translateX(-50%);
-    padding: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Centraliza perfeitamente */
     background: white;
     border: 1px solid #ccc;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    height: 300px;
-}
-
-.form_modal input:not([type="checkbox"]) {
-    width: 100%;
-    padding: 5px;
-    margin-bottom: 5px;
-    height: 35px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: rgba(238, 233, 233, 0.329);
-    margin-top: 8px;
-}
-
-.form_modal textarea {
-    width: 100%;
-    height: 60px;
-    padding: 5px;
-    margin-bottom: 5px;
-    resize: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: rgba(238, 233, 233, 0.329);
-    margin-top: 8px;
-}
-
-.form_modal label {
-    font-size: 14px;
-    color: rgb(95, 93, 93);
-    font-family: 'Roboto', 'sans-serif';
-}
-
-.fechar {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-}
-
-.fechar:hover {
-    background-color: rgb(243, 56, 56);
-}
-
-.form_modal .btn button {
-    height: 30px;
-    padding: 5px;
-    background-color: rgb(53, 156, 53);
-    color: white;
-    border: 1px solid #ccc;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    /* Garante que fique na frente de tudo */
+    padding: 25px 30px;
     border-radius: 8px;
-    margin-right: 5px;
-    cursor:pointer
+    overflow-y: auto;
 }
 
-.form_modal .btn button:hover {
-    border: 2px solid gray;
+#modal_cadastro {
+    width: 550px;
+    max-height: 90vh;
 }
 
-.form_modal a {
-    margin-left: 12px;
+#modal_edicao {
+    width: 450px;
+    max-height: 90vh;
+}
+
+.modal h2 {
+    color: rgb(136, 133, 133);
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.modal h3 {
+    font-size: 16px;
+    border-bottom: 2px solid lightgray;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.form_cadastro,
+.form_modal {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.modal label {
+    font-family: 'Roboto', 'sans-serif';
+    font-size: 14px;
+    padding-bottom: 5px;
+    color: rgb(95, 93, 93);
+}
+
+.modal input[type="text"],
+.modal input[type="number"],
+.modal input[type="email"],
+.modal textarea {
+    width: 100%;
+    height: 38px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+
+    background-color: rgba(238, 233, 233, 0.329);
+    padding: 0 10px;
+    font-size: 14px;
+}
+
+.modal textarea{
+    height: 80px; /* Altura padrão para textareas */
+    resize: none; 
+    padding-top: 8px;
+}
+
+.form_cadastro a, .form_modal a {
+    margin-top: 4px;
     font-size: 12px;
     visibility: hidden;
-    transition: color 0.1s ease;
+    transition: color 0.1s ease;  
+    margin-left: 3px;
 }
 
-.form_modal.erro a {
+.form_cadastro.erro a, .form_modal.erro a{
     visibility: visible;
     color: rgb(236, 42, 42);
 }
 
-.form_modal .btn_excluir button {
-    position: absolute;
-    right: 5px;
-    border: none;
-    padding: 5px;
-    background-color: white;
-    cursor: pointer;
+.checkbox {
+    display: flex;
+    justify-content: flex-end; /* Alinha à direita */
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 8px;
 }
 
-.form_modal .btn_excluir button:hover {
-    background-color: rgb(182, 182, 182);
+.checkbox label {
+    padding: 0;
+    color: rgb(95,93,93);
+    margin-left: 10px;
+    order: 2;
+}
+
+.checkbox input {
+    accent-color: green;
+    order: 1;
+    transform: scale(1.2);
+    cursor:pointer;
+}
+
+.fechar {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    line-height: 0; 
+    transition: background-color 0.2s;
+}
+
+.fechar:hover {
+    background-color: #f1f1f1;
+}
+
+.modal_actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.modal_actions .btn_group {
+    display: flex;
+    gap: 10px; 
+}
+
+.btn{
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+/*Gravar e salvar dados*/
+.btn_primary {
+    background-color: rgb(53, 156, 53);
+    color: white;
+}
+
+.btn_primary:hover {
+    background-color: rgb(43, 126, 43);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/*Cancelar*/
+.btn_secondary {
+    background-color: #f0f0f0;
+    color: #333;
+    border-color: #ccc;
+}
+.btn_secondary:hover {
+    background-color: #e0e0e0;
+}
+
+/* Botão de excluir */
+.btn_delete {
+    background-color: transparent;
+    border: none;
+    padding: 5px;
+}
+
+.btn_delete:hover img {
+    opacity: 0.7;
+}
+
+#modal_cadastro .modal_actions {
+    justify-content: center;
 }
 
 /*Paginação*/
