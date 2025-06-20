@@ -57,6 +57,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabela = document.querySelector('#tabela_usuarios tbody')
     const paginacaoContainer = document.getElementById('paginacao')
 
+
+    // carregar informações do admin
+    function carregarAdmin() {
+        const emailLogado = sessionStorage.getItem('adminLogado')
+
+        //função pra bloquear acesso se nao tiver logado
+        if (!emailLogado) {
+            alert("Nenhum administrador logado. Por favor, faça o Login.")
+            window.location.href = '../login_cadastro/login.html'
+            return;
+        }
+
+        const admins = JSON.parse(localStorage.getItem('admins')) || [];
+
+        const adminInfo = admins.find(admin => admin.email === emailLogado)
+
+        if (adminInfo) {
+            const nomeUsuario = document.querySelector('.usuario_nome')
+            if (nomeUsuario) {
+                nomeUsuario.textContent = adminInfo.nome
+            }
+        } else {
+            alert("Erro ao carregar informações do Administrador.")
+            window.location.href = '../login_cadastro/login.html'
+        }
+    }
+    carregarAdmin()
+
     // Tabela e paginação:
 
     let state = {
@@ -378,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         }
 
-        return true; 
+        return true;
     }
 
     //Eventos modal de edição:
@@ -386,261 +414,261 @@ document.addEventListener('DOMContentLoaded', () => {
     // Salvar Edições
     document.getElementById('salvar').addEventListener('click', () => {
 
-    if (checkEditForm()) {
+        if (checkEditForm()) {
+            const index = modalEdicao.dataset.index;
+            if (index === undefined) {
+                return;
+            }
+
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const checkboxEdit = document.getElementById('edit_ativo')
+            const novoStatus = checkboxEdit.checked ? "Ativo" : "Inativo"
+
+            const usuarioAtualizado = {
+                ...usuarios[index],
+                nome: document.getElementById('edit_nome').value.trim(),
+                idade: document.getElementById('edit_idade').value.trim(),
+                email: document.getElementById('edit_email').value.trim(),
+                telefone: document.getElementById('edit_telefone').value.trim(),
+                endereco: document.getElementById('edit_endereco').value.trim(),
+                outros: document.getElementById('edit_outros').value.trim(),
+                interesses: document.getElementById('edit_interesses').value.trim(),
+                sentimentos: document.getElementById('edit_sentimentos').value.trim(),
+                valores: document.getElementById('edit_valores').value.trim(),
+                status: novoStatus,
+                revisado: true //ao salvar coloca como true
+            };
+
+            usuarios[index] = usuarioAtualizado
+            //atualizar lista de usuarios
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+            alert("Dados atualizados com sucesso!");
+            fecharModal(modalEdicao)
+            renderizarTabela()
+        } else {
+            alert("Corrija os campos que contém erro antes de salvar")
+        }
+
+    });
+
+    //Excluir dados 
+    document.getElementById('excluir').addEventListener('click', () => {
+        if (!confirm("Quer excluir esse cadastro?")) {
+            return;
+        }
+
         const index = modalEdicao.dataset.index;
         if (index === undefined) {
             return;
         }
 
         let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-        const checkboxEdit = document.getElementById('edit_ativo')
-        const novoStatus = checkboxEdit.checked ? "Ativo" : "Inativo"
-
-        const usuarioAtualizado = {
-            ...usuarios[index],
-            nome: document.getElementById('edit_nome').value.trim(),
-            idade: document.getElementById('edit_idade').value.trim(),
-            email: document.getElementById('edit_email').value.trim(),
-            telefone: document.getElementById('edit_telefone').value.trim(),
-            endereco: document.getElementById('edit_endereco').value.trim(),
-            outros: document.getElementById('edit_outros').value.trim(),
-            interesses: document.getElementById('edit_interesses').value.trim(),
-            sentimentos: document.getElementById('edit_sentimentos').value.trim(),
-            valores: document.getElementById('edit_valores').value.trim(),
-            status: novoStatus,
-            revisado: true //ao salvar coloca como true
-        };
-
-        usuarios[index] = usuarioAtualizado
-        //atualizar lista de usuarios
+        // Remove o usuário do array
+        usuarios.splice(index, 1);
         localStorage.setItem('usuarios', JSON.stringify(usuarios));
 
-        alert("Dados atualizados com sucesso!");
+        alert('Cadastro excluído');
         fecharModal(modalEdicao)
         renderizarTabela()
-    } else {
-        alert("Corrija os campos que contém erro antes de salvar")
+
+    });
+
+    document.getElementById('cancelar').addEventListener('click', () => fecharModal(modalEdicao))
+    modalEdicao.querySelector('.fechar').addEventListener('click', () => fecharModal(modalEdicao))
+
+
+    function erroinput(input, mensagem) {
+        const formItem = input.parentElement;
+        const textoMensagem = formItem.querySelector("a");
+        textoMensagem.innerText = mensagem;
+        formItem.className = 'form_cadastro erro';
     }
 
-});
-
-//Excluir dados 
-document.getElementById('excluir').addEventListener('click', () => {
-    if (!confirm("Quer excluir esse cadastro?")) {
-        return;
+    function sucessoinput(input) {
+        const formItem = input.parentElement;
+        formItem.className = "form_cadastro";
     }
 
-    const index = modalEdicao.dataset.index;
-    if (index === undefined) {
-        return;
-    }
-
-    let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-    // Remove o usuário do array
-    usuarios.splice(index, 1);
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
-
-    alert('Cadastro excluído');
-    fecharModal(modalEdicao)
-    renderizarTabela()
-
-});
-
-document.getElementById('cancelar').addEventListener('click', () => fecharModal(modalEdicao))
-modalEdicao.querySelector('.fechar').addEventListener('click', () => fecharModal(modalEdicao))
-
-
-function erroinput(input, mensagem) {
-    const formItem = input.parentElement;
-    const textoMensagem = formItem.querySelector("a");
-    textoMensagem.innerText = mensagem;
-    formItem.className = 'form_cadastro erro';
-}
-
-function sucessoinput(input) {
-    const formItem = input.parentElement;
-    formItem.className = "form_cadastro";
-}
-
-function checkNome(nomeInput) {
-    if (nomeInput.value === '') {
-        erroinput(nomeInput, "Campo obrigatório");
-    } else {
-        sucessoinput(nomeInput)
-    }
-}
-
-function checkIdade(idadeInput) {
-    const idadeValor = idadeInput.value
-    if (idadeValor.value === '') {
-        erroinput(idadeInput, "Campo obrigatório");
-    } else if (!(idadeValor >= 16 && idadeValor <= 80)) {
-        erroinput(idadeInput, "Valor não aceito");
-    } else {
-        sucessoinput(idadeInput)
-    }
-}
-
-function checkEmail(emailInput) {
-    const emailValor = emailInput.value;
-    const regexEmail = /^[_.]?[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}(?:\.br)?$/i
-    if (emailValor === '') {
-        erroinput(emailInput, "Campo obrigatório");
-    } else if (!regexEmail.test(emailValor)) {
-        erroinput(emailInput, "Formato incorreto")
-    } else {
-        sucessoinput(emailInput)
-    }
-}
-
-function checkTelefone(telefoneInput) {
-    const telefoneValor = telefoneInput.value;
-    const regexTelefone = /^\(?([1-9]{2})\)? ?(9?[0-9]{4})-?([0-9]{4})$/
-    if (telefoneInput === '') {
-        erroinput(telefoneInput, "Campo obrigatório");
-    } else if (!regexTelefone.test(telefoneValor)) {
-        erroinput(telefoneInput, "Formato incorreto");
-    } else {
-        sucessoinput(telefoneInput)
-    }
-}
-
-function checkEndereco(enderecoInput) {
-    if (enderecoInput.value === '') {
-        erroinput(enderecoInput, "Campo obrigatório");
-    } else {
-        sucessoinput(enderecoInput)
-    }
-}
-
-function checkOutros(outrosInput) {
-    if (outrosInput.value === '') {
-        erroinput(outrosInput, "Campo obrigatório");
-    } else {
-        sucessoinput(outrosInput)
-    }
-}
-
-function checkInteresses(interessesInput) {
-    if (interessesInput.value === '') {
-        erroinput(interessesInput, "Campo obrigatório");
-    } else {
-        sucessoinput(interessesInput)
-    }
-}
-
-function checkSentimentos(sentimentosInput) {
-    if (sentimentosInput.value === '') {
-        erroinput(sentimentosInput, "Campo obrigatório");
-    } else {
-        sucessoinput(sentimentosInput)
-    }
-}
-
-function checkValores(valoresInput) {
-    if (valoresInput.value === '') {
-        erroinput(valoresInput, "Campo obrigatório");
-    } else {
-        sucessoinput(valoresInput)
-    }
-}
-
-function checkForm(formElemento) {
-    checkNome(formElemento.querySelector('#idnome'))
-    checkIdade(formElemento.querySelector('#ididade'));
-    checkEmail(formElemento.querySelector('#idemail'));
-    checkTelefone(formElemento.querySelector('#idtelefone'));
-    checkEndereco(formElemento.querySelector('#idendereco'));
-    checkOutros(formElemento.querySelector('#idoutros'));
-    checkInteresses(formElemento.querySelector('#idinteresses'));
-    checkSentimentos(formElemento.querySelector('#idsentimentos'));
-    checkValores(formElemento.querySelector('#idvalores'));
-
-    const temErros = formElemento.querySelector('.erro') !== null
-    if (temErros) {
-        return false
-    }
-
-    const emailInput = formElemento.querySelector('#idemail')
-    const emailValor = emailInput.value.toLowerCase().trim()
-    const dadosExistentes = JSON.parse(localStorage.getItem('usuarios')) || [];
-    const emailJaCadastrado = dadosExistentes.some(user => user.email.toLowerCase() === emailValor);
-
-    if (emailJaCadastrado) {
-        alert("Este e-mail já está cadastrado.");
-        erroinput(emailInput, "Este E-mail já existe")
-        return false;
-    }
-    //se passou nas validações:
-    return true;
-}
-
-function submitNovoCadastro(formElemento) {
-    const novoUsuario = {
-        status: formElemento.querySelector('#cadastro_ativo').checked ? "Ativo" : "Inativo",
-        nome: formElemento.querySelector('#idnome').value.trim(),
-        idade: formElemento.querySelector('#ididade').value.trim(),
-        email: formElemento.querySelector('#idemail').value.toLowerCase().trim(),
-        telefone: formElemento.querySelector('#idtelefone').value.trim(),
-        endereco: formElemento.querySelector('#idendereco').value.trim(),
-        outros: formElemento.querySelector('#idoutros').value.trim(),
-        interesses: formElemento.querySelector('#idinteresses').value.trim(),
-        sentimentos: formElemento.querySelector('#idsentimentos').value.trim(),
-        valores: formElemento.querySelector('#idvalores').value.trim(),
-        dataCadastro: new Date().toISOString(),
-        revisado: false
-    };
-
-    const dadosExistentes = JSON.parse(localStorage.getItem('usuarios')) || [];
-    dadosExistentes.push(novoUsuario);
-    localStorage.setItem('usuarios', JSON.stringify(dadosExistentes));
-
-    alert("Cadastro salvo com Sucesso!");
-    fecharModal(modalCadastro)
-    renderizarTabela()
-}
-
-const btn_cad = document.getElementById('btn_cad')
-if (btn_cad) {
-    btn_cad.addEventListener('click', () => {
-        modalCadastro.classList.remove('oculto')
-
-        const formCadastro = modalCadastro.querySelector('form')
-
-        //funções de validação:
-        formCadastro.querySelector('#idnome').addEventListener("blur", (e) => checkNome(e.target));
-        formCadastro.querySelector('#ididade').addEventListener("blur", (e) => checkIdade(e.target));
-        formCadastro.querySelector('#idemail').addEventListener("blur", (e) => checkEmail(e.target));
-        formCadastro.querySelector('#idtelefone').addEventListener("blur", (e) => checkTelefone(e.target));
-        formCadastro.querySelector('#idendereco').addEventListener("blur", (e) => checkEndereco(e.target));
-        formCadastro.querySelector('#idoutros').addEventListener("blur", (e) => checkOutros(e.target));
-        formCadastro.querySelector('#idinteresses').addEventListener("blur", (e) => checkInteresses(e.target));
-        formCadastro.querySelector('#idsentimentos').addEventListener("blur", (e) => checkSentimentos(e.target));
-        formCadastro.querySelector('#idvalores').addEventListener("blur", (e) => checkValores(e.target));
-
-        formCadastro.onsubmit = function (event) {
-            event.preventDefault()
-
-            if (checkForm(formCadastro)) {
-                submitNovoCadastro(formCadastro)
-            } else {
-                alert("Corrija os campos com erro.")
-            }
+    function checkNome(nomeInput) {
+        if (nomeInput.value === '') {
+            erroinput(nomeInput, "Campo obrigatório");
+        } else {
+            sucessoinput(nomeInput)
         }
-    });
-}
-if (modalCadastro) {
-    modalCadastro.querySelector('.fechar').addEventListener('click', () => fecharModal(modalCadastro))
-}
+    }
 
-//Inicialização da página:
-if (campoPesquisa) {
-    campoPesquisa.addEventListener('input', function () {
-        state.termoPesquisaAtual = this.value.toLowerCase().trim()
-        state.paginaAtual = 1
+    function checkIdade(idadeInput) {
+        const idadeValor = idadeInput.value
+        if (idadeValor.value === '') {
+            erroinput(idadeInput, "Campo obrigatório");
+        } else if (!(idadeValor >= 16 && idadeValor <= 80)) {
+            erroinput(idadeInput, "Valor não aceito");
+        } else {
+            sucessoinput(idadeInput)
+        }
+    }
+
+    function checkEmail(emailInput) {
+        const emailValor = emailInput.value;
+        const regexEmail = /^[_.]?[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}(?:\.br)?$/i
+        if (emailValor === '') {
+            erroinput(emailInput, "Campo obrigatório");
+        } else if (!regexEmail.test(emailValor)) {
+            erroinput(emailInput, "Formato incorreto")
+        } else {
+            sucessoinput(emailInput)
+        }
+    }
+
+    function checkTelefone(telefoneInput) {
+        const telefoneValor = telefoneInput.value;
+        const regexTelefone = /^\(?([1-9]{2})\)? ?(9?[0-9]{4})-?([0-9]{4})$/
+        if (telefoneInput === '') {
+            erroinput(telefoneInput, "Campo obrigatório");
+        } else if (!regexTelefone.test(telefoneValor)) {
+            erroinput(telefoneInput, "Formato incorreto");
+        } else {
+            sucessoinput(telefoneInput)
+        }
+    }
+
+    function checkEndereco(enderecoInput) {
+        if (enderecoInput.value === '') {
+            erroinput(enderecoInput, "Campo obrigatório");
+        } else {
+            sucessoinput(enderecoInput)
+        }
+    }
+
+    function checkOutros(outrosInput) {
+        if (outrosInput.value === '') {
+            erroinput(outrosInput, "Campo obrigatório");
+        } else {
+            sucessoinput(outrosInput)
+        }
+    }
+
+    function checkInteresses(interessesInput) {
+        if (interessesInput.value === '') {
+            erroinput(interessesInput, "Campo obrigatório");
+        } else {
+            sucessoinput(interessesInput)
+        }
+    }
+
+    function checkSentimentos(sentimentosInput) {
+        if (sentimentosInput.value === '') {
+            erroinput(sentimentosInput, "Campo obrigatório");
+        } else {
+            sucessoinput(sentimentosInput)
+        }
+    }
+
+    function checkValores(valoresInput) {
+        if (valoresInput.value === '') {
+            erroinput(valoresInput, "Campo obrigatório");
+        } else {
+            sucessoinput(valoresInput)
+        }
+    }
+
+    function checkForm(formElemento) {
+        checkNome(formElemento.querySelector('#idnome'))
+        checkIdade(formElemento.querySelector('#ididade'));
+        checkEmail(formElemento.querySelector('#idemail'));
+        checkTelefone(formElemento.querySelector('#idtelefone'));
+        checkEndereco(formElemento.querySelector('#idendereco'));
+        checkOutros(formElemento.querySelector('#idoutros'));
+        checkInteresses(formElemento.querySelector('#idinteresses'));
+        checkSentimentos(formElemento.querySelector('#idsentimentos'));
+        checkValores(formElemento.querySelector('#idvalores'));
+
+        const temErros = formElemento.querySelector('.erro') !== null
+        if (temErros) {
+            return false
+        }
+
+        const emailInput = formElemento.querySelector('#idemail')
+        const emailValor = emailInput.value.toLowerCase().trim()
+        const dadosExistentes = JSON.parse(localStorage.getItem('usuarios')) || [];
+        const emailJaCadastrado = dadosExistentes.some(user => user.email.toLowerCase() === emailValor);
+
+        if (emailJaCadastrado) {
+            alert("Este e-mail já está cadastrado.");
+            erroinput(emailInput, "Este E-mail já existe")
+            return false;
+        }
+        //se passou nas validações:
+        return true;
+    }
+
+    function submitNovoCadastro(formElemento) {
+        const novoUsuario = {
+            status: formElemento.querySelector('#cadastro_ativo').checked ? "Ativo" : "Inativo",
+            nome: formElemento.querySelector('#idnome').value.trim(),
+            idade: formElemento.querySelector('#ididade').value.trim(),
+            email: formElemento.querySelector('#idemail').value.toLowerCase().trim(),
+            telefone: formElemento.querySelector('#idtelefone').value.trim(),
+            endereco: formElemento.querySelector('#idendereco').value.trim(),
+            outros: formElemento.querySelector('#idoutros').value.trim(),
+            interesses: formElemento.querySelector('#idinteresses').value.trim(),
+            sentimentos: formElemento.querySelector('#idsentimentos').value.trim(),
+            valores: formElemento.querySelector('#idvalores').value.trim(),
+            dataCadastro: new Date().toISOString(),
+            revisado: false
+        };
+
+        const dadosExistentes = JSON.parse(localStorage.getItem('usuarios')) || [];
+        dadosExistentes.push(novoUsuario);
+        localStorage.setItem('usuarios', JSON.stringify(dadosExistentes));
+
+        alert("Cadastro salvo com Sucesso!");
+        fecharModal(modalCadastro)
         renderizarTabela()
-    });
-}
-renderizarTabela()
+    }
+
+    const btn_cad = document.getElementById('btn_cad')
+    if (btn_cad) {
+        btn_cad.addEventListener('click', () => {
+            modalCadastro.classList.remove('oculto')
+
+            const formCadastro = modalCadastro.querySelector('form')
+
+            //funções de validação:
+            formCadastro.querySelector('#idnome').addEventListener("blur", (e) => checkNome(e.target));
+            formCadastro.querySelector('#ididade').addEventListener("blur", (e) => checkIdade(e.target));
+            formCadastro.querySelector('#idemail').addEventListener("blur", (e) => checkEmail(e.target));
+            formCadastro.querySelector('#idtelefone').addEventListener("blur", (e) => checkTelefone(e.target));
+            formCadastro.querySelector('#idendereco').addEventListener("blur", (e) => checkEndereco(e.target));
+            formCadastro.querySelector('#idoutros').addEventListener("blur", (e) => checkOutros(e.target));
+            formCadastro.querySelector('#idinteresses').addEventListener("blur", (e) => checkInteresses(e.target));
+            formCadastro.querySelector('#idsentimentos').addEventListener("blur", (e) => checkSentimentos(e.target));
+            formCadastro.querySelector('#idvalores').addEventListener("blur", (e) => checkValores(e.target));
+
+            formCadastro.onsubmit = function (event) {
+                event.preventDefault()
+
+                if (checkForm(formCadastro)) {
+                    submitNovoCadastro(formCadastro)
+                } else {
+                    alert("Corrija os campos com erro.")
+                }
+            }
+        });
+    }
+    if (modalCadastro) {
+        modalCadastro.querySelector('.fechar').addEventListener('click', () => fecharModal(modalCadastro))
+    }
+
+    //Inicialização da página:
+    if (campoPesquisa) {
+        campoPesquisa.addEventListener('input', function () {
+            state.termoPesquisaAtual = this.value.toLowerCase().trim()
+            state.paginaAtual = 1
+            renderizarTabela()
+        });
+    }
+    renderizarTabela()
 });
 

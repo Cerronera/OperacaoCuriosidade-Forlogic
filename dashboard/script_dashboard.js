@@ -30,10 +30,38 @@ function abrirNovoCadastro() {
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    //atualizar os blocos
     if (document.getElementById('bloco_1')) {
         atualizarBlocos();
     }
 
+    // carregar informações do admin
+    function carregarAdmin(){
+        const emailLogado = sessionStorage.getItem('adminLogado')
+
+        //função pra bloquear acesso se nao tiver logado
+        if(!emailLogado){
+            alert("Nenhum administrador logado. Por favor, faça o Login.")
+            window.location.href = '../login_cadastro/login.html'
+            return;
+        }
+
+        const admins = JSON.parse(localStorage.getItem('admins')) || [];
+
+        const adminInfo = admins.find(admin => admin.email === emailLogado)
+
+        if(adminInfo){
+            const nomeUsuario = document.querySelector('.usuario_nome')
+            if(nomeUsuario){
+                nomeUsuario.textContent = adminInfo.nome
+            }
+        } else {
+            alert("Erro ao carregar informações do Administrador.")
+            window.location.href = '../login_cadastro/login.html'
+        }
+    }
+    carregarAdmin()
+    
     //barra de pesquisa do header:
     const campoPesquisa = document.getElementById('campoPesquisa')
     const resultadosPesquisa = document.getElementById('resultadosPesquisa')
