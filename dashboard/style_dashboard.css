@@ -267,8 +267,7 @@ tr:hover {
 }
 
 .cadastros-relatorios .btn_cad button:hover {
-    border: 2px solid gray;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    background: rgb(7, 150, 7);
 }
 
 /*botao de imprimir*/
@@ -288,8 +287,7 @@ tr:hover {
 }
 
 .cadastros-relatorios .btn_imp button:hover {
-    border: 2px solid gray;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    background: rgb(53, 109, 156);
 }
 
 /* Modais*/
@@ -302,12 +300,10 @@ tr:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* Centraliza perfeitamente */
     background: white;
     border: 1px solid #ccc;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
     z-index: 1000;
-    /* Garante que fique na frente de tudo */
     padding: 25px 30px;
     border-radius: 8px;
     overflow-y: auto;
@@ -367,36 +363,44 @@ tr:hover {
     font-size: 14px;
 }
 
-.modal textarea{
-    height: 80px; /* Altura padrão para textareas */
-    resize: none; 
+.modal input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.modal textarea {
+    height: 80px;
+    /* Altura padrão para textareas */
+    resize: none;
     padding-top: 8px;
 }
 
-.form_cadastro a, .form_modal a {
+.form_cadastro a,
+.form_modal a {
     margin-top: 4px;
     font-size: 12px;
     visibility: hidden;
-    transition: color 0.1s ease;  
+    transition: color 0.1s ease;
     margin-left: 3px;
 }
 
-.form_cadastro.erro a, .form_modal.erro a{
+.form_cadastro.erro a,
+.form_modal.erro a {
     visibility: visible;
     color: rgb(236, 42, 42);
 }
 
 .checkbox {
     display: flex;
-    justify-content: flex-end; /* Alinha à direita */
+    justify-content: flex-end;
+    /* Alinha à direita */
     align-items: center;
     margin-bottom: 20px;
-    gap: 8px;
 }
 
 .checkbox label {
     padding: 0;
-    color: rgb(95,93,93);
+    color: rgb(95, 93, 93);
     margin-left: 10px;
     order: 2;
 }
@@ -405,7 +409,11 @@ tr:hover {
     accent-color: green;
     order: 1;
     transform: scale(1.2);
-    cursor:pointer;
+    cursor: pointer;
+}
+
+.checkbox label input {
+    margin-right: 8px;
 }
 
 .fechar {
@@ -417,7 +425,7 @@ tr:hover {
     cursor: pointer;
     padding: 5px;
     border-radius: 50%;
-    line-height: 0; 
+    line-height: 0;
     transition: background-color 0.2s;
 }
 
@@ -434,10 +442,10 @@ tr:hover {
 
 .modal_actions .btn_group {
     display: flex;
-    gap: 10px; 
+    gap: 10px;
 }
 
-.btn{
+.btn {
     padding: 10px 20px;
     border-radius: 8px;
     font-weight: bold;
@@ -454,8 +462,7 @@ tr:hover {
 }
 
 .btn_primary:hover {
-    background-color: rgb(43, 126, 43);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    background: rgb(7, 150, 7);
 }
 
 /*Cancelar*/
@@ -464,6 +471,7 @@ tr:hover {
     color: #333;
     border-color: #ccc;
 }
+
 .btn_secondary:hover {
     background-color: #e0e0e0;
 }

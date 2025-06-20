@@ -19,10 +19,10 @@ function realizarLogin() {
 
   const adminEncontrado = admins.find(admin => admin.email === emailDigitado && admin.senha === senhaDigitada)
 
-  if (adminEncontrado) {
+  if (adminEncontrado && adminEncontrado.senha === senhaDigitada) {
     alert('Login realizado!')
     sessionStorage.setItem('adminLogado', JSON.stringify(adminEncontrado))
-
+    sessionStorage.setItem('adminLogado', adminEncontrado.email)
     setTimeout(() => {
       window.location.href = '../dashboard/dashboard.html'
     }, 200);
