@@ -1,14 +1,8 @@
-/* Cadastro */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
-}
-
-** {
-    scrollbar-width: thin;
-    scrollbar-color: #EBEBEB;
 }
 
 body {
@@ -18,20 +12,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-
-}
-
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url();
-    background-size: cover;
-    background-position: center;
-    z-index: -1;
+    background-color: #f0f2f5;
 }
 
 .cadastro {
@@ -39,65 +20,84 @@ body::before {
     max-width: 600px;
     background-color: #ffffff;
     margin: 14px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    padding: 40px;
+}
+
+
+#form_dados h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 24px;
 }
 
 .form_cadastro {
-    margin-bottom: 5px;
-    padding: 5px;
     display: flex;
     flex-direction: column;
-    gap: px;
+    width: 80%;
+    margin: 0 auto 15px auto;
 }
 
-
 .form_cadastro label {
-    display: inline-block;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    color: #555;
+    font-weight: 500;
+}
 
+.form_cadastro input:not([type="checkbox"]) {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+}
+
+.form_cadastro input:focus {
+    outline: none;
+    border-color: #007bff;
 }
 
 .form_cadastro a {
     font-size: 0.8em;
     visibility: hidden;
-    /* color: transparent;*/
-    transition: color 0.3s ease;
+    transition: visibility 0s, color 0.3s ease;
     height: 16px;
-}
-
-.form_cadastro input:not([type="checkbox"]){
-    display: block;
-    width: 100%;
-    padding: 8px;
-    border: 2px solid black;
-}
-
-.form_cadastro input[type="checkbox"]{
-    width: auto;
-    margin: 2px 8px 0 0;;
-    accent-color: green;
-    transform: scale(1.2);
-    border-radius: 50%;
-    border: 0.5px solid black
-}
-
-.cadastro .btn {
-    border: black;
-    width: 100%;
-    height: 45px;
-    background: rgb(8, 180, 8);
-    cursor: pointer;
-    font-size: 16px;
-    color: #fff;
-    font-weight: 550;
-    align-items: center;
+    margin-top: 4px;
+    color: #d93025;
 }
 
 .form_cadastro.erro a {
     visibility: visible;
-    color: #ff0000;
 }
 
 .form_cadastro.erro input {
-    border-color: #ff0000;
+    border-color: #d93025;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.btn button {
+    width: 80%;
+    height: 45px;
+    background: rgb(8, 180, 8);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 550;
+    transition: background-color 0.2s;
+}
+
+.btn button:hover {
+    background: rgb(7, 150, 7);
 }

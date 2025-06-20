@@ -15,17 +15,17 @@ function realizarLogin() {
     return
   }
 
-  const usuarios = JSON.parse(localStorage.getItem('usuarios')) || []
+  const admins = JSON.parse(localStorage.getItem('admins')) || []
 
-  const usuarioEncontrado = usuarios.find(user => user.email === emailDigitado && user.senha === senhaDigitada)
+  const adminEncontrado = admins.find(admin => admin.email === emailDigitado && admin.senha === senhaDigitada)
 
-  if (usuarioEncontrado) {
+  if (adminEncontrado) {
     alert('Login realizado!')
-    sessionStorage.setItem('usuarioLogado', JSON.stringify(usuarioEncontrado))
+    sessionStorage.setItem('adminLogado', JSON.stringify(adminEncontrado))
 
     setTimeout(() => {
       window.location.href = '../dashboard/dashboard.html'
-    }, 1000);
+    }, 200);
   } else {
     alert('E-mail ou Senha incorretos')
   }
