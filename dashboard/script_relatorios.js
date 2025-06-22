@@ -1,8 +1,13 @@
 
 function voltar_login() {
-    setTimeout(() => {
-        window.location.href = '/login_cadastro/login.html'
-    }, 200);
+
+    const confirmar = confirm("Você tem certeza que deseja sair?")
+
+    if(confirmar){
+        sessionStorage.removeItem('adminLogado')
+        alert("Você foi desconectado")
+         window.location.href = '/login_cadastro/login.html'
+    }
 }
 
 function voltar_home() {

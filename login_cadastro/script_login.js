@@ -1,3 +1,14 @@
+//função para ver se já tem um usuário logado
+//função nao deixa o usuario digitar na url para acessar a página de login
+(function() {
+  const usuarioLogado = sessionStorage.getItem('adminLogado')
+
+  if(usuarioLogado){
+    alert("Você já está logado. Redirecionando para o painel")
+    window.location.replace('/dashboard/dashboard.html')
+  }
+})() //função que se auto inicia
+
 const form = document.getElementById('form_login')
 
 form.addEventListener('submit', async (event) => {
