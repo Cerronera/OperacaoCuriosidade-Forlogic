@@ -1,3 +1,48 @@
+:root{
+    /*Cores tema claro*/
+    --cor-dashboard-principal: #f2f2f2;
+    --cor-principal: #fff;
+    --cor-fonte: #000;
+    --cor-borda-geral: #ccc;
+    --cor-boxshadow-geral: rgba(0,0,0,0.1);
+
+
+    --cor-sidebar-logo: rgb(227, 239, 240);
+    --cor-sidebar-hover:  rgb(227, 239, 240); 
+
+    --cor-header-hover: #f2f2f2;
+    --cor-header-tema: #3b3b3b; 
+    --cor-hedaer-sol: #f39c12;
+    --cor-header-lua: #f1c40f;
+
+    --cor-bloco-1: rgb(56, 56, 214);
+    --cor-bloco-2: rgb(50, 165, 50);
+    --cor-bloco-3: rgb(189, 62, 62);
+
+    --cor-fonte-h2: rgb(136,133,133);
+    --cor-tabela-header: rgb(231,228,228);
+    --cor-tabela-conteudo: rgb(80,76,76);
+    --cor-tabela-hover: rgb(227, 239, 240);
+    --cor-tabela-borda: rgb(136,133,133);
+
+    --cor-cadastro-botao: rgb(53,156,53);
+    --cor-cadastro-botao-hover: rgb(7,150,7);
+    --cor-imprimir-botao: rgb(53, 53, 156);
+    --cor-imprimir-botao-hover: rgb(7,7,150);
+    --cor-fonte-botao: #fff;
+
+    --cor-modal-conteudo: rgb(95,93,93);
+    --cor-modal-input: rgba(238,233,233,0.329);
+    --cor-modal-input-focus: #007bff;
+    --cor-modal-erro: rgb(236,42,42);
+    --cor-modal-checkbox: rgb(7,150,7);
+    --cor-modal-fechar-hover: #f1f1f1;
+    --cor-modal-botao-cancelar: #f0f0f0;
+    --cor-modal-botao-cancelar-hover: #e0e0e0;
+
+    --cor-paginacao-hover: #acacac;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -8,14 +53,15 @@
 body {
     display: flex;
     min-height: 90vh;
-    background-color: #f2f2f2;
+    background-color: var(--cor-dashboard-principal);
+    transition: background 0.2s linear; 
 }
 
 /* Nav sidebar*/
 .sidebar {
     width: 320px;
-    background-color: white;
-    color: black;
+    background-color: var(--cor-principal);
+    color: var(--cor-fonte);
     padding: 20px 0;
     height: 100vh;
     position: fixed;
@@ -24,7 +70,7 @@ body {
 }
 
 .sidebar .oc {
-    background-color: rgb(227, 239, 240);
+    background-color: var(--cor-sidebar-logo);
     display: flex;
     width: 85%;
     height: 60px;
@@ -55,19 +101,18 @@ body {
     align-items: center;
     gap: 10px;
     padding: 8px;
-    border-bottom: 0.5px solid lightgray;
+    border-bottom: 0.5px solid var(--cor-borda-geral);
     margin-right: 40px;
 }
 
 .sidebar li a {
-    color: black;
+    color: var(--cor-fonte);
     text-decoration: none;
     display: block
 }
 
 .sidebar li a:hover {
-    background-color: rgb(227, 239, 240);
-    ;
+    background-color: var(--cor-sidebar-hover); /*arrumar o hover para incluir a imagem*/
 }
 
 /* configuração geral da pagina*/
@@ -82,16 +127,16 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: white;
+    background-color: var(--cor-principal);
     padding: 12px 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 6px var(--cor-boxshadow-geral);
     margin-bottom: 20px;
 
 }
 
 .dashboard .usuario a:hover {
-    background-color: #f2f2f2;
+    background-color: var(--cor-header-hover);
 }
 
 .posicao_resultado {
@@ -103,34 +148,83 @@ body {
     width: 70%;
     padding: 8px 14px;
     font-size: 1em;
-    border: 1px solid #ccc;
+    border: 1px solid var(--cor-borda-geral);
     border-radius: 8px;
+    background-color: var(--cor-principal);
+    color: var(--cor-fonte)
 }
 
 .resultados {
     display: none;
-    background-color: white;
-    border: 1px solid #ccc;
+    background-color: var(--cor-principal);
+    border: 1px solid var(--cor-borda-geral);
     position: absolute;
     z-index: 10;
+}
+
+/*botão tema */
+.dark .checkbox{
+    opacity: 0;
+    position: absolute;
+}
+
+.dark .label{
+    background-color: var(--cor-header-tema);
+    border-radius: 50px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    position: relative;
+    width: 50px;
+    height: 26px;
+
+}
+
+.dark .label .ball{
+    background-color: var(--cor-principal);
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    height: 22px;
+    width: 22px;
+
+    transform: translateX(0px);
+    transition: transform 0.2s linear;
+}
+
+.dark .checkbox:checked +.label .ball{
+    transform: translateX(24px);
+}
+
+.fa-moon{
+    color: var(--cor-header-lua);
+}
+
+.fa-sun{
+    color: var(--cor-hedaer-sol);
 }
 
 .usuario {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .usuario_nome {
     font-weight: bold;
     padding-right: 20px;
+    color: var(--cor-fonte);
 }
 
 .usuario .sair {
     display: flex;
     align-items: center;
     padding-left: 30px;
-    border-left: 0.5px solid lightgray;
+    border-left: 0.5px solid var(--cor-borda-geral);
 }
 
 /*main do dashboard*/
@@ -144,10 +238,10 @@ body {
 
 .bloco {
     flex: 1;
-    background-color: white;
+    background-color: var(--cor-principal);
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 4px var(--cor-boxshadow-geral);
     position: relative;
     display: flex;
     transition: transform 0.2s ease;
@@ -164,28 +258,41 @@ body {
     margin: 0;
     font-size: 60px;
     font-weight: 500;
+    font-size: 70px;
+}
+
+#bloco_1{
+    color: var(--cor-bloco-1);
+}
+
+#bloco_2{
+    color: var(--cor-bloco-2);
+}
+
+#bloco_3{
+    color:var(--cor-bloco-3);
 }
 
 .bloco h2 {
     position: absolute;
     bottom: 10px;
     right: 10px;
-    color: rgb(136, 133, 133);
-    font-size: 14px;
+    color: var(--cor-fonte-h2);
+    font-size: 16px;
     font-weight: 300;
     margin: 0;
 }
 
 /*Configuração Tabela*/
 .tabela {
-    background-color: white;
+    background-color: var(--cor-principal);
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 4px var(--cor-boxshadow-geral);
 }
 
 .tabela h2 {
-    color: rgb(136, 133, 133);
+    color: var(--cor-fonte-h2);
     font-size: 18px;
     margin-bottom: 30px;
 }
@@ -200,40 +307,40 @@ table {
 thead>tr>th {
     position: sticky;
     top: -1px;
-    background-color: rgb(231, 228, 228);
+    background-color: var(--cor-tabela-header);
 }
 
 thead {
-    color: rgb(136, 133, 133);
-    background-color: rgb(231, 228, 228);
+    color: var(--cor-fonte-h2);
+    background-color: var(--cor-tabela-header);
 }
 
 th {
-    color: rgb(136, 133, 133);
+    color: var(--cor-fonte-h2);
     font-size: 14px;
     text-align: left;
     padding: 10px;
-    border-bottom: 1px solid rgb(136, 133, 133);
+    border-bottom: 1px solid var(--cor-tabela-borda);
 }
 
 td {
-    color: rgb(80, 76, 76);
+    color: var(--cor-tabela-conteudo);
     text-align: left;
     padding: 10px;
-    border-bottom: 1px solid rgb(136, 133, 133);
+    border-bottom: 1px solid var(--cor-tabela-borda);
     font-size: 14px;
 }
 
 
 tr:hover {
-    background-color: #f1f1f1;
+    background-color: var(--cor-tabela-hover);
 }
 
 /*main da listagem de cadastros e de relatórios*/
 .cadastros-relatorios {
-    background-color: white;
+    background-color: var(--cor-principal);
     border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 4px var(--cor-boxshadow-geral);
     padding: 20px;
 }
 
@@ -245,7 +352,7 @@ tr:hover {
 }
 
 .cadastros-relatorios h2 {
-    color: rgb(136, 133, 133);
+    color: var(--cor-fonte-h2);
     margin-bottom: 20px;
     font-size: 18px;
 }
@@ -256,9 +363,8 @@ tr:hover {
     padding: 10px;
     width: 200px;
     justify-content: center;
-    background-color: rgb(53, 156, 53);
-    color: white;
-    border: 1px solid #ccc;
+    background-color: var(--cor-cadastro-botao);
+    color: var(--cor-fonte-botao);
     border-radius: 8px;
     font-weight: bold;
     font-size: 14px;
@@ -267,7 +373,7 @@ tr:hover {
 }
 
 .cadastros-relatorios .btn_cad button:hover {
-    background: rgb(7, 150, 7);
+    background: var(--cor-cadastro-botao-hover);
 }
 
 /*botao de imprimir*/
@@ -276,9 +382,8 @@ tr:hover {
     padding: 10px;
     width: 200px;
     justify-content: center;
-    background-color: rgb(53, 86, 156);
-    color: white;
-    border: 1px solid #ccc;
+    background-color: var(--cor-imprimir-botao);
+    color: var(--cor-fonte-botao);
     border-radius: 8px;
     font-weight: bold;
     font-size: 14px;
@@ -287,7 +392,7 @@ tr:hover {
 }
 
 .cadastros-relatorios .btn_imp button:hover {
-    background: rgb(53, 109, 156);
+    background: var(--cor-imprimir-botao-hover);
 }
 
 /* Modais*/
@@ -300,9 +405,9 @@ tr:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    background: var(--cor-principal);
+    border: 1px solid var(--cor-borda-geral);
+    box-shadow: 0 2px 10px var(--cor-boxshadow-geral);
     z-index: 1000;
     padding: 25px 30px;
     border-radius: 8px;
@@ -320,7 +425,7 @@ tr:hover {
 }
 
 .modal h2 {
-    color: rgb(136, 133, 133);
+    color: var(--cor-fonte-h2);
     font-size: 18px;
     margin-top: 0;
     margin-bottom: 30px;
@@ -328,8 +433,9 @@ tr:hover {
 }
 
 .modal h3 {
+    color: var(--cor-fonte);
     font-size: 16px;
-    border-bottom: 2px solid lightgray;
+    border-bottom: 2px solid var(--cor-borda-geral);
     margin-top: 30px;
     margin-bottom: 20px;
 }
@@ -345,7 +451,7 @@ tr:hover {
     font-family: 'Roboto', 'sans-serif';
     font-size: 14px;
     padding-bottom: 5px;
-    color: rgb(95, 93, 93);
+    color: var(--cor-modal-conteudo);
 }
 
 .modal input[type="text"],
@@ -354,18 +460,19 @@ tr:hover {
 .modal textarea {
     width: 100%;
     height: 38px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--cor-borda-geral);
+    color: var(--cor-fonte);
     border-radius: 4px;
     box-sizing: border-box;
 
-    background-color: rgba(238, 233, 233, 0.329);
+    background-color: var(--cor-modal-input);
     padding: 0 10px;
     font-size: 14px;
 }
 
-.modal input:focus {
+.modal input:focus, .modal textarea:focus {
     outline: none;
-    border-color: #007bff;
+    border-color: var(--cor-modal-input-focus);
 }
 
 .modal textarea {
@@ -387,7 +494,7 @@ tr:hover {
 .form_cadastro.erro a,
 .form_modal.erro a {
     visibility: visible;
-    color: rgb(236, 42, 42);
+    color: var(--cor-modal-erro);
 }
 
 .checkbox {
@@ -400,13 +507,13 @@ tr:hover {
 
 .checkbox label {
     padding: 0;
-    color: rgb(95, 93, 93);
+    color: var(--cor-modal-conteudo);
     margin-left: 10px;
     order: 2;
 }
 
 .checkbox input {
-    accent-color: green;
+    accent-color: var(--cor-cadastro-botao);
     order: 1;
     transform: scale(1.2);
     cursor: pointer;
@@ -430,7 +537,7 @@ tr:hover {
 }
 
 .fechar:hover {
-    background-color: #f1f1f1;
+    background-color: var(--cor-modal-fechar-hover);
 }
 
 .modal_actions {
@@ -457,23 +564,23 @@ tr:hover {
 
 /*Gravar e salvar dados*/
 .btn_primary {
-    background-color: rgb(53, 156, 53);
-    color: white;
+    background-color: var(--cor-cadastro-botao);
+    color: var(--cor-fonte-botao);
 }
 
 .btn_primary:hover {
-    background: rgb(7, 150, 7);
+    background: var(--cor-cadastro-botao-hover);
 }
 
 /*Cancelar*/
 .btn_secondary {
-    background-color: #f0f0f0;
-    color: #333;
-    border-color: #ccc;
+    background-color: var(--cor-modal-botao-cancelar);
+    color: var(--cor-modal-conteudo);
+    border-color: var(--cor-borda-geral);
 }
 
 .btn_secondary:hover {
-    background-color: #e0e0e0;
+    background-color: var(--cor-modal-botao-cancelar-hover);
 }
 
 /* Botão de excluir */
@@ -497,7 +604,7 @@ tr:hover {
     margin-top: 10px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
-    color: rgb(136, 133, 133);
+    color: var(--cor-fonte-h2);
     display: flex;
     gap: 5px;
     align-items: center;
@@ -519,11 +626,51 @@ tr:hover {
 }
 
 .paginacao-btn:hover:not(:disabled) {
-    background-color: #e8e8e8;
+    background-color:var(--cor-paginacao-hover);
 }
 
 
 .paginacao-container span {
     margin-left: 15px;
 
+}
+
+[data-theme="dark"]{
+    /*Cores tema escuro*/
+    --cor-dashboard-principal: #151a1f;
+    --cor-principal: #3b3b3b;
+    --cor-fonte: #fff;
+    --cor-borda-geral: #ccc;
+    --cor-boxshadow-geral: rgba(103, 103, 103, 0.1);
+
+
+    --cor-sidebar-logo: #232c35;
+    --cor-sidebar-hover:  #232c35;
+
+    --cor-header-hover: #f2f2f2;
+    --cor-header-tema: #111;
+    --cor-hedaer-sol: #f39c12;
+    --cor-header-lua: #f1c40f;
+
+    --cor-fonte-h2: rgb(207, 214, 214);
+    --cor-tabela-header: #151a1f;
+    --cor-tabela-conteudo: #fff;
+    --cor-tabela-hover: #232c35;
+    --cor-tabela-borda: #ccc;
+
+    --cor-cadastro-botao: rgb(53,156,53);
+    --cor-cadastro-botao-hover: rgb(7,150,7);
+    --cor-imprimir-botao: rgb(53, 53, 156);
+    --cor-imprimir-botao-hover: rgb(7,7,150);
+
+    --cor-modal-conteudo: rgb(207, 214, 214);
+    --cor-modal-input: rgba(199, 196, 196, 0.466);
+    --cor-modal-input-focus: #007bff;
+    --cor-modal-erro: rgb(236,42,42);
+    --cor-modal-checkbox: rgb(7,150,7);
+    --cor-modal-fechar-hover: #f1f1f1;
+    --cor-modal-botao-cancelar: #151a1f;
+    --cor-modal-botao-cancelar-hover: #6d6b6b;
+
+    --cor-paginacao-hover: #9e9e9e;
 }
