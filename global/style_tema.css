@@ -1,0 +1,107 @@
+:root {
+    /*Cores tema claro*/
+    --cor-dashboard-principal: #f2f2f2;
+    --cor-principal: #fff;
+    --cor-fonte: #000;
+    --cor-borda-geral: #ccc;
+    --cor-boxshadow-geral: rgba(0, 0, 0, 0.1);
+    --cor-hover: rgb(227, 239, 240);
+
+    --cor-sidebar-logo: rgb(227, 239, 240);
+
+    --cor-header-tema: #3b3b3b;
+    --cor-hedaer-sol: #f39c12;
+    --cor-header-lua: #f1c40f;
+
+    --cor-bloco-1: rgb(56, 56, 214);
+    --cor-bloco-2: rgb(50, 165, 50);
+    --cor-bloco-3: rgb(189, 62, 62);
+
+    --cor-fonte-h2: rgb(136, 133, 133);
+    --cor-tabela-header: rgb(231, 228, 228);
+    --cor-tabela-conteudo: rgb(80, 76, 76);
+    --cor-tabela-hover: rgb(227, 239, 240);
+    --cor-tabela-borda: rgb(136, 133, 133);
+
+    --cor-cadastro-botao: rgb(53, 156, 53);
+    --cor-cadastro-botao-hover: rgb(7, 150, 7);
+    --cor-imprimir-botao: rgb(53, 53, 156);
+    --cor-imprimir-botao-hover: rgb(7, 7, 150);
+    --cor-fonte-botao: #fff;
+
+    --cor-modal-conteudo: rgb(95, 93, 93);
+    --cor-modal-input: rgba(238, 233, 233, 0.329);
+    --cor-modal-input-focus: #007bff;
+    --cor-modal-erro: rgb(236, 42, 42);
+    --cor-modal-checkbox: rgb(7, 150, 7);
+    --cor-modal-fechar-hover: #f1f1f1;
+    --cor-modal-botao-cancelar: #f0f0f0;
+    --cor-modal-botao-cancelar-hover: #e0e0e0;
+
+    --cor-paginacao-hover: #acacac;
+
+    /*Login ADM*/
+
+    --cor-login-botao: #000;
+    --cor-login-fonte: #fff;
+    --cor-login-oc: rgb(227, 239, 240);
+    --cor-borda-login: #ccc;
+    --cor-login-placeholder: rgb(136,133,133);
+
+}
+
+
+[data-theme="dark"] {
+    /*Cores tema escuro*/
+    --cor-dashboard-principal: #151a1f;
+    --cor-principal: #3b3b3b;
+    --cor-fonte: #fff;
+    --cor-borda-geral: #ccc;
+    --cor-boxshadow-geral: rgba(103, 103, 103, 0.1);
+    --cor-hover: #232c35;
+
+    --cor-sidebar-logo: #232c35;
+
+    --cor-header-tema: #111;
+    --cor-hedaer-sol: #f39c12;
+    --cor-header-lua: #f1c40f;
+
+    --cor-bloco-1: rgb(93, 93, 218);
+    --cor-bloco-2: rgb(50, 165, 50);
+    --cor-bloco-3: rgb(189, 62, 62);
+
+    --cor-fonte-h2: rgb(207, 214, 214);
+    --cor-tabela-header: #151a1f;
+    --cor-tabela-conteudo: #fff;
+    --cor-tabela-hover: #232c35;
+    --cor-tabela-borda: #ccc;
+
+    --cor-cadastro-botao: rgb(53, 156, 53);
+    --cor-cadastro-botao-hover: rgb(7, 150, 7);
+    --cor-imprimir-botao: rgb(53, 53, 156);
+    --cor-imprimir-botao-hover: rgb(7, 7, 150);
+    --cor-fonte-botao: #fff;
+
+    --cor-modal-conteudo: rgb(207, 214, 214);
+    --cor-modal-input: rgba(199, 196, 196, 0.466);
+    --cor-modal-input-focus: #007bff;
+    --cor-modal-erro: rgb(236, 42, 42);
+    --cor-modal-checkbox: rgb(7, 150, 7);
+    --cor-modal-fechar-hover: #6d6d6d;
+    --cor-modal-botao-cancelar: #151a1f;
+    --cor-modal-botao-cancelar-hover: #6d6b6b;
+
+    --cor-paginacao-hover: #9e9e9e;
+
+    --cor-login-botao: #000;
+    --cor-login-fonte: #fff;
+    --cor-login-oc: #232c35;
+    --cor-borda-login: #000;
+    --cor-login-placeholder: #232c35;
+
+
+}
+
+[data-theme="dark"] img {
+    filter: invert(1)
+}

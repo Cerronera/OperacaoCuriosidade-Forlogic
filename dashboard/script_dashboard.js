@@ -4,10 +4,10 @@ function voltar_login() {
 
     const confirmar = confirm("Você tem certeza que deseja sair?")
 
-    if(confirmar){
+    if (confirmar) {
         sessionStorage.removeItem('adminLogado')
         alert("Você foi desconectado")
-         window.location.href = '/login_cadastro/login.html'
+        window.location.href = '/login_cadastro/login.html'
     }
 }
 
@@ -42,11 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // carregar informações do admin
-    function carregarAdmin(){
+    function carregarAdmin() {
         const emailLogado = sessionStorage.getItem('adminLogado')
 
         //função pra bloquear acesso se nao tiver logado
-        if(!emailLogado){
+        if (!emailLogado) {
             alert("Nenhum administrador logado. Por favor, faça o Login.")
             window.location.href = '../login_cadastro/login.html'
             return;
@@ -56,9 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const adminInfo = admins.find(admin => admin.email === emailLogado)
 
-        if(adminInfo){
+        if (adminInfo) {
             const nomeUsuario = document.querySelector('.usuario_nome')
-            if(nomeUsuario){
+            if (nomeUsuario) {
                 nomeUsuario.textContent = adminInfo.nome
             }
         } else {
@@ -67,7 +67,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     carregarAdmin()
-    
+
+    //lógica do tema escuro:
+    const trocarTemaCheckbox = document.getElementById('chk')
+    const rootElement = document.documentElement
+
+    if (trocarTemaCheckbox) {
+        const temaAtual = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+        if (temaAtual === 'dark') {
+            trocarTemaCheckbox.checked = true
+        }
+
+        trocarTemaCheckbox.addEventListener('change', () => {
+            if (trocarTemaCheckbox.checked) {
+                rootElement.setAttribute('data-theme', 'dark')
+                localStorage.setItem('theme', 'dark')
+            } else {
+                rootElement.removeAttribute('data-theme')
+                localStorage.setItem('theme', 'light')
+            }
+        });
+    }
+
     //barra de pesquisa do header:
     const campoPesquisa = document.getElementById('campoPesquisa')
     const resultadosPesquisa = document.getElementById('resultadosPesquisa')
