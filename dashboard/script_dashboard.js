@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //lógica do tema escuro:
     const trocarTemaCheckbox = document.getElementById('chk')
+    const rootElement = document.documentElement
 
     if (trocarTemaCheckbox) {
         const temaAtual = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
@@ -80,10 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         trocarTemaCheckbox.addEventListener('change', () => {
             if (trocarTemaCheckbox.checked) {
-                document.body.setAttribute('data-theme', 'dark')
+                rootElement.setAttribute('data-theme', 'dark')
                 localStorage.setItem('theme', 'dark')
             } else {
-                document.body.removeAttribute('data-theme')
+                rootElement.removeAttribute('data-theme')
                 localStorage.setItem('theme', 'light')
             }
         });

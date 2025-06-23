@@ -1,9 +1,9 @@
 (function (){
     function aplicarTema(tema){
         if(tema === 'dark'){
-            document.body.setAttribute('data-theme','dark')
+            document.documentElement.setAttribute('data-theme','dark')
         } else{
-            document.body.removeAttribute('data-theme')
+            document.documentElement.removeAttribute('data-theme')
         }
     }
 

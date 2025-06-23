@@ -1,48 +1,3 @@
-:root{
-    /*Cores tema claro*/
-    --cor-dashboard-principal: #f2f2f2;
-    --cor-principal: #fff;
-    --cor-fonte: #000;
-    --cor-borda-geral: #ccc;
-    --cor-boxshadow-geral: rgba(0,0,0,0.1);
-
-
-    --cor-sidebar-logo: rgb(227, 239, 240);
-    --cor-sidebar-hover:  rgb(227, 239, 240); 
-
-    --cor-header-hover: #f2f2f2;
-    --cor-header-tema: #3b3b3b; 
-    --cor-hedaer-sol: #f39c12;
-    --cor-header-lua: #f1c40f;
-
-    --cor-bloco-1: rgb(56, 56, 214);
-    --cor-bloco-2: rgb(50, 165, 50);
-    --cor-bloco-3: rgb(189, 62, 62);
-
-    --cor-fonte-h2: rgb(136,133,133);
-    --cor-tabela-header: rgb(231,228,228);
-    --cor-tabela-conteudo: rgb(80,76,76);
-    --cor-tabela-hover: rgb(227, 239, 240);
-    --cor-tabela-borda: rgb(136,133,133);
-
-    --cor-cadastro-botao: rgb(53,156,53);
-    --cor-cadastro-botao-hover: rgb(7,150,7);
-    --cor-imprimir-botao: rgb(53, 53, 156);
-    --cor-imprimir-botao-hover: rgb(7,7,150);
-    --cor-fonte-botao: #fff;
-
-    --cor-modal-conteudo: rgb(95,93,93);
-    --cor-modal-input: rgba(238,233,233,0.329);
-    --cor-modal-input-focus: #007bff;
-    --cor-modal-erro: rgb(236,42,42);
-    --cor-modal-checkbox: rgb(7,150,7);
-    --cor-modal-fechar-hover: #f1f1f1;
-    --cor-modal-botao-cancelar: #f0f0f0;
-    --cor-modal-botao-cancelar-hover: #e0e0e0;
-
-    --cor-paginacao-hover: #acacac;
-}
-
 * {
     box-sizing: border-box;
     margin: 0;
@@ -54,7 +9,7 @@ body {
     display: flex;
     min-height: 90vh;
     background-color: var(--cor-dashboard-principal);
-    transition: background 0.2s linear; 
+    transition: background 0.2s linear;
 }
 
 /* Nav sidebar*/
@@ -94,25 +49,28 @@ body {
 .sidebar ul {
     list-style: none;
     margin: 20px 10px 0 20px;
+    padding: 0;
 }
 
 .sidebar li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px;
     border-bottom: 0.5px solid var(--cor-borda-geral);
     margin-right: 40px;
 }
 
 .sidebar li a {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 8px;
     color: var(--cor-fonte);
     text-decoration: none;
-    display: block
+    transition: background-color 0.2s ease-in-out;
 }
 
 .sidebar li a:hover {
-    background-color: var(--cor-sidebar-hover); /*arrumar o hover para incluir a imagem*/
+    background-color: var(--cor-hover);
+    /*arrumar o hover para incluir a imagem*/
+    cursor: pointer;
 }
 
 /* configuração geral da pagina*/
@@ -136,7 +94,7 @@ body {
 }
 
 .dashboard .usuario a:hover {
-    background-color: var(--cor-header-hover);
+    background-color: var(--cor-hover);
 }
 
 .posicao_resultado {
@@ -163,12 +121,12 @@ body {
 }
 
 /*botão tema */
-.dark .checkbox{
+.dark .checkbox {
     opacity: 0;
     position: absolute;
 }
 
-.dark .label{
+.dark .label {
     background-color: var(--cor-header-tema);
     border-radius: 50px;
     cursor: pointer;
@@ -183,7 +141,7 @@ body {
 
 }
 
-.dark .label .ball{
+.dark .label .ball {
     background-color: var(--cor-principal);
     border-radius: 50%;
     position: absolute;
@@ -196,15 +154,15 @@ body {
     transition: transform 0.2s linear;
 }
 
-.dark .checkbox:checked +.label .ball{
+.dark .checkbox:checked+.label .ball {
     transform: translateX(24px);
 }
 
-.fa-moon{
+.fa-moon {
     color: var(--cor-header-lua);
 }
 
-.fa-sun{
+.fa-sun {
     color: var(--cor-hedaer-sol);
 }
 
@@ -261,16 +219,16 @@ body {
     font-size: 70px;
 }
 
-#bloco_1{
+#bloco_1 {
     color: var(--cor-bloco-1);
 }
 
-#bloco_2{
+#bloco_2 {
     color: var(--cor-bloco-2);
 }
 
-#bloco_3{
-    color:var(--cor-bloco-3);
+#bloco_3 {
+    color: var(--cor-bloco-3);
 }
 
 .bloco h2 {
@@ -470,7 +428,8 @@ tr:hover {
     font-size: 14px;
 }
 
-.modal input:focus, .modal textarea:focus {
+.modal input:focus,
+.modal textarea:focus {
     outline: none;
     border-color: var(--cor-modal-input-focus);
 }
@@ -588,6 +547,7 @@ tr:hover {
     background-color: transparent;
     border: none;
     padding: 5px;
+    cursor: pointer
 }
 
 .btn_delete:hover img {
@@ -626,51 +586,11 @@ tr:hover {
 }
 
 .paginacao-btn:hover:not(:disabled) {
-    background-color:var(--cor-paginacao-hover);
+    background-color: var(--cor-paginacao-hover);
 }
 
 
 .paginacao-container span {
     margin-left: 15px;
 
-}
-
-[data-theme="dark"]{
-    /*Cores tema escuro*/
-    --cor-dashboard-principal: #151a1f;
-    --cor-principal: #3b3b3b;
-    --cor-fonte: #fff;
-    --cor-borda-geral: #ccc;
-    --cor-boxshadow-geral: rgba(103, 103, 103, 0.1);
-
-
-    --cor-sidebar-logo: #232c35;
-    --cor-sidebar-hover:  #232c35;
-
-    --cor-header-hover: #f2f2f2;
-    --cor-header-tema: #111;
-    --cor-hedaer-sol: #f39c12;
-    --cor-header-lua: #f1c40f;
-
-    --cor-fonte-h2: rgb(207, 214, 214);
-    --cor-tabela-header: #151a1f;
-    --cor-tabela-conteudo: #fff;
-    --cor-tabela-hover: #232c35;
-    --cor-tabela-borda: #ccc;
-
-    --cor-cadastro-botao: rgb(53,156,53);
-    --cor-cadastro-botao-hover: rgb(7,150,7);
-    --cor-imprimir-botao: rgb(53, 53, 156);
-    --cor-imprimir-botao-hover: rgb(7,7,150);
-
-    --cor-modal-conteudo: rgb(207, 214, 214);
-    --cor-modal-input: rgba(199, 196, 196, 0.466);
-    --cor-modal-input-focus: #007bff;
-    --cor-modal-erro: rgb(236,42,42);
-    --cor-modal-checkbox: rgb(7,150,7);
-    --cor-modal-fechar-hover: #f1f1f1;
-    --cor-modal-botao-cancelar: #151a1f;
-    --cor-modal-botao-cancelar-hover: #6d6b6b;
-
-    --cor-paginacao-hover: #9e9e9e;
 }
