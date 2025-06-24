@@ -25,7 +25,7 @@
     --cor-tabela-borda: rgb(136, 133, 133);
 
     --cor-cadastro-botao: rgb(53, 156, 53);
-    --cor-cadastro-botao-hover: rgb(7, 150, 7);
+    --cor-cadastro-botao-hover: rgb(9, 187, 9);
     --cor-imprimir-botao: rgb(53, 53, 156);
     --cor-imprimir-botao-hover: rgb(7, 7, 150);
     --cor-fonte-botao: #fff;
@@ -79,7 +79,7 @@
     --cor-tabela-borda: #ccc;
 
     --cor-cadastro-botao: rgb(53, 156, 53);
-    --cor-cadastro-botao-hover: rgb(7, 150, 7);
+    --cor-cadastro-botao-hover: rgb(9, 187, 9);
     --cor-imprimir-botao: rgb(53, 53, 156);
     --cor-imprimir-botao-hover: rgb(7, 7, 150);
     --cor-fonte-botao: #fff;
@@ -99,7 +99,7 @@
     --cor-login-fonte: #fff;
     --cor-login-oc: #232c35;
     --cor-borda-login: #000;
-    --cor-login-placeholder: #232c35;
+    --cor-login-placeholder: rgba(202, 202, 202, 0.623);
 
 
 }

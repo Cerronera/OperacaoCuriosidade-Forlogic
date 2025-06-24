@@ -128,7 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Funções  de validação:
 
-    const validarIdade = (idade) => idade >= 16 && idade <= 80
     const validarTelefone = (telefone) => /^\(?([1-9]{2})\)? ?(9?[0-9]{4})-?([0-9]{4})$/.test(telefone)
     //aceita ddd a partir de 1, e aceita telefones fixos (8 numeros) e celulares (9 numeros)
 
@@ -161,16 +160,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function checkEditIdade() {
-        const idade = document.getElementById('edit_idade');
-        if (idade.value === '') {
-           erroinputEdit(idade, "Campo obrigatório");
-            return false
-        } else if (!validarIdade(idade.value)) {
-           erroinputEdit(idade, "Valor não aceito");
+        const idadeInput = document.getElementById('edit_idade');
+        const idadeValor = idadeInput.value.trim()
+        if (idadeValor === '') {
+            erroinputEdit(idadeInput, "Campo obrigatório");
             return false
         }
-        sucessoinputEdit(idade)
-        return true
+
+        const idadeNumerica = parseInt(idadeValor, 10)
+        if (idadeNumerica < 16) {
+            erroinputEdit(idadeInput, "A idade deve ser 16 anos ou mais");
+            return false
+        } else if (idadeNumerica > 80) {
+            erroinputEdit(idadeInput, "A idade deve ser no máximo 80 anos");
+            return false;
+        } else {
+            sucessoinputEdit(idadeInput)
+            return true
+        }
     }
 
     function checkEditEmail() {
@@ -189,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkEditTelefone() {
         const telefone = document.getElementById('edit_telefone');
         if (telefone.value === '') {
-           erroinputEdit(telefone, "Campo obrigatório");
+            erroinputEdit(telefone, "Campo obrigatório");
             return false
 
         } else if (!validarTelefone(telefone.value)) {
@@ -377,11 +384,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function checkIdade(idadeInput) {
-        const idadeValor = idadeInput.value
-        if (idadeValor.value === '') {
-            erroinput(idadeInput, "Campo obrigatório");
-        } else if (!(idadeValor >= 16 && idadeValor <= 80)) {
-            erroinput(idadeInput, "Valor não aceito");
+        const idadeValor = idadeInput.value.trim()
+        if (idadeValor === '') {
+            erroinput(idadeInput, "Campo obrigatório")
+            return
+        }
+        const idadeNumerica = parseInt(idadeValor, 10)
+        if (idadeNumerica < 16) {
+            erroinput(idadeInput, "Idade deve ser que 16 anos ou mais")
+        } else if (idadeNumerica > 80) {
+            erroinput(idadeInput, "Idade deve ser no máximo 80 anos")
         } else {
             sucessoinput(idadeInput)
         }

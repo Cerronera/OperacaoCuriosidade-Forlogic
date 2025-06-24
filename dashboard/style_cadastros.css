@@ -110,6 +110,7 @@
 }
 
 .modal label {
+    margin-top: 5px;
     font-family: 'Roboto', 'sans-serif';
     font-size: 14px;
     padding-bottom: 5px;
@@ -193,7 +194,7 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    padding: 5px;
+    padding: 3px;
     border-radius: 50%;
     line-height: 0;
     transition: background-color 0.2s;
