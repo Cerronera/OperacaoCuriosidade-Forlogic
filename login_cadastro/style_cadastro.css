@@ -103,3 +103,24 @@ body {
 .btn button:hover {
     background: var(--cor-cadastro-botao-hover);
 }
+
+@media (max-width: 600px){
+
+    .cadastro{
+        width: 100%;
+        min-height: 100vh;
+        margin: 0;
+        padding: 40px 25px;
+
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    #form_dados h1{
+        font-size: 2em;
+    }
+
+    .form_cadastro, .btn button{
+        width:100%
+    }
+}

@@ -3,10 +3,10 @@ function voltar_login() {
 
     const confirmar = confirm("Você tem certeza que deseja sair?")
 
-    if(confirmar){
+    if (confirmar) {
         sessionStorage.removeItem('adminLogado')
         alert("Você foi desconectado")
-         window.location.href = '/login_cadastro/login.html'
+        window.location.href = '/login_cadastro/login.html'
     }
 }
 
@@ -28,10 +28,6 @@ function ir_cadastros() {
     }, 200);
 }
 
-function abrirNovoCadastro() {
-    window.location.href = '/dashboard/novocadastro.html'
-}
-
 // Função para fechar qualquer modal
 function fecharModal(modalElement) {
     if (modalElement) {
@@ -49,19 +45,15 @@ function fecharModal(modalElement) {
                 }
             });
         }
+        document.body.classList.remove('modal-aberto')
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
 
     //Seletores Globais
-
     const modalCadastro = document.getElementById('modal_cadastro')
     const modalEdicao = document.getElementById('modal_edicao')
-    const campoPesquisa = document.getElementById('campoPesquisa')
-    const tabela = document.querySelector('#tabela_usuarios tbody')
-    const paginacaoContainer = document.getElementById('paginacao')
-
 
     // carregar informações do admin
     function carregarAdmin() {
@@ -90,138 +82,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     carregarAdmin()
 
-    // Tabela e paginação:
-
-    let state = {
-        'querySet': JSON.parse(localStorage.getItem('usuarios')) || [],
-        'paginaAtual': 1,
-        'linhasPorPagina': 10,
-        'termoPesquisaAtual': '',
+    //Chamar tabela
+    const configTabelaPrincipal = {
+        tabelaSelector: '#tabela_usuarios tbody',
+        paginacaoId: 'paginacao',
+        campoPesquisaId: 'campoPesquisa',
+        linhasPorPagina: 10,
+        onRowClick: abrirModalEdicao
     };
 
-    //Tabela e Paginação:
-
-    function calcularPaginacao() {
-        const startIndex = (state.paginaAtual - 1) * state.linhasPorPagina
-        const endIndex = startIndex + state.linhasPorPagina
-
-        //filtra primeiro por pesquisa e depois aplica paginação
-        let usuariosFiltrados = state.querySet
-        if (state.termoPesquisaAtual) {
-            usuariosFiltrados = usuariosFiltrados.filter(usuario =>
-                usuario.nome && usuario.nome.toLowerCase().includes(state.termoPesquisaAtual)
-            );
-        }
-
-        const usuariosDaPagina = usuariosFiltrados.slice(startIndex, endIndex)
-        const totalPaginas = Math.ceil(state.querySet.length / state.linhasPorPagina)
-
-        return {
-            'usuariosDaPagina': usuariosDaPagina,
-            'totalPaginas': totalPaginas,
-            'totalUsuarios': usuariosFiltrados.length
-        };
-    }
-
-    function botoesPagina(totalPaginas) {
-        paginacaoContainer.innerHTML = ''
-
-        //funcao para controlar o scroll após mudar de pagina
-        const scrollTabela = () => {
-            tabela.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }
-
-        //botão primeira pagina
-        const btn_primeiro = document.createElement('button')
-        btn_primeiro.textContent = '<<'
-        btn_primeiro.disabled = (state.paginaAtual === 1) //desabilita se tiver na primeira pagina
-        btn_primeiro.addEventListener('click', (e) => {
-            e.preventDefault() //previne comportamento padrão
-            state.paginaAtual = 1
-            renderizarTabela()
-            scrollTabela()
-        });
-
-        paginacaoContainer.appendChild(btn_primeiro)
-
-        //botao anterior
-        const btn_anterior = document.createElement('button')
-        btn_anterior.textContent = '<'
-        btn_anterior.disabled = (state.paginaAtual === 1) //desabilita se nao tiver como voltar
-        btn_anterior.addEventListener('click', (e) => {
-            e.preventDefault()
-            state.paginaAtual--
-            renderizarTabela()
-            scrollTabela()
-        });
-
-        //botao proximo
-        const btn_proximo = document.createElement('button')
-        btn_proximo.textContent = '>'
-        btn_proximo.disabled = (state.paginaAtual === totalPaginas || totalPaginas === 0) //desabilita se estiver na ultima ou nao tiver paginas para avançar
-        btn_proximo.addEventListener('click', (e) => {
-            e.preventDefault()
-            state.paginaAtual++
-            renderizarTabela()
-            scrollTabela()
-        });
-
-        //botao ultima pagina
-        const btn_ultima = document.createElement('button')
-        btn_ultima.textContent = '>>'
-        btn_ultima.disabled = (state.paginaAtual === totalPaginas || totalPaginas === 0) //desabilita se estiver na ultima
-        btn_ultima.addEventListener('click', (e) => {
-            e.preventDefault
-            state.paginaAtual = totalPaginas
-            renderizarTabela()
-            scrollTabela()
-        });
-
-        paginacaoContainer.appendChild(btn_primeiro)
-        paginacaoContainer.appendChild(btn_anterior)
-
-
-        const info = document.createElement('span')
-        info.textContent = `Página ${state.paginaAtual} de ${totalPaginas || 1}`
-        paginacaoContainer.appendChild(info)
-
-        paginacaoContainer.appendChild(btn_proximo)
-        paginacaoContainer.appendChild(btn_ultima)
-
-        paginacaoContainer.querySelectorAll('button').forEach(button => {
-            button.classList.add('paginacao-btn')
-        });
-    }
-
-    function renderizarTabela() {
-        tabela.innerHTML = '';
-        state.querySet = JSON.parse(localStorage.getItem('usuarios')) || []
-
-        const { usuariosDaPagina, totalPaginas, totalUsuarios } = calcularPaginacao()
-
-        if (usuariosDaPagina.length > 0) {
-            usuariosDaPagina.forEach((usuario) => {
-                const originalIndex = state.querySet.findIndex(u => u.email === usuario.email)
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${usuario.nome}</td>
-                    <td>${usuario.email}</td>
-                    <td>${usuario.telefone}</td>
-                    <td>${usuario.status}</td>
-                `;
-                // Adiciona evento de clique para abrir o modal
-                tr.addEventListener('click', () => abrirModalEdicao(usuario, originalIndex));
-                tabela.appendChild(tr);
-            });
-
-        } else {
-            const tr = document.createElement('tr')
-            tr.innerHTML = `<td colspan="4">${state.termoPesquisaAtual ? 'Nenhum usuário encontrado' : 'Nenhum usuário cadastrado'}</td>`;
-            tabela.appendChild(tr);
-        }
-
-        botoesPagina(totalPaginas)
-    }
+    inicializarTabela(configTabelaPrincipal)
 
     // Modal de edição
     function abrirModalEdicao(usuario, index) {
@@ -230,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             modalEdicao.dataset.index = index
             modalEdicao.classList.remove('oculto')
+            document.body.classList.add('modal-aberto')
 
             document.getElementById('edit_nome').value = usuario.nome
             document.getElementById('edit_idade').value = usuario.idade || ''
@@ -268,7 +139,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function erroinputEdit(input, mensagem) {
         const formItem = input.parentElement
         const textoMensagem = formItem.querySelector("a")
-        textoMensagem.innerText = mensagem
+        if (textoMensagem) {
+            textoMensagem.innerText = mensagem
+        }
         formItem.className = 'form_modal erro'
     }
 
@@ -279,8 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkEditNome() {
         const nome = document.getElementById('edit_nome');
-        if (nome.value === '') {
-            erroinput(nome, "Campo obrigatório");
+        if (nome.value.trim() === '') {
+            erroinputEdit(nome, "Campo obrigatório");
             return false;
         }
         sucessoinputEdit(nome)
@@ -290,10 +163,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkEditIdade() {
         const idade = document.getElementById('edit_idade');
         if (idade.value === '') {
-            erroinput(idade, "Campo obrigatório");
+           erroinputEdit(idade, "Campo obrigatório");
             return false
         } else if (!validarIdade(idade.value)) {
-            erroinput(idade, "Valor não aceito");
+           erroinputEdit(idade, "Valor não aceito");
             return false
         }
         sucessoinputEdit(idade)
@@ -303,10 +176,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkEditEmail() {
         const email = document.getElementById('edit_email');
         if (email.value === '') {
-            erroinput(email, "Campo obrigatório");
+            erroinputEdit(email, "Campo obrigatório");
             return false
         } else if (!validarEmail(email.value)) {
-            erroinput(email, "Formato incorreto")
+            erroinputEdit(email, "Formato incorreto")
             return false
         }
         sucessoinputEdit(email)
@@ -316,11 +189,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkEditTelefone() {
         const telefone = document.getElementById('edit_telefone');
         if (telefone.value === '') {
-            erroinput(telefone, "Campo obrigatório");
+           erroinputEdit(telefone, "Campo obrigatório");
             return false
 
         } else if (!validarTelefone(telefone.value)) {
-            erroinput(telefone, "Formato incorreto");
+            erroinputEdit(telefone, "Formato incorreto");
             return false
         }
         sucessoinputEdit(telefone)
@@ -330,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkEditEndereco() {
         const endereco = document.getElementById('edit_endereco');
         if (endereco.value === '') {
-            erroinput(endereco, "Campo obrigatório");
+            erroinputEdit(endereco, "Campo obrigatório");
             return false
         }
         sucessoinputEdit(endereco)
@@ -341,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkEditOutros() {
         const outros = document.getElementById('edit_outros');
         if (outros.value === '') {
-            erroinput(outros, "Campo obrigatório");
+            erroinputEdit(outros, "Campo obrigatório");
             return false
         }
         sucessoinputEdit(outros)
@@ -351,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkEditInteresses() {
         const interesses = document.getElementById('edit_interesses');
         if (interesses.value === '') {
-            erroinput(interesses, "Campo obrigatório");
+            erroinputEdit(interesses, "Campo obrigatório");
             return false
         }
         sucessoinputEdit(interesses)
@@ -361,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkEditSentimentos() {
         const sentimentos = document.getElementById('edit_sentimentos');
         if (sentimentos.value === '') {
-            erroinput(sentimentos, "Campo obrigatório");
+            erroinputEdit(sentimentos, "Campo obrigatório");
             return false
         }
         sucessoinputEdit(sentimentos)
@@ -371,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkEditValores() {
         const valores = document.getElementById('edit_valores');
         if (valores.value === '') {
-            erroinput(valores, "Campo obrigatório");
+            erroinputEdit(valores, "Campo obrigatório");
             return false
         }
         sucessoinputEdit(valores)
@@ -450,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             alert("Dados atualizados com sucesso!");
             fecharModal(modalEdicao)
-            renderizarTabela()
+            atualizarDadosParaExibicao()
         } else {
             alert("Corrija os campos que contém erro antes de salvar")
         }
@@ -475,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         alert('Cadastro excluído');
         fecharModal(modalEdicao)
-        renderizarTabela()
+        atualizarDadosParaExibicao()
 
     });
 
@@ -630,13 +503,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         alert("Cadastro salvo com Sucesso!");
         fecharModal(modalCadastro)
-        renderizarTabela()
+        atualizarDadosParaExibicao()
     }
 
     const btn_cad = document.getElementById('btn_cad')
     if (btn_cad) {
         btn_cad.addEventListener('click', () => {
             modalCadastro.classList.remove('oculto')
+            document.body.classList.add('modal-aberto')
 
             const formCadastro = modalCadastro.querySelector('form')
 
@@ -665,15 +539,5 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modalCadastro) {
         modalCadastro.querySelector('.fechar').addEventListener('click', () => fecharModal(modalCadastro))
     }
-
-    //Inicialização da página:
-    if (campoPesquisa) {
-        campoPesquisa.addEventListener('input', function () {
-            state.termoPesquisaAtual = this.value.toLowerCase().trim()
-            state.paginaAtual = 1
-            renderizarTabela()
-        });
-    }
-    renderizarTabela()
 });
 

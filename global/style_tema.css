@@ -20,6 +20,7 @@
     --cor-fonte-h2: rgb(136, 133, 133);
     --cor-tabela-header: rgb(231, 228, 228);
     --cor-tabela-conteudo: rgb(80, 76, 76);
+    --cor-tabela-inativo: rgba(80, 76, 76, 0.479);
     --cor-tabela-hover: rgb(227, 239, 240);
     --cor-tabela-borda: rgb(136, 133, 133);
 
@@ -46,7 +47,7 @@
     --cor-login-fonte: #fff;
     --cor-login-oc: rgb(227, 239, 240);
     --cor-borda-login: #ccc;
-    --cor-login-placeholder: rgb(136,133,133);
+    --cor-login-placeholder: rgb(136, 133, 133);
 
 }
 
@@ -73,6 +74,7 @@
     --cor-fonte-h2: rgb(207, 214, 214);
     --cor-tabela-header: #151a1f;
     --cor-tabela-conteudo: #fff;
+    --cor-tabela-inativo: rgba(255, 255, 255, 0.479);
     --cor-tabela-hover: #232c35;
     --cor-tabela-borda: #ccc;
 
