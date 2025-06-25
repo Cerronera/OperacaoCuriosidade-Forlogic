@@ -5,7 +5,7 @@
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
 }
-
+/*configurar a imagem para conseguir trocar a cor dela depois*/
 body::before {
     content: '';
     position: fixed;
@@ -81,7 +81,6 @@ h1 {
     width: 100%;
     height: 40px;
     margin: 30px 0;
-    background-color: var(--cor-modal-input);
 }
 
 .login .btn {
@@ -122,6 +121,11 @@ h1 {
     padding: 20px 30px 20px 5px;
     color: var(--cor-fonte);
     border: 1px solid var(--cor-borda-geral);
+    border-radius: 8px;
+}
+
+.input-box input:focus{
+    outline: none;
 }
 
 .input-box input::placeholder{
@@ -153,20 +157,33 @@ h1 {
 }
 
 /*mexer com mobile*/
-@media(max-width: 600px) {
+@media(max-width: 480px) { /*480 px pois é max-width definido*/
     .login {
-        width: 90%;
-        padding: 20px;
-        border-width: 1px;
+        width: 100%;
+        min-height: 100vh;
+        border:none;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 40px 50px;
+        
+    }
+    .login .oc{
+        width: 120px;
+        height: 120px;
+        margin-bottom: 25px;
     }
 
-    h1 {
-        font-size: 1.8em;
+    .login .oc h1 {
+        font-size: 32px;
     }
 
-    .input-box {
-        font-size: 0.8em;
+    .login .oc p{
+        font-size: 10px;
     }
 
+    .login .input-box {
+        margin: 25px 0;
+        
+    }
 
 }

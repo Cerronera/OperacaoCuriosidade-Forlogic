@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operação Curiosidade - Cadastros</title>
     <link rel="stylesheet" href="/global/style_tema.css">
-    <link rel="stylesheet" href="style_dashboard.css">
+    <link rel="stylesheet" href="/global/style_layout.css">
+    <link rel="stylesheet" href="style_cadastros.css">
     <script src="/global/tema.js" defer></script>
     <link rel="shortcut icon" href="/imagens/icon.png" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,10 +40,18 @@
     </nav>
     <div class="principal">
         <header class="dashboard">
+
+            <button id="btn_mobile" aria-label="Abrir menu" aria-haspopup="true" aria-controls="sidebar-menu"
+                aria-expanded="false"><i class="fas fa-bars"></i> </button>
+
             <div class="posicao_resultado">
                 <input type="text" placeholder="Pesquisar..." class="pesquisa" id="campoPesquisa">
                 <div id="resultadosPesquisa" class="resultados"></div>
+
+                <button id="btn_busca" aria-label="Abrir busca"> <i class="fas fa-search"> </i></button>
+                <button id="btn_fechar_busca" aria-label="Fechar busca"><i class="fas fa-times"> </i></button>
             </div>
+
 
             <div class="usuario">
                 <img src="/imagens/user.png" alt="Usuario">
@@ -60,20 +69,22 @@
                         <button type="button" class="btn" id="btn_cad">NOVO CADASTRO</button>
                     </div>
                 </div>
-                <table id="tabela_usuarios">
-                    <thead>
-                        <tr>
-                            <th>NOME</th>
-                            <th>E-MAIL</th>
-                            <th>TELEFONE</th>
-                            <th>STATUS</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div class="tabela_cadrel">
+                    <table id="tabela_usuarios">
+                        <thead>
+                            <tr>
+                                <th>NOME</th>
+                                <th>E-MAIL</th>
+                                <th>TELEFONE</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                    </tbody>
-                </table>
-                <div id="paginacao" class="paginacao-container"></div>
+                        </tbody>
+                    </table>
+                    <div id="paginacao" class="paginacao-container"></div>
+                </div>
             </div>
 
             <!--MODAL CADASTRO-->
@@ -225,8 +236,10 @@
             </form>
         </main>
     </div>
+    <script src="/global/global.js"></script>
     <script src="script_modal.js"></script>
     <script src="script_blocos.js"></script>
+    <script src="https://kit.fontawesome.com/6414134de6.js" crossorigin="anonymous"></script>
 </body>
 
 </html>

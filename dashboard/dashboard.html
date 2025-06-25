@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operação Comunidade - Dashboard</title>
     <link rel="stylesheet" href="/global/style_tema.css">
+    <link rel="stylesheet" href="/global/style_layout.css">
     <link rel="stylesheet" href="style_dashboard.css">
     <script src="/global/tema.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,9 +40,16 @@
     </nav>
     <div class="principal">
         <header class="dashboard">
+
+            <button id="btn_mobile" aria-label="Abrir menu" aria-haspopup="true" aria-controls="sidebar-menu"
+                aria-expanded="false"><i class="fas fa-bars"></i> </button>
+
             <div class="posicao_resultado">
                 <input type="text" placeholder="Pesquisar..." class="pesquisa" id="campoPesquisa">
                 <div id="resultadosPesquisa" class="resultados"></div>
+
+                <button id="btn_busca" aria-label="Abrir busca"> <i class="fas fa-search"> </i></button>
+                <button id="btn_fechar_busca" aria-label="Fechar busca"><i class="fas fa-times"> </i></button>
             </div>
 
             <div class="usuario">
@@ -97,8 +105,9 @@
 
         </main>
     </div>
-    <script src="script_dashboard.js"></script>
+    <script src="/global/global.js"></script>
     <script src="script_blocos.js"></script>
+    <script src="script_dashboard.js"></script>
     <script src="https://kit.fontawesome.com/6414134de6.js" crossorigin="anonymous"></script>
 </body>
 
