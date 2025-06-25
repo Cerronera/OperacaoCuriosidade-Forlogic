@@ -52,12 +52,12 @@
     font-size: 16px;
     font-weight: 300;
     margin: 0;
-    text-align:end;
+    text-align: end;
 }
 
 @media(max-width: 768px) {
 
-    .bloco h2{
+    .bloco h2 {
         font-size: 14px;
     }
 }

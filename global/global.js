@@ -1,3 +1,35 @@
+// Direcionamento de páginas:
+
+function voltar_login() {
+
+    const confirmar = confirm("Você tem certeza que deseja sair?")
+
+    if (confirmar) {
+        sessionStorage.removeItem('adminLogado')
+        alert("Você foi desconectado")
+        window.location.href = '/login_cadastro/login.html'
+    }
+}
+
+function voltar_home() {
+    setTimeout(() => {
+        window.location.href = '/dashboard/dashboard.html'
+    }, 200);
+}
+
+function ir_relatorios() {
+    setTimeout(() => {
+        window.location.href = '/dashboard/relatorios.html'
+    }, 200);
+}
+
+function ir_cadastros() {
+    setTimeout(() => {
+        window.location.href = '/dashboard/cadastros.html'
+    }, 200);
+}
+
+
 /*menu hamburguer*/
 
 const btnMobile = document.getElementById('btn_mobile')
@@ -49,7 +81,9 @@ if (btnFecharBusca) {
     });
 }
 
-/*pagina ativa*/
+
+/*DOM*/
+
 document.addEventListener('DOMContentLoaded', () => {
 
 
@@ -73,6 +107,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     paginaAtiva()
+
+    // carregar informações do admin
+    function carregarAdmin() {
+        const emailLogado = sessionStorage.getItem('adminLogado')
+
+        //função pra bloquear acesso se nao tiver logado
+        if (!emailLogado) {
+            alert("Nenhum administrador logado. Por favor, faça o Login.")
+            window.location.href = '../login_cadastro/login.html'
+            return;
+        }
+
+        const admins = JSON.parse(localStorage.getItem('admins')) || [];
+
+        const adminInfo = admins.find(admin => admin.email === emailLogado)
+
+        if (adminInfo) {
+            const nomeUsuario = document.querySelector('.usuario_nome')
+            if (nomeUsuario) {
+                nomeUsuario.textContent = adminInfo.nome
+            }
+        } else {
+            alert("Erro ao carregar informações do Administrador.")
+            window.location.href = '../login_cadastro/login.html'
+        }
+    }
+    carregarAdmin()
 
 });
 
@@ -107,8 +168,8 @@ function renderizarLinhasTabela() {
     }
 
     estadoTabela.usuariosDaPagina.forEach(usuario => {
-        const tr = document.createElement('tr');
-        const statusClass = usuario.status === 'Ativo' ? 'status-ativo' : 'status-inativo';
+        const tr = document.createElement('tr')
+        const statusClass = usuario.status === 'Ativo' ? 'status-ativo' : 'status-inativo'
 
         tr.innerHTML = `
             <td>${usuario.nome}</td>
@@ -148,7 +209,7 @@ function renderizarBotoesDePaginacao() {
         const btn = document.createElement('button')
         btn.innerHTML = texto
 
-        // Desabilita o botão se a ação for nula (ex: não há página anterior)
+        // Desabilita o botão se a ação for nula 
         if (!acao) {
             btn.disabled = true
         } else {
@@ -159,7 +220,7 @@ function renderizarBotoesDePaginacao() {
             });
         }
         btn.classList.add('paginacao-btn')
-        return btn;
+        return btn
     };
 
     const pag = estadoTabela.paginaAtual
@@ -172,17 +233,17 @@ function renderizarBotoesDePaginacao() {
     info.textContent = `Página ${pag} de ${total || 1}`
     estadoTabela.elementoPaginacao.appendChild(info)
 
-    estadoTabela.elementoPaginacao.appendChild(criarBotao('&rsaquo;', pag < total ? () => estadoTabela.paginaAtual++ : null));
-    estadoTabela.elementoPaginacao.appendChild(criarBotao('&raquo;', pag < total ? () => estadoTabela.paginaAtual = total : null));
+    estadoTabela.elementoPaginacao.appendChild(criarBotao('&rsaquo;', pag < total ? () => estadoTabela.paginaAtual++ : null))
+    estadoTabela.elementoPaginacao.appendChild(criarBotao('&raquo;', pag < total ? () => estadoTabela.paginaAtual = total : null))
 }
 
 //busca
 function atualizarDadosParaExibicao() {
 
     estadoTabela.listaCompletaDeUsuarios = JSON.parse(localStorage.getItem('usuarios')) || []
-    const termoBusca = estadoTabela.elementoCampoPesquisa.value.toLowerCase().trim();
+    const termoBusca = estadoTabela.elementoCampoPesquisa.value.toLowerCase().trim()
 
-    // 1. Filtra a lista completa com base na busca
+    //Filtra a lista completa com base na busca
     if (termoBusca) {
         estadoTabela.usuariosFiltrados = estadoTabela.listaCompletaDeUsuarios.filter(usuario =>
             usuario.nome.toLowerCase().includes(termoBusca)
@@ -191,13 +252,12 @@ function atualizarDadosParaExibicao() {
         estadoTabela.usuariosFiltrados = estadoTabela.listaCompletaDeUsuarios;
     }
 
-    // 2. Calcula a paginação com base na lista já filtrada
+    // Calcula a paginação com base na lista filtrada
     estadoTabela.totalPaginas = Math.ceil(estadoTabela.usuariosFiltrados.length / estadoTabela.linhasPorPagina);
     const startIndex = (estadoTabela.paginaAtual - 1) * estadoTabela.linhasPorPagina;
     const endIndex = startIndex + estadoTabela.linhasPorPagina;
     estadoTabela.usuariosDaPagina = estadoTabela.usuariosFiltrados.slice(startIndex, endIndex);
 
-    // 3. Manda desenhar tudo na tela
     renderizarLinhasTabela();
     renderizarBotoesDePaginacao();
 }
@@ -211,15 +271,14 @@ function handlePesquisa() {
 
 //inicialização da tabela
 function inicializarTabela(config) {
-    // Guarda as configurações para uso futuro
-    estadoTabela.config = config;
 
-    // Conecta as variáveis do "cérebro" com os elementos HTML reais da página
+    estadoTabela.config = config
+
     estadoTabela.elementoTabelaBody = document.querySelector(config.tabelaSelector);
     estadoTabela.elementoPaginacao = document.getElementById(config.paginacaoId);
     estadoTabela.elementoCampoPesquisa = document.getElementById(config.campoPesquisaId);
 
-    // Define as configurações específicas
+    // Define as configurações específica ou seta elas como 10
     estadoTabela.linhasPorPagina = config.linhasPorPagina || 10;
 
     // Carrega os dados iniciais do localStorage
@@ -230,7 +289,6 @@ function inicializarTabela(config) {
         estadoTabela.elementoCampoPesquisa.addEventListener('keyup', handlePesquisa);
     }
 
-    // Faz a primeira "foto" dos dados e mostra na tela
     atualizarDadosParaExibicao();
 
     // Adiciona um listener para atualizar a tabela se outra aba modificar os dados

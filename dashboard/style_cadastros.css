@@ -216,20 +216,20 @@
     gap: 10px;
 }
 
-body.modal-aberto{
+body.modal-aberto {
     overflow: hidden;
 }
 
-body.modal-aberto::after{
+body.modal-aberto::after {
     content: '';
     content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
 }
 
 .btn {
@@ -279,21 +279,21 @@ body.modal-aberto::after{
     justify-content: center;
 }
 
-@media(max-width: 480px){
+@media(max-width: 480px) {
 
-    .modal{
+    .modal {
         width: 95%;
         max-height: 90vh;
 
-        top:50%;
+        top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         margin: 0;
         border-radius: 8px;
     }
 
-    
-    #modal_cadastro{
+
+    #modal_cadastro {
         width: 90%;
     }
 
