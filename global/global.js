@@ -38,7 +38,7 @@ const body = document.body
 
 function toggleMenu(event) {
 
-    if (event.type === 'touchstar') {
+    if (event.type === 'touchstart') {
         event.preventDefault()
     }
 
@@ -169,18 +169,18 @@ function renderizarLinhasTabela() {
 
     estadoTabela.usuariosDaPagina.forEach(usuario => {
         const tr = document.createElement('tr')
-        const statusClass = usuario.status === 'Ativo' ? 'status-ativo' : 'status-inativo'
+        const status = usuario.status === 'Ativo' ? 'status-ativo' : 'status-inativo'
 
         tr.innerHTML = `
             <td>${usuario.nome}</td>
             <td>${usuario.email}</td>
             <td>${usuario.telefone}</td>
             <td class="status-cell">
-            <span class="${statusClass}">${usuario.status}</span>
+            <span class="${status}">${usuario.status}</span>
             </td>
         `;
 
-        // Se uma função de clique foi configurada, adiciona o evento
+        //função de clique para modal editar
         if (estadoTabela.config.onRowClick) {
 
             const originalIndex = estadoTabela.listaCompletaDeUsuarios.findIndex(
@@ -189,7 +189,7 @@ function renderizarLinhasTabela() {
 
             tr.style.cursor = 'pointer'
             tr.addEventListener('click', () => {
-                if (originalIndex !== 1) {
+                if (originalIndex !== -1) {
                     estadoTabela.config.onRowClick(usuario, originalIndex)
                 }
             });
@@ -226,18 +226,18 @@ function renderizarBotoesDePaginacao() {
     const pag = estadoTabela.paginaAtual
     const total = estadoTabela.totalPaginas
 
-    estadoTabela.elementoPaginacao.appendChild(criarBotao('&laquo;', pag > 1 ? () => estadoTabela.paginaAtual = 1 : null))
-    estadoTabela.elementoPaginacao.appendChild(criarBotao('&lsaquo;', pag > 1 ? () => estadoTabela.paginaAtual-- : null))
+    estadoTabela.elementoPaginacao.appendChild(criarBotao('<<', pag > 1 ? () => estadoTabela.paginaAtual = 1 : null))
+    estadoTabela.elementoPaginacao.appendChild(criarBotao('<', pag > 1 ? () => estadoTabela.paginaAtual-- : null))
 
     const info = document.createElement('span')
     info.textContent = `Página ${pag} de ${total || 1}`
     estadoTabela.elementoPaginacao.appendChild(info)
 
-    estadoTabela.elementoPaginacao.appendChild(criarBotao('&rsaquo;', pag < total ? () => estadoTabela.paginaAtual++ : null))
-    estadoTabela.elementoPaginacao.appendChild(criarBotao('&raquo;', pag < total ? () => estadoTabela.paginaAtual = total : null))
+    estadoTabela.elementoPaginacao.appendChild(criarBotao('>', pag < total ? () => estadoTabela.paginaAtual++ : null))
+    estadoTabela.elementoPaginacao.appendChild(criarBotao('>>', pag < total ? () => estadoTabela.paginaAtual = total : null))
 }
 
-//busca
+//como os dados são exibidos
 function atualizarDadosParaExibicao() {
 
     estadoTabela.listaCompletaDeUsuarios = JSON.parse(localStorage.getItem('usuarios')) || []
@@ -278,7 +278,7 @@ function inicializarTabela(config) {
     estadoTabela.elementoPaginacao = document.getElementById(config.paginacaoId);
     estadoTabela.elementoCampoPesquisa = document.getElementById(config.campoPesquisaId);
 
-    // Define as configurações específica ou seta elas como 10
+    // Define as configurações específicas 
     estadoTabela.linhasPorPagina = config.linhasPorPagina || 10;
 
     // Carrega os dados iniciais do localStorage

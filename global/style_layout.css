@@ -120,7 +120,7 @@ body {
 
 .posicao_resultado {
     position: relative;
-    width: 65%;
+    width: 50%;
 }
 
 .pesquisa {
@@ -348,8 +348,7 @@ tr:hover {
         padding: 10px 20px;
         background-color: var(--cor-principal);
         border-bottom: 1px solid var(--cor-borda-geral);
-        gap: 20px;
-
+        gap: 15px;
         position: sticky;
         top: 0;
         z-index: 999;
@@ -380,8 +379,13 @@ tr:hover {
     }
 
     header.dashboard {
-        gap: 15px;
+        justify-content: space-between;
+        gap: 10px;
         padding: 10px 15px;
+    }
+
+    .posicao_resultado {
+        width: 100%;
     }
 
     .usuario {
@@ -420,10 +424,6 @@ tr:hover {
     header.dashboard.busca-ativa .usuario,
     header.dashboard.busca-ativa #btn_busca {
         display: none;
-    }
-
-    header.dashboard {
-        justify-content: space-between;
     }
 
     header.dashboard.busca-ativa .posicao_resultado {
