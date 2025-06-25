@@ -358,8 +358,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkTelefone(telefoneInput) {
         const telefoneValor = telefoneInput.value;
-        const regexTelefone = /^\(?([1-9]{2})\)? ?(9?[0-9]{4})-?([0-9]{4})$/
-        if (telefoneInput === '') {
+        const regexTelefone = /^[1-9]{2}(9[0-9]{8}|[2-8][0-9]{7})$/
+        if (telefoneValor === '') {
             erroinput(telefoneInput, "Campo obrigatório")
         } else if (!regexTelefone.test(telefoneValor)) {
             erroinput(telefoneInput, "Formato incorreto")
