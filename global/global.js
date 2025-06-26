@@ -74,8 +74,26 @@ if (btnFecharBusca) {
     });
 }
 
+function carregarAdmin() {
+    const emailLogado = sessionStorage.getItem('adminLogado')
+    const admins = JSON.parse(localStorage.getItem('admins')) || [];
+    const adminInfo = admins.find(admin => admin.email === emailLogado)
+
+    if (adminInfo) {
+        const nomeUsuario = document.querySelector('.usuario_nome')
+        if (nomeUsuario) {
+            nomeUsuario.textContent = adminInfo.nome
+        }
+    } else {
+        alert("Erro ao carregar informações do Administrador.")
+        sessionStorage.removeItem('adminLogado')
+        window.location.href = '../login_cadastro/login.html'
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
+    carregarAdmin()
 
     function paginaAtiva() {
 
@@ -97,31 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     paginaAtiva()
-
-    function carregarAdmin() {
-        const emailLogado = sessionStorage.getItem('adminLogado')
-
-        if (!emailLogado) {
-            alert("Nenhum administrador logado. Por favor, faça o Login.")
-            window.location.href = '../login_cadastro/login.html'
-            return;
-        }
-
-        const admins = JSON.parse(localStorage.getItem('admins')) || [];
-
-        const adminInfo = admins.find(admin => admin.email === emailLogado)
-
-        if (adminInfo) {
-            const nomeUsuario = document.querySelector('.usuario_nome')
-            if (nomeUsuario) {
-                nomeUsuario.textContent = adminInfo.nome
-            }
-        } else {
-            alert("Erro ao carregar informações do Administrador.")
-            window.location.href = '../login_cadastro/login.html'
-        }
-    }
-    carregarAdmin()
 
 });
 

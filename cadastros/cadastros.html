@@ -18,6 +18,7 @@
 </head>
 
 <body>
+    <script src="/global/guardiao.js"></script>
     <nav class="sidebar">
         <div class="oc">
             <h1>OC</h1>
@@ -102,57 +103,53 @@
                     </div>
 
                     <div class="form_cadastro">
-                        <label for="idnome">Nome:</label>
+                        <label for="idnome">*Nome:</label>
                         <input type="text" id="idnome" name="nome" required>
                         <a>erro</a>
                     </div>
 
                     <div class="form_cadastro">
-                        <label for="ididade">Idade:</label>
+                        <label for="ididade">*Idade:</label>
                         <input type="number" id="ididade" name="idade" required>
                         <a>erro</a>
                     </div>
 
                     <div class="form_cadastro">
-                        <label for="idemail">E-mail:</label>
+                        <label for="idemail">*E-mail:</label>
                         <input type="email" id="idemail" name="email" required>
                         <a>erro</a>
                     </div>
 
                     <div class="form_cadastro">
-                        <label for="idtelefone">Telefone:</label>
+                        <label for="idtelefone">*Telefone:</label>
                         <input type="text" id="idtelefone" name="telefone" maxlength="15" placeholder="99 999999999">
                         <a>erro</a>
                     </div>
 
                     <div class="form_cadastro">
-                        <label for="idendereco">Endereço:</label>
+                        <label for="idendereco">*Endereço:</label>
                         <input type="text" name="endereo" id="idendereco" required>
                         <a>erro</a>
                     </div>
 
                     <div class="form_cadastro">
                         <label for="idoutros">Outras Informações:</label>
-                        <textarea name="outrasinformacoes" id="idoutros" required></textarea>
-                        <a>erro</a>
+                        <textarea name="outrasinformacoes" id="idoutros"></textarea>
                     </div>
 
                     <h3>2° Interesses</h3>
                     <div class="form_cadastro">
-                        <textarea name="interesses" id="idinteresses" required></textarea>
-                        <a>erro</a>
+                        <textarea name="interesses" id="idinteresses"></textarea>
                     </div>
 
                     <h3>3° Sentimentos</h3>
                     <div class="form_cadastro">
-                        <textarea name="Sentimentos" id="idsentimentos" required></textarea>
-                        <a>erro</a>
+                        <textarea name="Sentimentos" id="idsentimentos"></textarea>
                     </div>
 
                     <h3>4° Valores</h3>
                     <div class="form_cadastro">
-                        <textarea name="valores" id="idvalores" required></textarea>
-                        <a>erro</a>
+                        <textarea name="valores" id="idvalores"></textarea>
                     </div>
                     <div class="modal_actions">
                         <button type="submit" class="btn btn_primary" id="submit" style="width: 200px;">GRAVAR</button>

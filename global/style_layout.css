@@ -74,12 +74,19 @@ body {
 }
 
 .principal {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+
     margin-left: 330px;
     width: 100%;
     padding: 20px;
 }
 
-
+body.autenticado .principal{
+    visibility: visible;
+    opacity: 1;
+}
 
 #btn_mobile {
     display: none;

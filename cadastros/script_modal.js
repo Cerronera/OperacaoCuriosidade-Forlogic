@@ -289,6 +289,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('cancelar').addEventListener('click', () => fecharModal(modalEdicao))
     modalEdicao.querySelector('.fechar').addEventListener('click', () => fecharModal(modalEdicao))
 
+
+    
     function erroinput(input, mensagem) {
         const formItem = input.parentElement
         const textoMensagem = formItem.querySelector("a")
