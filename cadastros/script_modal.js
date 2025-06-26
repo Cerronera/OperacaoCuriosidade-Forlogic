@@ -58,10 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('edit_email').addEventListener("blur", checkEditEmail)
             document.getElementById('edit_telefone').addEventListener("blur", checkEditTelefone)
             document.getElementById('edit_endereco').addEventListener("blur", checkEditEndereco)
-            document.getElementById('edit_outros').addEventListener("blur", checkEditOutros)
-            document.getElementById('edit_interesses').addEventListener("blur", checkEditInteresses)
-            document.getElementById('edit_sentimentos').addEventListener("blur", checkEditSentimentos)
-            document.getElementById('edit_valores').addEventListener("blur", checkEditValores)
         }
     }
 
@@ -151,47 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return true
     }
 
-
-    function checkEditOutros() {
-        const outros = document.getElementById('edit_outros')
-        if (outros.value.trim() === '') {
-            erroinputEdit(outros, "Campo obrigatório")
-            return false
-        }
-        sucessoinputEdit(outros)
-        return true
-    }
-
-    function checkEditInteresses() {
-        const interesses = document.getElementById('edit_interesses')
-        if (interesses.value.trim() === '') {
-            erroinputEdit(interesses, "Campo obrigatório")
-            return false
-        }
-        sucessoinputEdit(interesses)
-        return true
-    }
-
-    function checkEditSentimentos() {
-        const sentimentos = document.getElementById('edit_sentimentos')
-        if (sentimentos.value.trim() === '') {
-            erroinputEdit(sentimentos, "Campo obrigatório")
-            return false
-        }
-        sucessoinputEdit(sentimentos)
-        return true
-    }
-
-    function checkEditValores() {
-        const valores = document.getElementById('edit_valores')
-        if (valores.value.trim() === '') {
-            erroinputEdit(valores, "Campo obrigatório")
-            return false
-        }
-        sucessoinputEdit(valores)
-        return true
-    }
-
     function checkEditForm() {
 
         const nomeOk = checkEditNome()
@@ -199,12 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const emailOk = checkEditEmail()
         const telefoneOk = checkEditTelefone()
         const enderecoOk = checkEditEndereco()
-        const outrosOk = checkEditOutros()
-        const interessesOk = checkEditInteresses()
-        const sentimentosOk = checkEditSentimentos()
-        const valoresOk = checkEditValores()
 
-        const camposBasicos = nomeOk && idadeOk && emailOk && telefoneOk && enderecoOk && outrosOk && interessesOk && sentimentosOk && valoresOk;
+        const camposBasicos = nomeOk && idadeOk && emailOk && telefoneOk && enderecoOk;
 
         if (!camposBasicos) {
             return false
@@ -241,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const usuarioAtualizado = {
                 ...usuarios[index],
-                nome: document.getElementById('edit_nome').value.trim(),
+                nome: padronizarNome(document.getElementById('edit_nome').value.trim()),
                 idade: document.getElementById('edit_idade').value.trim(),
                 email: document.getElementById('edit_email').value.trim(),
                 telefone: document.getElementById('edit_telefone').value.trim(),
@@ -290,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modalEdicao.querySelector('.fechar').addEventListener('click', () => fecharModal(modalEdicao))
 
 
-    
+
     function erroinput(input, mensagem) {
         const formItem = input.parentElement
         const textoMensagem = formItem.querySelector("a")
@@ -359,48 +310,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function checkOutros(outrosInput) {
-        if (outrosInput.value === '') {
-            erroinput(outrosInput, "Campo obrigatório")
-        } else {
-            sucessoinput(outrosInput)
-        }
-    }
-
-    function checkInteresses(interessesInput) {
-        if (interessesInput.value === '') {
-            erroinput(interessesInput, "Campo obrigatório")
-        } else {
-            sucessoinput(interessesInput)
-        }
-    }
-
-    function checkSentimentos(sentimentosInput) {
-        if (sentimentosInput.value === '') {
-            erroinput(sentimentosInput, "Campo obrigatório")
-        } else {
-            sucessoinput(sentimentosInput)
-        }
-    }
-
-    function checkValores(valoresInput) {
-        if (valoresInput.value === '') {
-            erroinput(valoresInput, "Campo obrigatório")
-        } else {
-            sucessoinput(valoresInput)
-        }
-    }
-
     function checkForm(formElemento) {
         checkNome(formElemento.querySelector('#idnome'))
         checkIdade(formElemento.querySelector('#ididade'))
         checkEmail(formElemento.querySelector('#idemail'))
         checkTelefone(formElemento.querySelector('#idtelefone'))
         checkEndereco(formElemento.querySelector('#idendereco'))
-        checkOutros(formElemento.querySelector('#idoutros'))
-        checkInteresses(formElemento.querySelector('#idinteresses'))
-        checkSentimentos(formElemento.querySelector('#idsentimentos'))
-        checkValores(formElemento.querySelector('#idvalores'))
+        document.getElementById('modal_cadastro').scrollTop = 0;
 
         const temErros = formElemento.querySelector('.erro') !== null
         if (temErros) {
@@ -423,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function submitNovoCadastro(formElemento) {
         const novoUsuario = {
             status: formElemento.querySelector('#cadastro_ativo').checked ? "Ativo" : "Inativo",
-            nome: formElemento.querySelector('#idnome').value.trim(),
+            nome: padronizarNome(formElemento.querySelector('#idnome').value.trim()),
             idade: formElemento.querySelector('#ididade').value.trim(),
             email: formElemento.querySelector('#idemail').value.toLowerCase().trim(),
             telefone: formElemento.querySelector('#idtelefone').value.trim(),
@@ -458,10 +374,6 @@ document.addEventListener('DOMContentLoaded', () => {
             formCadastro.querySelector('#idemail').addEventListener("blur", (e) => checkEmail(e.target))
             formCadastro.querySelector('#idtelefone').addEventListener("blur", (e) => checkTelefone(e.target))
             formCadastro.querySelector('#idendereco').addEventListener("blur", (e) => checkEndereco(e.target))
-            formCadastro.querySelector('#idoutros').addEventListener("blur", (e) => checkOutros(e.target))
-            formCadastro.querySelector('#idinteresses').addEventListener("blur", (e) => checkInteresses(e.target))
-            formCadastro.querySelector('#idsentimentos').addEventListener("blur", (e) => checkSentimentos(e.target))
-            formCadastro.querySelector('#idvalores').addEventListener("blur", (e) => checkValores(e.target))
 
             formCadastro.onsubmit = function (event) {
                 event.preventDefault()

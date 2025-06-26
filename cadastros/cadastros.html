@@ -96,33 +96,38 @@
 
                     <h3>1° Fatos e Dados</h3>
 
-                    <div class="checkbox">
-                        <button type="button" class="fechar" onclick="fecharModal()"><img src="/imagens/fechar.png"
-                                alt="fechar"></button>
-                        <label><input type="checkbox" id="cadastro_ativo">Ativo</label>
+                    <button type="button" class="fechar" onclick="fecharModal()"><img src="/imagens/fechar.png"
+                            alt="fechar">
+                    </button>
+
+                    <div class="form_linha">
+                        <div class="form_cadastro">
+                            <label for="idnome">*Nome:</label>
+                            <input type="text" id="idnome" name="nome" required>
+                            <a>erro</a>
+                        </div>
+                        <div class="checkbox campo_ativo">
+                            <label><input type="checkbox" id="cadastro_ativo">Ativo</label>
+                        </div>
                     </div>
 
-                    <div class="form_cadastro">
-                        <label for="idnome">*Nome:</label>
-                        <input type="text" id="idnome" name="nome" required>
-                        <a>erro</a>
-                    </div>
-
-                    <div class="form_cadastro">
-                        <label for="ididade">*Idade:</label>
-                        <input type="number" id="ididade" name="idade" required>
-                        <a>erro</a>
+                    <div class="form_linha">
+                        <div class="form_cadastro">
+                            <label for="ididade">*Idade:</label>
+                            <input type="number" id="ididade" name="idade" required>
+                            <a>erro</a>
+                        </div>
+                        <div class="form_cadastro">
+                            <label for="idtelefone">*Telefone:</label>
+                            <input type="text" id="idtelefone" name="telefone" maxlength="15"
+                                placeholder="99 999999999">
+                            <a>erro</a>
+                        </div>
                     </div>
 
                     <div class="form_cadastro">
                         <label for="idemail">*E-mail:</label>
                         <input type="email" id="idemail" name="email" required>
-                        <a>erro</a>
-                    </div>
-
-                    <div class="form_cadastro">
-                        <label for="idtelefone">*Telefone:</label>
-                        <input type="text" id="idtelefone" name="telefone" maxlength="15" placeholder="99 999999999">
                         <a>erro</a>
                     </div>
 
@@ -158,30 +163,42 @@
             </div>
 
             <div id="modal_edicao" class="modal oculto">
+
+                <h2>Edição de Usuário</h2>
+
+                <h3> </h3>
+
                 <form id="form_edicao">
-                    <div class="form_modal">
-                        <button type="button" class="fechar" onclick="fecharModal()"><img src="/imagens/fechar.png"
-                                alt="fechar"></button>
-                        <label for="edit_nome">Nome:</label>
-                        <input type="text" id="edit_nome" required>
-                        <a>erro</a>
+                    <button type="button" class="fechar" onclick="fecharModal()"><img src="/imagens/fechar.png"
+                            alt="fechar"></button>
+
+                    <div class="form_linha">
+                        <div class="form_modal">
+                            <label for="edit_nome">Nome:</label>
+                            <input type="text" id="edit_nome" required>
+                            <a>erro</a>
+                        </div>
+                        <div class="checkbox campo_ativo">
+                            <label><input type="checkbox" id="edit_ativo">Ativo</label>
+                        </div>
                     </div>
 
-                    <div class="form_modal">
-                        <label for="edit_idade">Idade:</label>
-                        <input type="number" id="edit_idade" required>
-                        <a>erro</a>
+                    <div class="form_linha">
+                        <div class="form_modal">
+                            <label for="edit_idade">Idade:</label>
+                            <input type="number" id="edit_idade" required>
+                            <a>erro</a>
+                        </div>
+                        <div class="form_modal">
+                            <label for="edit_telefone">Telefone:</label>
+                            <input type="text" id="edit_telefone" placeholder="99 99999999" required>
+                            <a>erro</a>
+                        </div>
                     </div>
 
                     <div class="form_modal">
                         <label for="edit_email">E-mail:</label>
                         <input type="email" id="edit_email" required>
-                        <a>erro</a>
-                    </div>
-
-                    <div class="form_modal">
-                        <label for="edit_telefone">Telefone:</label>
-                        <input type="text" id="edit_telefone" placeholder="99 99999999" required>
                         <a>erro</a>
                     </div>
 
@@ -211,10 +228,6 @@
                         <label for="edit_valores">Valores:</label>
                         <textarea id="edit_valores" required></textarea>
                         <a>erro</a>
-                    </div>
-
-                    <div class="checkbox">
-                        <label><input type="checkbox" id="edit_ativo">Ativo</label>
                     </div>
 
                     <div class="modal_actions">
