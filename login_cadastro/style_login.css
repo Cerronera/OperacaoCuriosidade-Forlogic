@@ -5,7 +5,7 @@
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
 }
-/*configurar a imagem para conseguir trocar a cor dela depois*/
+
 body::before {
     content: '';
     position: fixed;
@@ -156,8 +156,10 @@ h1 {
     filter: invert(1);
 }
 
-/*mexer com mobile*/
-@media(max-width: 480px) { /*480 px pois é max-width definido*/
+
+
+@media(max-width: 480px) { 
+
     .login {
         width: 100%;
         min-height: 100vh;
@@ -185,5 +187,4 @@ h1 {
         margin: 25px 0;
         
     }
-
 }

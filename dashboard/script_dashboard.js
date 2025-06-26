@@ -1,11 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    //atualizar os blocos
     if (document.getElementById('bloco_1')) {
         atualizarBlocos();
     }
 
-    //lógica do tema escuro:
     const trocarTemaCheckbox = document.getElementById('chk')
     const rootElement = document.documentElement
 
@@ -26,8 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-    //chamar a tabela:
+    
     const configTabelaPrincipal = {
         tabelaSelector: '#tabela_usuarios tbody',
         paginacaoId: 'paginacao',

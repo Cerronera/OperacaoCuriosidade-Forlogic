@@ -1,4 +1,3 @@
-// Função para fechar qualquer modal
 function fecharModal(modalElement) {
     if (modalElement) {
         modalElement.classList.add('oculto')
@@ -21,11 +20,9 @@ function fecharModal(modalElement) {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    //Seletores Globais
     const modalCadastro = document.getElementById('modal_cadastro')
     const modalEdicao = document.getElementById('modal_edicao')
 
-    //Chamar tabela
     const configTabelaPrincipal = {
         tabelaSelector: '#tabela_usuarios tbody',
         paginacaoId: 'paginacao',
@@ -36,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     inicializarTabela(configTabelaPrincipal)
 
-    // Modal de edição
     function abrirModalEdicao(usuario, index) {
 
         if (index !== -1) {
@@ -69,14 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    //Funções  de validação:
-
     const validarTelefone = (telefone) => /^\(?([1-9]{2})\)? ?(9?[0-9]{4})-?([0-9]{4})$/.test(telefone)
-    //aceita ddd a partir de 1, e aceita telefones fixos (8 numeros) e celulares (9 numeros)
 
     const validarEmail = (email) => /^[_.]?[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}(?:\.br)?$/i.test(email)
-    //aceita . _ numeros no inicio, aceita .br no final
-
 
     function erroinputEdit(input, mensagem) {
         const formItem = input.parentElement
@@ -201,7 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return true
     }
 
-    //validação de todo o formulario:
     function checkEditForm() {
 
         const nomeOk = checkEditNome()
@@ -237,9 +227,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return true
     }
 
-    //Eventos modal de edição:
-
-    // Salvar Edições
     document.getElementById('salvar').addEventListener('click', () => {
 
         if (checkEditForm()) {
@@ -264,11 +251,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 sentimentos: document.getElementById('edit_sentimentos').value.trim(),
                 valores: document.getElementById('edit_valores').value.trim(),
                 status: novoStatus,
-                revisado: true //ao salvar coloca como true
+                revisado: true 
             };
 
             usuarios[index] = usuarioAtualizado
-            //atualizar lista de usuarios
             localStorage.setItem('usuarios', JSON.stringify(usuarios));
 
             alert("Dados atualizados com sucesso!")
@@ -280,7 +266,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     });
 
-    //Excluir dados 
     document.getElementById('excluir').addEventListener('click', () => {
         if (!confirm("Quer excluir esse cadastro?")) {
             return;
@@ -292,7 +277,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-        // Remove o usuário do array
         usuarios.splice(index, 1);
         localStorage.setItem('usuarios', JSON.stringify(usuarios))
 
@@ -304,9 +288,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('cancelar').addEventListener('click', () => fecharModal(modalEdicao))
     modalEdicao.querySelector('.fechar').addEventListener('click', () => fecharModal(modalEdicao))
-
-
-    //CADASTRO
 
     function erroinput(input, mensagem) {
         const formItem = input.parentElement
@@ -434,7 +415,6 @@ document.addEventListener('DOMContentLoaded', () => {
             erroinput(emailInput, "Este E-mail já existe")
             return false
         }
-        //se passou nas validações:
         return true
     }
 
@@ -471,7 +451,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const formCadastro = modalCadastro.querySelector('form')
 
-            //funções de validação:
             formCadastro.querySelector('#idnome').addEventListener("blur", (e) => checkNome(e.target))
             formCadastro.querySelector('#ididade').addEventListener("blur", (e) => checkIdade(e.target))
             formCadastro.querySelector('#idemail').addEventListener("blur", (e) => checkEmail(e.target))

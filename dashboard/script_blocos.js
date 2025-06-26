@@ -1,11 +1,8 @@
-//Blocos:
-//bloco 1
 function contarCadastros() {
     const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
     return usuarios.length;
 }
 
-//bloco 2
 function contarCadastrosUltimoMes() {
     const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
     if (usuarios.length === 0) {
@@ -26,7 +23,6 @@ function contarCadastrosUltimoMes() {
     }).length;
 }
 
-//bloco 3
 function contarPendentes() {
     const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
     return usuarios.filter(usuario => {

@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const regexEmail = /^[_.]?[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}(?:\.br)?$/i
         return regexEmail.test(email)
     }
-    //validação campo por campo
 
     function checkNome() {
         const nomeValor = nome.value.trim()
@@ -90,12 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const submitButton = form.querySelector('button[type = "submit"]')
 
         if (formValido) {
-            //adiciona a classe sucesso e remove a de erro se o formulario for válido
             submitButton.classList.add('sucesso')
             submitButton.classList.remove('erro')
             return true;
         } else {
-            //inverso à lógica de validação
             submitButton.classList.add('erro')
             submitButton.classList.remove('sucesso')
             return false;
@@ -110,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
             tipo: 'admin'
         };
 
-        //Verifica se já há usuários cadastrados
         const adminsExistentes = JSON.parse(localStorage.getItem('admins')) || []
         const emailJaCadastrado = adminsExistentes.some(admin => admin.email === novoAdmin.email)
 
@@ -119,7 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        //adiciona o novo usuario
         adminsExistentes.push(novoAdmin)
         localStorage.setItem('admins', JSON.stringify(adminsExistentes));
 

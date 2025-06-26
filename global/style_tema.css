@@ -1,5 +1,4 @@
 :root {
-    /*Cores tema claro*/
     --cor-dashboard-principal: #f2f2f2;
     --cor-principal: #fff;
     --cor-fonte: #000;
@@ -41,8 +40,6 @@
 
     --cor-paginacao-hover: #acacac;
 
-    /*Login ADM*/
-
     --cor-login-botao: #000;
     --cor-login-fonte: #fff;
     --cor-login-oc: rgb(227, 239, 240);
@@ -53,7 +50,6 @@
 
 
 [data-theme="dark"] {
-    /*Cores tema escuro*/
     --cor-dashboard-principal: #151a1f;
     --cor-principal: #3b3b3b;
     --cor-fonte: #fff;
@@ -100,8 +96,6 @@
     --cor-login-oc: #232c35;
     --cor-borda-login: #000;
     --cor-login-placeholder: rgba(202, 202, 202, 0.623);
-
-
 }
 
 [data-theme="dark"] img {

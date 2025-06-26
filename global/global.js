@@ -1,5 +1,3 @@
-// Direcionamento de páginas:
-
 function voltar_login() {
 
     const confirmar = confirm("Você tem certeza que deseja sair?")
@@ -19,18 +17,15 @@ function voltar_home() {
 
 function ir_relatorios() {
     setTimeout(() => {
-        window.location.href = '/dashboard/relatorios.html'
+        window.location.href = '/relatorios/relatorios.html'
     }, 200);
 }
 
 function ir_cadastros() {
     setTimeout(() => {
-        window.location.href = '/dashboard/cadastros.html'
+        window.location.href = '/cadastros/cadastros.html'
     }, 200);
 }
-
-
-/*menu hamburguer*/
 
 const btnMobile = document.getElementById('btn_mobile')
 const sidebar = document.querySelector('.sidebar')
@@ -61,8 +56,6 @@ body.addEventListener('click', (event) => {
     }
 });
 
-/*botao busca mobile*/
-
 const header = document.querySelector('header.dashboard')
 const btnBusca = document.getElementById('btn_busca')
 const btnFecharBusca = document.getElementById('btn_fechar_busca')
@@ -80,9 +73,6 @@ if (btnFecharBusca) {
         header.classList.remove('busca-ativa')
     });
 }
-
-
-/*DOM*/
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -108,11 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     paginaAtiva()
 
-    // carregar informações do admin
     function carregarAdmin() {
         const emailLogado = sessionStorage.getItem('adminLogado')
 
-        //função pra bloquear acesso se nao tiver logado
         if (!emailLogado) {
             alert("Nenhum administrador logado. Por favor, faça o Login.")
             window.location.href = '../login_cadastro/login.html'
@@ -137,9 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-/*Tabela */
 
-//guardar o estado atual da tabela
 let estadoTabela = {
     listaCompletaDeUsuarios: [],
     usuariosFiltrados: [],
@@ -180,7 +166,6 @@ function renderizarLinhasTabela() {
             </td>
         `;
 
-        //função de clique para modal editar
         if (estadoTabela.config.onRowClick) {
 
             const originalIndex = estadoTabela.listaCompletaDeUsuarios.findIndex(
@@ -199,7 +184,6 @@ function renderizarLinhasTabela() {
     });
 }
 
-//botões paginação
 function renderizarBotoesDePaginacao() {
     if (!estadoTabela.elementoPaginacao) return;
 
@@ -209,13 +193,11 @@ function renderizarBotoesDePaginacao() {
         const btn = document.createElement('button')
         btn.innerHTML = texto
 
-        // Desabilita o botão se a ação for nula 
         if (!acao) {
             btn.disabled = true
         } else {
             btn.addEventListener('click', () => {
                 acao()
-                // Após a ação, atualiza a tabela inteira
                 atualizarDadosParaExibicao()
             });
         }
@@ -237,13 +219,11 @@ function renderizarBotoesDePaginacao() {
     estadoTabela.elementoPaginacao.appendChild(criarBotao('>>', pag < total ? () => estadoTabela.paginaAtual = total : null))
 }
 
-//como os dados são exibidos
 function atualizarDadosParaExibicao() {
 
     estadoTabela.listaCompletaDeUsuarios = JSON.parse(localStorage.getItem('usuarios')) || []
     const termoBusca = estadoTabela.elementoCampoPesquisa.value.toLowerCase().trim()
 
-    //Filtra a lista completa com base na busca
     if (termoBusca) {
         estadoTabela.usuariosFiltrados = estadoTabela.listaCompletaDeUsuarios.filter(usuario =>
             usuario.nome.toLowerCase().includes(termoBusca)
@@ -252,7 +232,6 @@ function atualizarDadosParaExibicao() {
         estadoTabela.usuariosFiltrados = estadoTabela.listaCompletaDeUsuarios;
     }
 
-    // Calcula a paginação com base na lista filtrada
     estadoTabela.totalPaginas = Math.ceil(estadoTabela.usuariosFiltrados.length / estadoTabela.linhasPorPagina);
     const startIndex = (estadoTabela.paginaAtual - 1) * estadoTabela.linhasPorPagina;
     const endIndex = startIndex + estadoTabela.linhasPorPagina;
@@ -262,14 +241,11 @@ function atualizarDadosParaExibicao() {
     renderizarBotoesDePaginacao();
 }
 
-//quando algo é digitado na barra de pesquisa:
 function handlePesquisa() {
-    // Ao pesquisar, sempre voltamos para a primeira página
     estadoTabela.paginaAtual = 1;
     atualizarDadosParaExibicao();
 }
 
-//inicialização da tabela
 function inicializarTabela(config) {
 
     estadoTabela.config = config
@@ -278,20 +254,16 @@ function inicializarTabela(config) {
     estadoTabela.elementoPaginacao = document.getElementById(config.paginacaoId);
     estadoTabela.elementoCampoPesquisa = document.getElementById(config.campoPesquisaId);
 
-    // Define as configurações específicas 
     estadoTabela.linhasPorPagina = config.linhasPorPagina || 10;
 
-    // Carrega os dados iniciais do localStorage
     estadoTabela.listaCompletaDeUsuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
 
-    // Configura os eventos
     if (estadoTabela.elementoCampoPesquisa) {
         estadoTabela.elementoCampoPesquisa.addEventListener('keyup', handlePesquisa);
     }
 
     atualizarDadosParaExibicao();
 
-    // Adiciona um listener para atualizar a tabela se outra aba modificar os dados
     window.addEventListener('storage', () => {
         estadoTabela.listaCompletaDeUsuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
         atualizarDadosParaExibicao();

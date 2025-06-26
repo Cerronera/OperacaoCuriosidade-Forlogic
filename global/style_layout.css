@@ -12,7 +12,7 @@ body {
     transition: background 0.2s linear;
 }
 
-/* Nav sidebar*/
+
 .sidebar {
     width: 320px;
     background-color: var(--cor-principal);
@@ -79,9 +79,9 @@ body {
     padding: 20px;
 }
 
-/*Header*/
+
+
 #btn_mobile {
-    /*menu hamburguer no header quando tiver mobile*/
     display: none;
     background: transparent;
     border: none;
@@ -118,6 +118,7 @@ body {
     background-color: var(--cor-hover);
 }
 
+
 .posicao_resultado {
     position: relative;
     width: 50%;
@@ -142,7 +143,7 @@ body {
     z-index: 10;
 }
 
-/*botão tema */
+
 .dark .checkbox {
     opacity: 0;
     position: absolute;
@@ -188,6 +189,7 @@ body {
     color: var(--cor-hedaer-sol);
 }
 
+
 .usuario {
     display: flex;
     align-items: center;
@@ -207,7 +209,8 @@ body {
     border-left: 0.5px solid var(--cor-borda-geral);
 }
 
-/*Configuração Tabela*/
+
+
 .tabela {
     background-color: var(--cor-principal);
     padding: 20px;
@@ -227,7 +230,6 @@ table {
     position: relative;
 }
 
-/*Configuração parar manter o header da tabela -- uso nos relatórios*/
 thead>tr>th {
     position: sticky;
     top: -1px;
@@ -263,7 +265,7 @@ tr:hover {
     color: var(--cor-tabela-inativo)
 }
 
-/*Paginação*/
+
 
 .paginacao-container {
     margin-top: 10px;
@@ -298,10 +300,10 @@ tr:hover {
     margin: 0 15px;
 }
 
-/*responsividade*/
+
+
 @media (max-width: 1024px) {
 
-    /*menu hamburguer*/
     .sidebar {
         position: fixed;
         left: 0;
@@ -310,7 +312,6 @@ tr:hover {
         width: 320px;
         z-index: 1001;
 
-        /*começa escondida*/
         transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
     }
@@ -319,7 +320,6 @@ tr:hover {
         transform: translateX(0);
     }
 
-    /* fundo escuro quando a sidebar ta aberta*/
     body.menu-aberto::after {
         content: '';
         position: fixed;
@@ -340,7 +340,7 @@ tr:hover {
         display: block;
     }
 
-    /*header*/
+
     header.dashboard {
         display: flex;
         justify-content: space-between;
@@ -366,14 +366,14 @@ tr:hover {
     }
 }
 
+
+
 @media(max-width: 768px) {
 
     .sidebar {
         width: 280px;
     }
 
-
-    /*header*/
     .usuario .usuario_nome {
         display: none;
     }
@@ -397,12 +397,13 @@ tr:hover {
         padding-left: 10px;
     }
 
-    /*tabela*/
     .tabela,
     .tabela_cadrel {
         overflow-x: auto;
     }
 }
+
+
 
 @media(max-width: 480px) {
 
@@ -415,7 +416,6 @@ tr:hover {
         display: none;
     }
 
-    /* botao de busca para celular*/
     #btn_busca {
         display: block;
     }
@@ -441,6 +441,4 @@ tr:hover {
         display: block;
         margin-left: 10px;
     }
-
-
 }
