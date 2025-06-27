@@ -91,22 +91,22 @@ function carregarAdmin() {
     }
 }
 
-function padronizarNome(nome){
+function padronizarNome(nome) {
 
-    if(!nome){
+    if (!nome) {
         return ''
     }
 
-   const palavras = nome.toLowerCase().split(' ')
+    const palavras = nome.toLowerCase().split(' ')
 
-   const palavrasNome = palavras.map(palavra => {
-    if(['de', 'da', 'do', 'dos', 'e'].includes(palavra)){
+    const palavrasNome = palavras.map(palavra => {
+        if (['de', 'da', 'do', 'dos', 'e'].includes(palavra)) {
 
-        return palavra
-    }
+            return palavra
+        }
 
-    return palavra.charAt(0).toUpperCase() + palavra.slice(1)
-   });
+        return palavra.charAt(0).toUpperCase() + palavra.slice(1)
+    });
 
     return palavrasNome.join(' ')
 }
@@ -179,23 +179,44 @@ function renderizarLinhasTabela() {
             </td>
         `;
 
-        if (estadoTabela.config.onRowClick) {
+        if (estadoTabela.config.mostrarColunaAcoes) {
+            const acoesTd = document.createElement('td')
+            acoesTd.classList.add('acoes_modal')
 
+            const btnExcluir = document.createElement('button')
+            btnExcluir.type = 'button'
+            btnExcluir.className = 'btn_delete'
+            btnExcluir.innerHTML = `<i class="fas fa-trash-alt"></i>`
+
+            btnExcluir.addEventListener('click', (event) => {
+                event.stopPropagation()
+
+                if (typeof estadoTabela.config.onDeleteClick === 'function') {
+                    estadoTabela.config.onDeleteClick(usuario)
+                }
+            });
+
+            acoesTd.appendChild(btnExcluir)
+            tr.appendChild(acoesTd)
+        }
+
+        if (estadoTabela.config.onRowClick) {
             const originalIndex = estadoTabela.listaCompletaDeUsuarios.findIndex(
                 u => u.email === usuario.email
             );
 
             tr.style.cursor = 'pointer'
+
             tr.addEventListener('click', () => {
                 if (originalIndex !== -1) {
                     estadoTabela.config.onRowClick(usuario, originalIndex)
                 }
             });
         }
-
         estadoTabela.elementoTabelaBody.appendChild(tr)
     });
 }
+
 
 function renderizarBotoesDePaginacao() {
     if (!estadoTabela.elementoPaginacao) return;

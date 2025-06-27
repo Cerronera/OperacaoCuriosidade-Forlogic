@@ -5,10 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operação Curiosidade - Cadastros</title>
+    <script>
+        (function () {
+            const tema = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-theme: dark)').matches ? 'dark' : 'light')
+
+            if (tema === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark')
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="/global/style_tema.css">
     <link rel="stylesheet" href="/global/style_layout.css">
     <link rel="stylesheet" href="style_cadastros.css">
-    <script src="/global/tema.js" defer></script>
+    <script src="https://kit.fontawesome.com/6414134de6.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="/imagens/icon.png" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -78,6 +87,7 @@
                                 <th>E-MAIL</th>
                                 <th>TELEFONE</th>
                                 <th>STATUS</th>
+                                <th>EXCLUIR</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -231,8 +241,6 @@
                     </div>
 
                     <div class="modal_actions">
-                        <button type="button" id="excluir" class="btn_delete"><img src="/imagens/delete.png"
-                                alt="deletar"></button>
                         <div class="btn_group">
                             <button type="button" id="cancelar" class="btn btn_secondary">Cancelar</button>
                             <button type="button" id="salvar" class="btn btn_primary">Salvar Alterações</button>
@@ -246,7 +254,6 @@
     <script src="/global/global.js"></script>
     <script src="script_modal.js"></script>
     <script src="/dashboard/script_blocos.js"></script>
-    <script src="https://kit.fontawesome.com/6414134de6.js" crossorigin="anonymous"></script>
 </body>
 
 </html>

@@ -136,6 +136,9 @@
     border-color: var(--cor-modal-input-focus);
 }
 
+.modal input::placeholder{
+    color: var(--cor-login-placeholder)
+}
 .modal textarea {
     height: 80px;
     resize: none;
@@ -222,8 +225,9 @@
 
 .modal_actions {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
+    gap: 20px;
     margin-top: 30px;
 }
 
@@ -277,14 +281,20 @@ body.modal-aberto::after {
 }
 
 .btn_delete {
-    background-color: transparent;
+    background: none;
     border: none;
     padding: 5px;
-    cursor: pointer
+    cursor: pointer;
+    line-height: 1; 
 }
 
-.btn_delete:hover img {
-    opacity: 0.7;
+.btn_delete i{
+    color: var(--cor-botao-excluir);
+    font-size: 16px;
+}
+
+.btn_delete:hover i {
+    color: var(--cor-botao-excluir-hover)
 }
 
 #modal_cadastro .modal_actions {

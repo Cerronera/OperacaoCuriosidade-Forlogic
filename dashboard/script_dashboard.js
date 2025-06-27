@@ -4,27 +4,30 @@ document.addEventListener('DOMContentLoaded', () => {
         atualizarBlocos();
     }
 
+    
     const trocarTemaCheckbox = document.getElementById('chk')
-    const rootElement = document.documentElement
 
     if (trocarTemaCheckbox) {
-        const temaAtual = localStorage.getItem('theme')
 
-        if (temaAtual === 'dark') {
+        if (document.documentElement.getAttribute('data-theme') === 'dark') {
             trocarTemaCheckbox.checked = true
         }
 
         trocarTemaCheckbox.addEventListener('change', () => {
             if (trocarTemaCheckbox.checked) {
-                rootElement.setAttribute('data-theme', 'dark')
+                document.documentElement.setAttribute('data-theme', 'dark')
                 localStorage.setItem('theme', 'dark')
             } else {
-                rootElement.removeAttribute('data-theme')
+                document.documentElement.removeAttribute('data-theme')
                 localStorage.setItem('theme', 'light')
             }
         });
     }
-    
+
+    setTimeout(() => {
+        document.body.classList.add('transicao-ativa')
+    }, 100);
+
     const configTabelaPrincipal = {
         tabelaSelector: '#tabela_usuarios tbody',
         paginacaoId: 'paginacao',

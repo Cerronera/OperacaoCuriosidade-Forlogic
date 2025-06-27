@@ -4,11 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operação Comunidade - Dashboard</title>
+    <title>Operação Comunidade - Home</title>
+    <script>
+        (function () {
+            const tema = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-theme: dark)').matches ? 'dark' : 'light')
+
+            if (tema === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark')
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="/global/style_tema.css">
     <link rel="stylesheet" href="/global/style_layout.css">
     <link rel="stylesheet" href="style_dashboard.css">
-    <script src="/global/tema.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link

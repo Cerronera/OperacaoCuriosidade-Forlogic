@@ -23,15 +23,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalCadastro = document.getElementById('modal_cadastro')
     const modalEdicao = document.getElementById('modal_edicao')
 
+    function excluirUsuario(deletarUsuario) {
+        if (confirm(`Tem certeza que deseja excluir o cadastro de ${deletarUsuario.nome}?`)) {
+
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+
+            const novosUsuarios = usuarios.filter(user => user.email !== deletarUsuario.email)
+
+            localStorage.setItem('usuarios', JSON.stringify(novosUsuarios));
+
+            atualizarDadosParaExibicao()
+        }
+    }
+
     const configTabelaPrincipal = {
         tabelaSelector: '#tabela_usuarios tbody',
         paginacaoId: 'paginacao',
         campoPesquisaId: 'campoPesquisa',
         linhasPorPagina: 10,
-        onRowClick: abrirModalEdicao
+        onRowClick: abrirModalEdicao,
+        mostrarColunaAcoes: true,
+        onDeleteClick: excluirUsuario
     };
-
     inicializarTabela(configTabelaPrincipal)
+
 
     function abrirModalEdicao(usuario, index) {
 
@@ -202,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 sentimentos: document.getElementById('edit_sentimentos').value.trim(),
                 valores: document.getElementById('edit_valores').value.trim(),
                 status: novoStatus,
-                revisado: true 
+                revisado: true
             };
 
             usuarios[index] = usuarioAtualizado
@@ -217,30 +232,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     });
 
-    document.getElementById('excluir').addEventListener('click', () => {
-        if (!confirm("Quer excluir esse cadastro?")) {
-            return;
-        }
-
-        const index = modalEdicao.dataset.index;
-        if (index === undefined) {
-            return;
-        }
-
-        let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-        usuarios.splice(index, 1);
-        localStorage.setItem('usuarios', JSON.stringify(usuarios))
-
-        alert('Cadastro excluído')
-        fecharModal(modalEdicao)
-        atualizarDadosParaExibicao()
-
-    });
-
     document.getElementById('cancelar').addEventListener('click', () => fecharModal(modalEdicao))
     modalEdicao.querySelector('.fechar').addEventListener('click', () => fecharModal(modalEdicao))
-
-
 
     function erroinput(input, mensagem) {
         const formItem = input.parentElement

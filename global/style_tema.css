@@ -38,6 +38,9 @@
     --cor-modal-botao-cancelar: #f0f0f0;
     --cor-modal-botao-cancelar-hover: #e0e0e0;
 
+    --cor-botao-excluir: rgb(136, 133, 133);
+    --cor-botao-excluir-hover: #c82333;
+
     --cor-paginacao-hover: #acacac;
 
     --cor-login-botao: #000;
@@ -81,7 +84,7 @@
     --cor-fonte-botao: #fff;
 
     --cor-modal-conteudo: rgb(207, 214, 214);
-    --cor-modal-input: rgba(199, 196, 196, 0.466);
+    --cor-modal-input: rgb(131, 131, 131);
     --cor-modal-input-focus: #007bff;
     --cor-modal-erro: rgb(236, 42, 42);
     --cor-modal-checkbox: rgb(7, 150, 7);
@@ -89,13 +92,16 @@
     --cor-modal-botao-cancelar: #151a1f;
     --cor-modal-botao-cancelar-hover: #6d6b6b;
 
+    --cor-botao-excluir: #fff;
+    --cor-botao-excluir-hover: #c82333;
+
     --cor-paginacao-hover: #9e9e9e;
 
     --cor-login-botao: #000;
     --cor-login-fonte: #fff;
     --cor-login-oc: #232c35;
     --cor-borda-login: #000;
-    --cor-login-placeholder: rgba(202, 202, 202, 0.623);
+    --cor-login-placeholder: rgb(51, 51, 51);
 }
 
 [data-theme="dark"] img {
