@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#btn_fechar{
+    padding: 10px 20px;
+    background-color: rgb(233, 233, 233);
+    border: 1px solid gray;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#btn_fechar:hover {
+    opacity: 0.7;
+}
+
+#btn_fechar:active {
+    opacity: 0.9;
+}
+
+#modal_avisos {
+    position: fixed;
+    left: 50%;
+    top: 40px;
+    display: flex;
+    flex-direction: column;
+    z-index: 2000;
+    background-color: white;
+    width: 400px;
+    max-width: 90vw;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    transform: translateX(-50%);
+    display: none;
+}
+
+#modal_shadow {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.37);
+    z-index: 1000;
+    display: none;
+}
+
+body.modal-aviso-aberto{
+    overflow: hidden;
+}
+
+#modal_header {
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+}
+
+#modal_body {
+    padding: 10px 20px;
+}
+
+#modal_footer {
+    padding: 10px 20px 12px;
+    border-top: 1px solid lightgray;
+}
+
+#modal_footer button {
+    float: right;
+    padding: 7px 12px;
+    color: white;
+    border: none;
+}
+
+#modal_avisos.tipo-erro #modal_header,
+#modal_avisos.tipo-erro #modal_footer button {
+    background-color: rgb(207, 14, 14);
+}
+
+#modal_avisos.tipo-aviso #modal_header,
+#modal_avisos.tipo-aviso #modal_footer button {
+    background-color: rgb(14, 201, 207);
+}
+
+@keyframes entrarModal {
+    from {
+        transform: translate(-50%, -130%);
+    }
+
+    to {
+        transform: translate(-50%, 0);
+    }
+}
+
+@keyframes sairModal {
+    from {
+        transform: translate(-50%, 0);
+
+    }
+
+    to {
+        transform: translate(-50%, -130%);
+    }
+}
+
+@keyframes entrarShadow {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes sairShadow {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}

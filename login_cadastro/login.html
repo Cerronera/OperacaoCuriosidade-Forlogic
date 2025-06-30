@@ -16,14 +16,17 @@
     </script>
     <link rel="stylesheet" href="/global/style_tema.css">
     <link rel="stylesheet" href="style_login.css">
+    <link rel="stylesheet" href="/global/style_avisos.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
+    <script src="https://kit.fontawesome.com/6414134de6.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="/imagens/icon.png" type="image/x-icon">
 </head>
 
 <body>
+
     <div class="login">
         <form id="form_login" autocomplete="off" action="" method="post">
             <div style="display: flex;justify-content: center;">
@@ -49,6 +52,20 @@
             <p><a href="/login_cadastro/cadastro.html">Registre-se</a></p>
         </div>
     </div>
+
+    <div id="modal_avisos">
+        <header id="modal_header"> </header>
+
+        <div id="modal_body"> </div>
+
+        <footer id="modal_footer">
+            <button id="btn_fechar">Fechar</button>
+        </footer>
+
+    </div>
+    <div id="modal_shadow"></div>
+
+    <script src="/global/script_avisos.js"></script>
     <script src="script_login.js"></script>
 </body>
 

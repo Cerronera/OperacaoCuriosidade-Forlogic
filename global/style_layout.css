@@ -11,7 +11,7 @@ body {
     background-color: var(--cor-dashboard-principal);
 }
 
-body.transicao-ativa{
+body.transicao-ativa {
     transition: background-color 0.2s linear, color 0.2s linear;
 }
 
@@ -220,13 +220,11 @@ body.autenticado .principal {
 }
 
 
-
 .tabela {
     background-color: var(--cor-principal);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 1px 4px var(--cor-boxshadow-geral);
-    height: 540px;
 }
 
 .tabela h2 {
@@ -238,6 +236,7 @@ body.autenticado .principal {
 table {
     width: 100%;
     border-collapse: collapse;
+    border-spacing: 0;
     position: relative;
 }
 
@@ -276,6 +275,14 @@ tr:hover {
     color: var(--cor-tabela-inativo)
 }
 
+table .linha_fantasma td {
+    border-bottom: none;
+}
+
+table .linha_fantasma:hover {
+    background-color: transparent;
+    cursor:default;
+}
 
 
 .paginacao-container {

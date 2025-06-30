@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/global/style_tema.css">
     <link rel="stylesheet" href="/global/style_layout.css">
     <link rel="stylesheet" href="style_cadastros.css">
+    <link rel="stylesheet" href="/global/style_avisos.css">
     <script src="https://kit.fontawesome.com/6414134de6.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="/imagens/icon.png" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -87,7 +88,7 @@
                                 <th>E-MAIL</th>
                                 <th>TELEFONE</th>
                                 <th>STATUS</th>
-                                <th>EXCLUIR</th>
+                                <th class="delete">EXCLUIR</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -184,7 +185,7 @@
 
                     <div class="form_linha">
                         <div class="form_modal">
-                            <label for="edit_nome">Nome:</label>
+                            <label for="edit_nome">*Nome:</label>
                             <input type="text" id="edit_nome" required>
                             <a>erro</a>
                         </div>
@@ -195,25 +196,25 @@
 
                     <div class="form_linha">
                         <div class="form_modal">
-                            <label for="edit_idade">Idade:</label>
+                            <label for="edit_idade">*Idade:</label>
                             <input type="number" id="edit_idade" required>
                             <a>erro</a>
                         </div>
                         <div class="form_modal">
-                            <label for="edit_telefone">Telefone:</label>
+                            <label for="edit_telefone">*Telefone:</label>
                             <input type="text" id="edit_telefone" placeholder="99 99999999" required>
                             <a>erro</a>
                         </div>
                     </div>
 
                     <div class="form_modal">
-                        <label for="edit_email">E-mail:</label>
+                        <label for="edit_email">*E-mail:</label>
                         <input type="email" id="edit_email" required>
                         <a>erro</a>
                     </div>
 
                     <div class="form_modal">
-                        <label for="edit_endereco">Endereço:</label>
+                        <label for="edit_endereco">*Endereço:</label>
                         <input type="text" id="edit_endereco" required>
                         <a>erro</a>
                     </div>
@@ -251,8 +252,22 @@
             </form>
         </main>
     </div>
+
+    <div id="modal_avisos">
+        <header id="modal_header"> </header>
+
+        <div id="modal_body"> </div>
+
+        <footer id="modal_footer">
+            <button id="btn_fechar">Fechar</button>
+        </footer>
+
+    </div>
+    <div id="modal_shadow"></div>
+
+    <script src="/global/script_avisos.js"></script>
     <script src="/global/global.js"></script>
-    <script src="script_modal.js"></script>
+    <script src="script_cadastros.js"></script>
     <script src="/dashboard/script_blocos.js"></script>
 </body>
 

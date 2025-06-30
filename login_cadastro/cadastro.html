@@ -16,7 +16,9 @@
     </script>
     <link rel="stylesheet" href="/global/style_tema.css">
     <link rel="stylesheet" href="style_cadastro.css">
+    <link rel="stylesheet" href="/global/style_avisos.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/6414134de6.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="/imagens/icon.png" type="image/x-icon">
     <style>
         h1 {
@@ -30,7 +32,7 @@
 <body>
     <div class="cadastro">
         <form id="form_dados" action="" method="post">
-                <h1>CADASTRO</h1>
+            <h1>CADASTRO</h1>
             <div class="form_cadastro">
                 <label for="inome">*Nome:</label>
                 <input type="text" id="inome" name="nome" required autofocus>
@@ -56,6 +58,21 @@
             </div>
         </form>
     </div>
+
+    <div id="modal_avisos">
+        <header id="modal_header"> </header>
+
+        <div id="modal_body"> </div>
+
+        <footer id="modal_footer">
+            <button id="btn_fechar">Fechar</button>
+        </footer>
+
+    </div>
+    <div id="modal_shadow"></div>
+
     <script src="script_cadastro.js"></script>
+    <script src="/global/script_avisos.js"></script>
 </body>
+
 </html>

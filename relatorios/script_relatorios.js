@@ -32,7 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
         tabelaSelector: '#tabela_usuarios tbody',
         paginacaoId: 'paginacao',
         campoPesquisaId: 'campoPesquisa',
-        linhasPorPagina: 20
+        linhasPorPagina: 20,
+        manterAlturaTabela: true
     };
 
     inicializarTabela(configTabelaPrincipal)

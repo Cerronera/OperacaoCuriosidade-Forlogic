@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
         atualizarBlocos();
     }
 
-    
+
     const trocarTemaCheckbox = document.getElementById('chk')
 
     if (trocarTemaCheckbox) {
@@ -32,7 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
         tabelaSelector: '#tabela_usuarios tbody',
         paginacaoId: 'paginacao',
         campoPesquisaId: 'campoPesquisa',
-        linhasPorPagina: 10
+        linhasPorPagina: 10,
+        manterAlturaTabela: true
     };
 
     inicializarTabela(configTabelaPrincipal)

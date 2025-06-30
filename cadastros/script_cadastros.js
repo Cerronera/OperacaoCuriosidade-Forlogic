@@ -43,7 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
         linhasPorPagina: 10,
         onRowClick: abrirModalEdicao,
         mostrarColunaAcoes: true,
-        onDeleteClick: excluirUsuario
+        onDeleteClick: excluirUsuario,
+        manterAlturaTabela: true
     };
     inicializarTabela(configTabelaPrincipal)
 
@@ -173,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const camposBasicos = nomeOk && idadeOk && emailOk && telefoneOk && enderecoOk;
 
         if (!camposBasicos) {
+            ativarModal('Campos com Erro', 'Corrija os campos que contém erro antes de salvar', 'erro')
             return false
         }
 
@@ -185,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
         )
 
         if (emailJaCadastrado) {
-            alert("Este E-mail já está cadastrado para outro usuário")
+            ativarModal('E-mail em Uso', 'Este E-mail já está cadastrado para outro usuário', 'erro');
             erroinputEdit(document.getElementById('edit_email'), "E-mail já pertence a outro usuário")
             return false
         }
@@ -223,11 +225,9 @@ document.addEventListener('DOMContentLoaded', () => {
             usuarios[index] = usuarioAtualizado
             localStorage.setItem('usuarios', JSON.stringify(usuarios));
 
-            alert("Dados atualizados com sucesso!")
+            ativarModal('Edição Salva', 'Dados atualizados com sucesso!', 'aviso')
             fecharModal(modalEdicao)
             atualizarDadosParaExibicao()
-        } else {
-            alert("Corrija os campos que contém erro antes de salvar")
         }
 
     });
@@ -322,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const emailJaCadastrado = dadosExistentes.some(user => user.email.toLowerCase() === emailValor)
 
         if (emailJaCadastrado) {
-            alert("Este e-mail já está cadastrado.")
+            ativarModal('E-mail em Uso', 'Este e-mail já está cadastrado por outro usuário', 'erro')
             erroinput(emailInput, "Este E-mail já existe")
             return false
         }
@@ -349,7 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dadosExistentes.push(novoUsuario);
         localStorage.setItem('usuarios', JSON.stringify(dadosExistentes))
 
-        alert("Cadastro salvo com Sucesso!")
+        ativarModal('Usuário Salvo', 'Cadastro salvo com Sucesso!', 'aviso')
         fecharModal(modalCadastro)
         atualizarDadosParaExibicao()
     }
@@ -374,7 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (checkForm(formCadastro)) {
                     submitNovoCadastro(formCadastro)
                 } else {
-                    alert("Corrija os campos com erro.")
+                    ativarModal('Campos com Erro', 'Corrija os campos que contém erro antes de salvar', 'erro')
                 }
             }
         });

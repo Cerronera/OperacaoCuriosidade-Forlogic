@@ -136,37 +136,39 @@
     border-color: var(--cor-modal-input-focus);
 }
 
-.modal input::placeholder{
+.modal input::placeholder {
     color: var(--cor-login-placeholder)
 }
+
 .modal textarea {
     height: 80px;
     resize: none;
     padding-top: 8px;
 }
 
-.form_linha{
+.form_linha {
     display: flex;
     align-items: flex-start;
     gap: 20px;
     width: 100%;
 }
 
-.form_linha > .form_cadastro,
-.form_linha > .form_modal{
+.form_linha>.form_cadastro,
+.form_linha>.form_modal {
     flex: 1;
     min-width: 0;
     margin-bottom: 0;
 }
 
-.campo_ativo{
+.campo_ativo {
     margin-top: 30px;
 }
+
 .form_cadastro a,
 .form_modal a {
     display: block;
     height: 18px;
-   
+
     font-size: 12px;
     visibility: hidden;
     transition: color 0.1s ease;
@@ -280,15 +282,28 @@ body.modal-aberto::after {
     background-color: var(--cor-modal-botao-cancelar-hover);
 }
 
+
+
+.tabela_cadrel .acoes_excluir{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.tabela_cadrel .delete{
+    text-align: center;
+}
+
+
 .btn_delete {
     background: none;
     border: none;
-    padding: 5px;
     cursor: pointer;
-    line-height: 1; 
+    line-height: 1;
 }
 
-.btn_delete i{
+.btn_delete i {
     color: var(--cor-botao-excluir);
     font-size: 16px;
 }
@@ -317,7 +332,8 @@ body.modal-aberto::after {
     }
 
 
-    #modal_cadastro {
+    #modal_cadastro,
+    #modal_edicao {
         width: 90%;
     }
 

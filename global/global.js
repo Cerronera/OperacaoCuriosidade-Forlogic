@@ -154,19 +154,22 @@ let estadoTabela = {
 };
 
 function renderizarLinhasTabela() {
+    const tabelaBody = estadoTabela.elementoTabelaBody
+    tabelaBody.innerHTML = ''
 
-    estadoTabela.elementoTabelaBody.innerHTML = ''
+    const usuariosDaPagina = estadoTabela.usuariosDaPagina;
+    const config = estadoTabela.config;
 
-    if (estadoTabela.usuariosDaPagina.length === 0) {
+    if (usuariosDaPagina.length === 0) {
         const termoBusca = estadoTabela.elementoCampoPesquisa.value
         const mensagem = termoBusca ? 'Nenhum usuário encontrado' : 'Nenhum usuário cadastrado'
-        estadoTabela.elementoTabelaBody.innerHTML = `
-        <tr><td colspan="4">${mensagem}</td></tr>
-        `;
-        return
+        const numColunas = tabelaBody.parentElement.querySelector('thead tr').childElementCount || 4
+        tabelaBody.innerHTML = `
+        <tr><td colspan="${numColunas}">${mensagem}</td></tr>`;
+        return;
     }
 
-    estadoTabela.usuariosDaPagina.forEach(usuario => {
+    usuariosDaPagina.forEach(usuario => {
         const tr = document.createElement('tr')
         const status = usuario.status === 'Ativo' ? 'status-ativo' : 'status-inativo'
 
@@ -174,14 +177,15 @@ function renderizarLinhasTabela() {
             <td>${usuario.nome}</td>
             <td>${usuario.email}</td>
             <td>${usuario.telefone}</td>
-            <td class="status-cell">
-            <span class="${status}">${usuario.status}</span>
-            </td>
+            <td class="status-cell"><span class="${status}">${usuario.status}</span></td>
         `;
 
-        if (estadoTabela.config.mostrarColunaAcoes) {
+        if (config.mostrarColunaAcoes) {
             const acoesTd = document.createElement('td')
-            acoesTd.classList.add('acoes_modal')
+            acoesTd.className = 'acoes_modal'
+
+            const containerExcluir = document.createElement('div')
+            containerExcluir.classList.add('acoes_excluir')
 
             const btnExcluir = document.createElement('button')
             btnExcluir.type = 'button'
@@ -191,16 +195,17 @@ function renderizarLinhasTabela() {
             btnExcluir.addEventListener('click', (event) => {
                 event.stopPropagation()
 
-                if (typeof estadoTabela.config.onDeleteClick === 'function') {
-                    estadoTabela.config.onDeleteClick(usuario)
+                if (typeof config.onDeleteClick === 'function') {
+                    config.onDeleteClick(usuario)
                 }
             });
 
-            acoesTd.appendChild(btnExcluir)
+            containerExcluir.appendChild(btnExcluir)
+            acoesTd.appendChild(containerExcluir)
             tr.appendChild(acoesTd)
         }
 
-        if (estadoTabela.config.onRowClick) {
+        if (config.onRowClick) {
             const originalIndex = estadoTabela.listaCompletaDeUsuarios.findIndex(
                 u => u.email === usuario.email
             );
@@ -209,12 +214,29 @@ function renderizarLinhasTabela() {
 
             tr.addEventListener('click', () => {
                 if (originalIndex !== -1) {
-                    estadoTabela.config.onRowClick(usuario, originalIndex)
+                    config.onRowClick(usuario, originalIndex)
                 }
             });
         }
-        estadoTabela.elementoTabelaBody.appendChild(tr)
+        tabelaBody.appendChild(tr)
     });
+
+    if (config.manterAlturaTabela) {
+        const linhasRenderizadas = usuariosDaPagina.length
+        const linhasPorPagina = estadoTabela.linhasPorPagina
+
+        const linhasVazias = linhasPorPagina - linhasRenderizadas
+
+        if (linhasVazias > 0) {
+            for (let i = 0; i < linhasVazias; i++) {
+                const trVazia = document.createElement('tr')
+                trVazia.classList.add('linha_fantasma')
+                trVazia.innerHTML = '<td colspan = "100%">&nbsp;</td>'
+                trVazia.style.height = '38px';
+                tabelaBody.appendChild(trVazia)
+            }
+        }
+    }
 }
 
 

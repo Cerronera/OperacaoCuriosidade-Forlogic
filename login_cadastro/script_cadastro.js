@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         adminsExistentes.push(novoAdmin)
         localStorage.setItem('admins', JSON.stringify(adminsExistentes));
 
-        alert("Administrador cadastrado com Sucesso!")
+        ativarModal('Cadastro Realizado!','Administrador cadastrado com Sucesso', 'aviso')
         setTimeout(() => {
             window.location.href = '/login_cadastro/login.html'
         }, 1000);
