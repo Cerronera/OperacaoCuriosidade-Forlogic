@@ -1,148 +1,122 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('form_dados');
+    const nomeInput = document.getElementById('inome');
+    const emailInput = document.getElementById('iemail');
+    const senhaInput = document.getElementById('isenha');
+    const confirmarSenhaInput = document.getElementById('iconfirmarsenha');
+    const submitButton = document.getElementById('submit');
 
 
-    function erroinput(input, mensagem) {
-        const formItem = input.parentElement
-        const textoMensagem = formItem.querySelector("a")
-        textoMensagem.innerText = mensagem
-        formItem.className = 'form_cadastro erro'
+    function erroInput(input, mensagem) {
+        const formItem = input.parentElement;
+        const textoMensagem = formItem.querySelector("a");
+        textoMensagem.innerText = mensagem;
+        formItem.classList.add('erro'); 
     }
 
-    function sucessoinput(input) {
-        const formItem = input.parentElement
-        formItem.className = 'form_cadastro'
-        const textoMensagem = formItem.querySelector("a")
+    function sucessoInput(input) {
+        const formItem = input.parentElement;
+        formItem.classList.remove('erro'); 
+        const textoMensagem = formItem.querySelector("a");
         if (textoMensagem) {
-            textoMensagem.innerText = ""
+            textoMensagem.innerText = "";
         }
-    }
-
-    function validarEmail(email) {
-        const regexEmail = /^[_.]?[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}(?:\.br)?$/i
-        return regexEmail.test(email)
     }
 
     function checkNome() {
-        const nomeValor = nome.value.trim()
-        if (nomeValor === '') {
-            erroinput(nome, "Campo obrigatório")
-            return false
-        } else {
-            sucessoinput(nome)
-            return true
+        if (nomeInput.value.trim() === '') {
+            erroInput(nomeInput, "Campo obrigatório");
+            return false;
         }
+        sucessoInput(nomeInput);
+        return true;
     }
 
     function checkEmail() {
-        const emailValor = email.value.trim()
-        if (emailValor === '') {
-            erroinput(email, "Campo obrigatório")
-            return false
-        } else if (!validarEmail(emailValor)) {
-            erroinput(email, "Formato incorreto")
-        } else {
-            sucessoinput(email)
-            return true
+        const regexEmail = /^[_.]?[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}(?:\.br)?$/i;
+        if (emailInput.value.trim() === '' || !regexEmail.test(emailInput.value)) {
+            erroInput(emailInput, "Formato de e-mail inválido");
+            return false;
         }
+        sucessoInput(emailInput);
+        return true;
     }
 
     function checkSenha() {
-        const senhaValor = senha.value
-        if (senhaValor === '') {
-            erroinput(senha, "Campo obrigatório")
-            return false
-        } else if (senhaValor.length < 8) {
-            erroinput(senha, "A senha deve conter no mínimo 8 caracteres")
-            return false
-        }
-        else {
-            sucessoinput(senha)
-            return true
-        }
-    }
-
-    function checkConfirma_senha() {
-        const senhaValor = senha.value
-        const confirmar_senhaValor = confirmar_senha.value
-        if (confirmar_senhaValor === '') {
-            erroinput(confirmar_senha, "Campo obrigatório")
-            return false
-        } else if (senhaValor !== confirmar_senhaValor) {
-            erroinput(confirmar_senha, "As Senhas não coincidem")
-            return false
-        }
-        else {
-            sucessoinput(confirmar_senha)
-            return true
-        }
-    }
-
-    function checkForm() {
-        const camposValidos = [
-            checkNome(),
-            checkEmail(),
-            checkSenha(),
-            checkConfirma_senha()
-        ]
-
-        const formValido = camposValidos.every(campo => campo === true)
-        const submitButton = form.querySelector('button[type = "submit"]')
-
-        if (formValido) {
-            submitButton.classList.add('sucesso')
-            submitButton.classList.remove('erro')
-            return true;
-        } else {
-            submitButton.classList.add('erro')
-            submitButton.classList.remove('sucesso')
+        if (senhaInput.value.length < 8) {
+            erroInput(senhaInput, "A senha deve conter no mínimo 8 caracteres");
             return false;
         }
+        sucessoInput(senhaInput);
+        return true;
     }
 
-    async function submitForm() {
-        const novoAdmin = {
-            nome: nome.value.trim(),
-            email: email.value.trim(),
-            senha: senha.value,
-            tipo: 'admin'
-        };
+    function checkConfirmaSenha() {
+        if (senhaInput.value !== confirmarSenhaInput.value) {
+            erroInput(confirmarSenhaInput, "As senhas não coincidem");
+            return false;
+        }
+        sucessoInput(confirmarSenhaInput);
+        return true;
+    }
 
-        const adminsExistentes = JSON.parse(localStorage.getItem('admins')) || []
-        const emailJaCadastrado = adminsExistentes.some(admin => admin.email === novoAdmin.email)
 
-        if (emailJaCadastrado) {
-            erroinput(email, "Este e-mail já está cadastrado por outro usuário")
+
+    async function handleFormSubmit(event) {
+        event.preventDefault(); 
+
+        const nomeValido = checkNome();
+        const emailValido = checkEmail();
+        const senhaValida = checkSenha();
+        const confirmaSenhaValida = checkConfirmaSenha();
+
+        if (!nomeValido || !emailValido || !senhaValida || !confirmaSenhaValida) {
+            submitButton.classList.add('erro');
+            submitButton.classList.remove('sucesso');
             return;
         }
 
-        adminsExistentes.push(novoAdmin)
-        localStorage.setItem('admins', JSON.stringify(adminsExistentes));
+        const novoAdmin = {
+            nome: nomeInput.value.trim(),
+            email: emailInput.value.toLowerCase().trim(),
+            senha: senhaInput.value,
+            tipo: 'admin'
+        };
 
-        ativarModal('Cadastro Realizado!','Administrador cadastrado com Sucesso', 'aviso')
-        setTimeout(() => {
-            window.location.href = '/login_cadastro/login.html'
-        }, 1000);
+        const adminsExistentes = JSON.parse(localStorage.getItem('admins')) || [];
+        const emailJaCadastrado = adminsExistentes.some(admin => admin.email === novoAdmin.email);
+
+        if (emailJaCadastrado) {
+            erroInput(emailInput, "Este e-mail já está cadastrado");
+            submitButton.classList.add('erro');
+            submitButton.classList.remove('sucesso');
+            ativarModal('E-mail em Uso', 'Este e-mail já está cadastrado para outro administrador.', 'erro');
+            return;
+        }
+
+        try {
+            adminsExistentes.push(novoAdmin);
+            localStorage.setItem('admins', JSON.stringify(adminsExistentes));
+            
+            submitButton.classList.add('sucesso');
+            submitButton.classList.remove('erro');
+
+            ativarModal('Cadastro Realizado!', 'Administrador cadastrado com sucesso.', 'aviso',
+                () => { 
+                    window.location.href = '/login_cadastro/login.html';
+                }
+            );
+
+        } catch (error) {
+            console.error("Erro ao salvar no localStorage:", error);
+            ativarModal('Erro Inesperado', 'Ocorreu um erro ao salvar os dados. Por favor, tente novamente.', 'erro');
+        }
     }
 
-    const form = document.getElementById('form_dados')
-    const nome = document.getElementById('inome')
-    const email = document.getElementById('iemail')
-    const senha = document.getElementById('isenha')
-    const confirmar_senha = document.getElementById('iconfirmarsenha')
+    form.addEventListener('submit', handleFormSubmit);
 
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault()
-        if (checkForm()) {
-            await submitForm()
-        }
-    });
-
-    nome.addEventListener("blur", checkNome)
-    email.addEventListener("blur", checkEmail)
-    senha.addEventListener("blur", checkSenha)
-    confirmar_senha.addEventListener("blur", checkConfirma_senha)
-
+    nomeInput.addEventListener("blur", checkNome);
+    emailInput.addEventListener("blur", checkEmail);
+    senhaInput.addEventListener("blur", checkSenha);
+    confirmarSenhaInput.addEventListener("blur", checkConfirmaSenha);
 });
-
-
-

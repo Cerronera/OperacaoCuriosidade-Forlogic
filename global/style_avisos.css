@@ -1,92 +1,118 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-#btn_fechar{
-    padding: 10px 20px;
-    background-color: rgb(233, 233, 233);
-    border: 1px solid gray;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#btn_fechar:hover {
-    opacity: 0.7;
-}
-
-#btn_fechar:active {
-    opacity: 0.9;
-}
-
 #modal_avisos {
     position: fixed;
     left: 50%;
-    top: 40px;
-    display: flex;
-    flex-direction: column;
-    z-index: 2000;
-    background-color: white;
+    top: 50px;
+    transform: translateX(-50%);
     width: 400px;
     max-width: 90vw;
+    z-index: 2000;
+
+    display: none;
+    flex-direction: column;
+
+    background-color: var(--cor-avisos-fundo);
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-    transform: translateX(-50%);
-    display: none;
+
+
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
 }
 
 #modal_shadow {
     position: fixed;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.37);
     z-index: 1000;
+
     display: none;
+    background-color: var(--cor-avisos-shadow);
+
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
 }
 
-body.modal-aviso-aberto{
+body.modal-aviso-aberto {
     overflow: hidden;
 }
 
+
+#modal_avisos.visivel {
+    display: flex;
+}
+
+#modal_shadow.visivel {
+    display: block;
+}
+
+.animacao-entrar {
+    animation-name: entrarModal;
+}
+
+.shadow-animacao-entrar {
+    animation-name: entrarShadow;
+}
+
+.animacao-sair {
+    animation-name: sairModal;
+}
+
+.shadow-animacao-sair {
+    animation-name: sairShadow;
+}
+
 #modal_header {
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    padding: 10px 20px;
+    padding: 12px 20px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 22px;
+    gap: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
     font-weight: 700;
-    color: white;
+    color: var(--cor-avisos-fonte);
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
 }
 
 #modal_body {
-    padding: 10px 20px;
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--cor-avisos-fonte-body);
+    line-height: 1.6;
 }
 
 #modal_footer {
     padding: 10px 20px 12px;
-    border-top: 1px solid lightgray;
+    border-top: 1px solid var(--cor-avisos-borda-separacao);
+    text-align: right;
 }
 
 #modal_footer button {
-    float: right;
-    padding: 7px 12px;
-    color: white;
+    padding: 8px 18px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--cor-avisos-fonte);
     border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 0.2s;
 }
+
+#modal_footer button:hover {
+    opacity: 0.85;
+}
+
 
 #modal_avisos.tipo-erro #modal_header,
 #modal_avisos.tipo-erro #modal_footer button {
-    background-color: rgb(207, 14, 14);
+    background-color: var(--cor-avisos-header-erro);
 }
 
 #modal_avisos.tipo-aviso #modal_header,
 #modal_avisos.tipo-aviso #modal_footer button {
-    background-color: rgb(14, 201, 207);
+    background-color: var(--cor-avisos-header-aviso);
 }
+
 
 @keyframes entrarModal {
     from {

@@ -49,6 +49,16 @@
     --cor-borda-login: #ccc;
     --cor-login-placeholder: rgb(136, 133, 133);
 
+    
+    --cor-avisos-fundo: #fff;
+    --cor-avisos-borda: #808080;
+    --cor-avisos-borda-separacao: #d3d3d3;
+    --cor-avisos-shadow: rgba(0, 0, 0, 0.37);
+    --cor-avisos-fonte: #fff;
+    --cor-avisos-fonte-body: #000;
+    --cor-avisos-header-erro: rgb(207, 14, 14);
+    --cor-avisos-header-aviso:  rgb(14, 201, 207);
+
 }
 
 
@@ -102,6 +112,16 @@
     --cor-login-oc: #232c35;
     --cor-borda-login: #000;
     --cor-login-placeholder: rgb(51, 51, 51);
+
+
+    --cor-avisos-fundo: #3b3b3b;
+    --cor-avisos-borda: #808080;
+    --cor-avisos-borda-separacao: #d3d3d3;
+    --cor-avisos-shadow: rgba(0, 0, 0, 0.37);
+    --cor-avisos-fonte: #fff;
+    --cor-avisos-fonte-body: #fff;
+    --cor-avisos-header-erro: rgb(196, 39, 39);
+    --cor-avisos-header-aviso:  rgb(18, 88, 168);
 }
 
 [data-theme="dark"] img {

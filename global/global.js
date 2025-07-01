@@ -4,7 +4,6 @@ function voltar_login() {
 
     if (confirmar) {
         sessionStorage.removeItem('adminLogado')
-        alert("Você foi desconectado")
         window.location.href = '/login_cadastro/login.html'
     }
 }
@@ -85,7 +84,6 @@ function carregarAdmin() {
             nomeUsuario.textContent = adminInfo.nome
         }
     } else {
-        alert("Erro ao carregar informações do Administrador.")
         sessionStorage.removeItem('adminLogado')
         window.location.href = '../login_cadastro/login.html'
     }
