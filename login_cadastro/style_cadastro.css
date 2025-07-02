@@ -104,6 +104,8 @@ body {
     background: var(--cor-cadastro-botao-hover);
 }
 
+
+
 @media (max-width: 600px){
 
     .cadastro{

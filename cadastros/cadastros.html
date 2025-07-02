@@ -5,10 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operação Curiosidade - Cadastros</title>
+    <script>
+        (function () {
+            const tema = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-theme: dark)').matches ? 'dark' : 'light')
+
+            if (tema === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark')
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="/global/style_tema.css">
     <link rel="stylesheet" href="/global/style_layout.css">
-    <link rel="stylesheet" href="style_cadastros.css">
-    <script src="/global/tema.js" defer></script>
+    <link rel="stylesheet" href="style_cadrel.css">
+    <link rel="stylesheet" href="/global/style_avisos.css">
+    <script src="https://kit.fontawesome.com/6414134de6.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="/imagens/icon.png" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,6 +28,8 @@
 </head>
 
 <body>
+    <script src="/global/guardiao.js"></script>
+
     <nav class="sidebar">
         <div class="oc">
             <h1>OC</h1>
@@ -77,6 +89,7 @@
                                 <th>E-MAIL</th>
                                 <th>TELEFONE</th>
                                 <th>STATUS</th>
+                                <th class="delete"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -87,7 +100,6 @@
                 </div>
             </div>
 
-            <!--MODAL CADASTRO-->
             <div id="modal_cadastro" class="modal oculto">
 
                 <h2>Novo Cadastro</h2>
@@ -96,64 +108,65 @@
 
                     <h3>1° Fatos e Dados</h3>
 
-                    <div class="checkbox">
-                        <button type="button" class="fechar" onclick="fecharModal()"><img src="/imagens/fechar.png"
-                                alt="fechar"></button>
-                        <label><input type="checkbox" id="cadastro_ativo">Ativo</label>
+                    <button type="button" class="fechar" onclick="fecharModal()"><img src="/imagens/fechar.png"
+                            alt="fechar">
+                    </button>
+
+                    <div class="form_linha">
+                        <div class="form_cadastro">
+                            <label for="idnome">Nome<span>*</span></label>
+                            <input type="text" id="idnome" name="nome" required>
+                            <a>erro</a>
+                        </div>
+                        <div class="checkbox campo_ativo">
+                            <label><input type="checkbox" id="idativo">Ativo</label>
+                        </div>
+                    </div>
+
+                    <div class="form_linha">
+                        <div class="form_cadastro">
+                            <label for="ididade">Idade<span>*</span></label>
+                            <input type="number" id="ididade" name="idade" required>
+                            <a>erro</a>
+                        </div>
+                        <div class="form_cadastro">
+                            <label for="idtelefone">Telefone<span>*</span></label>
+                            <input type="text" id="idtelefone" name="telefone" maxlength="15"
+                                placeholder="99 999999999">
+                            <a>erro</a>
+                        </div>
                     </div>
 
                     <div class="form_cadastro">
-                        <label for="idnome">Nome:</label>
-                        <input type="text" id="idnome" name="nome" required>
-                        <a>erro</a>
-                    </div>
-
-                    <div class="form_cadastro">
-                        <label for="ididade">Idade:</label>
-                        <input type="number" id="ididade" name="idade" required>
-                        <a>erro</a>
-                    </div>
-
-                    <div class="form_cadastro">
-                        <label for="idemail">E-mail:</label>
+                        <label for="idemail">E-mail<span>*</span></label>
                         <input type="email" id="idemail" name="email" required>
                         <a>erro</a>
                     </div>
 
                     <div class="form_cadastro">
-                        <label for="idtelefone">Telefone:</label>
-                        <input type="text" id="idtelefone" name="telefone" maxlength="15" placeholder="99 999999999">
-                        <a>erro</a>
-                    </div>
-
-                    <div class="form_cadastro">
-                        <label for="idendereco">Endereço:</label>
+                        <label for="idendereco">Endereço<span>*</span></label>
                         <input type="text" name="endereo" id="idendereco" required>
                         <a>erro</a>
                     </div>
 
                     <div class="form_cadastro">
-                        <label for="idoutros">Outras Informações:</label>
-                        <textarea name="outrasinformacoes" id="idoutros" required></textarea>
-                        <a>erro</a>
+                        <label for="idoutros">Outras Informações</label>
+                        <textarea name="outrasinformacoes" id="idoutros"></textarea>
                     </div>
 
                     <h3>2° Interesses</h3>
                     <div class="form_cadastro">
-                        <textarea name="interesses" id="idinteresses" required></textarea>
-                        <a>erro</a>
+                        <textarea name="interesses" id="idinteresses"></textarea>
                     </div>
 
                     <h3>3° Sentimentos</h3>
                     <div class="form_cadastro">
-                        <textarea name="Sentimentos" id="idsentimentos" required></textarea>
-                        <a>erro</a>
+                        <textarea name="Sentimentos" id="idsentimentos"></textarea>
                     </div>
 
                     <h3>4° Valores</h3>
                     <div class="form_cadastro">
-                        <textarea name="valores" id="idvalores" required></textarea>
-                        <a>erro</a>
+                        <textarea name="valores" id="idvalores"></textarea>
                     </div>
                     <div class="modal_actions">
                         <button type="submit" class="btn btn_primary" id="submit" style="width: 200px;">GRAVAR</button>
@@ -161,71 +174,75 @@
                 </form>
             </div>
 
-            <!-- MODAL EDIÇÃO-->
-
             <div id="modal_edicao" class="modal oculto">
+
+                <h2>Edição de Usuário</h2>
+
+                <h3> </h3>
+
                 <form id="form_edicao">
-                    <div class="form_modal">
-                        <button type="button" class="fechar" onclick="fecharModal()"><img src="/imagens/fechar.png"
-                                alt="fechar"></button>
-                        <label for="edit_nome">Nome:</label>
-                        <input type="text" id="edit_nome" required>
-                        <a>erro</a>
+                    <button type="button" class="fechar" onclick="fecharModal()"><img src="/imagens/fechar.png"
+                            alt="fechar"></button>
+
+                    <div class="form_linha">
+                        <div class="form_modal">
+                            <label for="edit_nome">Nome<span>*</span></label>
+                            <input type="text" id="edit_nome" required>
+                            <a>erro</a>
+                        </div>
+                        <div class="checkbox campo_ativo">
+                            <label><input type="checkbox" id="edit_ativo">Ativo</label>
+                        </div>
+                    </div>
+
+                    <div class="form_linha">
+                        <div class="form_modal">
+                            <label for="edit_idade">Idade<span>*</span></label>
+                            <input type="number" id="edit_idade" required>
+                            <a>erro</a>
+                        </div>
+                        <div class="form_modal">
+                            <label for="edit_telefone">Telefone<span>*</span></label>
+                            <input type="text" id="edit_telefone" placeholder="99 99999999" required>
+                            <a>erro</a>
+                        </div>
                     </div>
 
                     <div class="form_modal">
-                        <label for="edit_idade">Idade:</label>
-                        <input type="number" id="edit_idade" required>
-                        <a>erro</a>
-                    </div>
-
-                    <div class="form_modal">
-                        <label for="edit_email">E-mail:</label>
+                        <label for="edit_email">E-mail<span>*</span></label>
                         <input type="email" id="edit_email" required>
                         <a>erro</a>
                     </div>
 
                     <div class="form_modal">
-                        <label for="edit_telefone">Telefone:</label>
-                        <input type="text" id="edit_telefone" placeholder="99 99999999" required>
-                        <a>erro</a>
-                    </div>
-
-                    <div class="form_modal">
-                        <label for="edit_endereco">Endereço:</label>
+                        <label for="edit_endereco">Endereço<span>*</span></label>
                         <input type="text" id="edit_endereco" required>
                         <a>erro</a>
                     </div>
 
                     <div class="form_modal">
-                        <label for="edit_outros">Outras Informações :</label>
+                        <label for="edit_outros">Outras Informações</label>
                         <textarea id="edit_outros" required></textarea>
                         <a>erro</a>
                     </div>
                     <div class="form_modal">
-                        <label for="edit_interesses">Interesses:</label>
+                        <label for="edit_interesses">Interesses</label>
                         <textarea id="edit_interesses" required></textarea>
                         <a>erro</a>
                     </div>
 
                     <div class="form_modal">
-                        <label for="edit_sentimentos">Sentimentos:</label>
+                        <label for="edit_sentimentos">Sentimentos</label>
                         <textarea id="edit_sentimentos" required></textarea>
                         <a>erro</a>
                     </div>
                     <div class="form_modal">
-                        <label for="edit_valores">Valores:</label>
+                        <label for="edit_valores">Valores</label>
                         <textarea id="edit_valores" required></textarea>
                         <a>erro</a>
                     </div>
 
-                    <div class="checkbox">
-                        <label><input type="checkbox" id="edit_ativo">Ativo</label>
-                    </div>
-
                     <div class="modal_actions">
-                        <button type="button" id="excluir" class="btn_delete"><img src="/imagens/delete.png"
-                                alt="deletar"></button>
                         <div class="btn_group">
                             <button type="button" id="cancelar" class="btn btn_secondary">Cancelar</button>
                             <button type="button" id="salvar" class="btn btn_primary">Salvar Alterações</button>
@@ -236,10 +253,34 @@
             </form>
         </main>
     </div>
+
+    <div id="modal_avisos" class="modal_wrapper">
+        <div class="modal_container">
+            <header class="modal_header"></header>
+            <div class="modal_body"></div>
+            <footer class="modal_footer">
+                <button id="btn_fechar_aviso" class="btn_fechar">Fechar</button>
+            </footer>
+        </div>
+        <div class="modal_shadow"></div>
+    </div>
+
+    <div id="modal_confirmacao" class="modal_wrapper">
+        <div class="modal_container">
+            <header class="modal_header"></header>
+            <div class="modal_body"></div>
+            <footer class="modal_footer footer_confirmacao">
+                <button id="btn_cancelar" class="btn_cancelar">Cancelar</button>
+                <button id="btn_confirmar" class="btn_confirmar">Confirmar</button>
+            </footer>
+        </div>
+        <div class="modal_shadow"></div>
+    </div>
+
+    <script src="/global/script_avisos.js"></script>
     <script src="/global/global.js"></script>
-    <script src="script_modal.js"></script>
-    <script src="script_blocos.js"></script>
-    <script src="https://kit.fontawesome.com/6414134de6.js" crossorigin="anonymous"></script>
+    <script src="script_cadastros.js"></script>
+    <script src="/dashboard/script_blocos.js"></script>
 </body>
 
 </html>

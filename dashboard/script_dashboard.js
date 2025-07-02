@@ -1,38 +1,39 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    //atualizar os blocos
     if (document.getElementById('bloco_1')) {
         atualizarBlocos();
     }
 
-    //lógica do tema escuro:
+
     const trocarTemaCheckbox = document.getElementById('chk')
-    const rootElement = document.documentElement
 
     if (trocarTemaCheckbox) {
-        const temaAtual = localStorage.getItem('theme')
 
-        if (temaAtual === 'dark') {
+        if (document.documentElement.getAttribute('data-theme') === 'dark') {
             trocarTemaCheckbox.checked = true
         }
 
         trocarTemaCheckbox.addEventListener('change', () => {
             if (trocarTemaCheckbox.checked) {
-                rootElement.setAttribute('data-theme', 'dark')
+                document.documentElement.setAttribute('data-theme', 'dark')
                 localStorage.setItem('theme', 'dark')
             } else {
-                rootElement.removeAttribute('data-theme')
+                document.documentElement.removeAttribute('data-theme')
                 localStorage.setItem('theme', 'light')
             }
         });
     }
 
-    //chamar a tabela:
+    setTimeout(() => {
+        document.body.classList.add('transicao-ativa')
+    }, 100);
+
     const configTabelaPrincipal = {
         tabelaSelector: '#tabela_usuarios tbody',
         paginacaoId: 'paginacao',
         campoPesquisaId: 'campoPesquisa',
-        linhasPorPagina: 10
+        linhasPorPagina: 10,
+        manterAlturaTabela: true
     };
 
     inicializarTabela(configTabelaPrincipal)

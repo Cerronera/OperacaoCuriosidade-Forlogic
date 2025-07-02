@@ -4,11 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operação Comunidade - Dashboard</title>
+    <title>Operação Comunidade - Home</title>
+    <script>
+        (function () {
+            const tema = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-theme: dark)').matches ? 'dark' : 'light')
+
+            if (tema === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark')
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="/global/style_tema.css">
     <link rel="stylesheet" href="/global/style_layout.css">
+    <link rel="stylesheet" href="/global/style_avisos.css">
     <link rel="stylesheet" href="style_dashboard.css">
-    <script src="/global/tema.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -18,6 +27,8 @@
 </head>
 
 <body>
+    <script src="/global/guardiao.js"></script>
+
     <nav class="sidebar">
         <div class="oc">
             <h1>OC</h1>
@@ -41,16 +52,16 @@
     <div class="principal">
         <header class="dashboard">
 
-                <button id="btn_mobile" aria-label="Abrir menu" aria-haspopup="true" aria-controls="sidebar-menu"
-                    aria-expanded="false"><i class="fas fa-bars"></i> </button>
+            <button id="btn_mobile" aria-label="Abrir menu" aria-haspopup="true" aria-controls="sidebar-menu"
+                aria-expanded="false"><i class="fas fa-bars"></i> </button>
 
-                <div class="posicao_resultado">
-                    <input type="text" placeholder="Pesquisar..." class="pesquisa" id="campoPesquisa">
-                    <div id="resultadosPesquisa" class="resultados"></div>
+            <div class="posicao_resultado">
+                <input type="text" placeholder="Pesquisar..." class="pesquisa" id="campoPesquisa">
+                <div id="resultadosPesquisa" class="resultados"></div>
 
-                    <button id="btn_busca" aria-label="Abrir busca"> <i class="fas fa-search"> </i></button>
-                    <button id="btn_fechar_busca" aria-label="Fechar busca"><i class="fas fa-times"> </i></button>
-                </div>
+                <button id="btn_busca" aria-label="Abrir busca"> <i class="fas fa-search"> </i></button>
+                <button id="btn_fechar_busca" aria-label="Fechar busca"><i class="fas fa-times"> </i></button>
+            </div>
 
             <div class="usuario">
                 <div class="dark">
@@ -97,7 +108,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!--Dados dos usuarios do localStorage-->
+
                     </tbody>
                 </table>
                 <div id="paginacao" class="paginacao-container"></div>
@@ -105,6 +116,31 @@
 
         </main>
     </div>
+
+    <div id="modal_avisos" class="modal_wrapper">
+        <div class="modal_container">
+            <header class="modal_header"></header>
+            <div class="modal_body"></div>
+            <footer class="modal_footer">
+                <button id="btn_fechar_aviso" class="btn_fechar">Fechar</button>
+            </footer>
+        </div>
+        <div class="modal_shadow"></div>
+    </div>
+
+    <div id="modal_confirmacao" class="modal_wrapper">
+        <div class="modal_container">
+            <header class="modal_header"></header>
+            <div class="modal_body"></div>
+            <footer class="modal_footer footer_confirmacao">
+                <button id="btn_cancelar" class="btn_cancelar">Cancelar</button>
+                <button id="btn_confirmar" class="btn_confirmar">Confirmar</button>
+            </footer>
+        </div>
+        <div class="modal_shadow"></div>
+    </div>
+
+    <script src="/global/script_avisos.js"></script>
     <script src="/global/global.js"></script>
     <script src="script_blocos.js"></script>
     <script src="script_dashboard.js"></script>
