@@ -71,6 +71,7 @@
     padding: 25px 30px;
     border-radius: 8px;
     overflow-y: auto;
+
 }
 
 #modal_cadastro {
@@ -106,6 +107,27 @@
     margin-bottom: 15px;
 }
 
+.modal::-webkit-scrollbar {
+    width: 10px;
+}
+
+.modal::-webkit-scrollbar-track {
+    background: transparent;
+    margin-block: 5px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+    background-color: var(--cor-modal-scrollbar);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.modal::-webkit-scrollbar-thumb:hover{
+    background-color: var(--cor-modal-scrollbar-hover);
+}
+
+
 .modal label {
     margin-top: 5px;
     font-family: 'Roboto', 'sans-serif';
@@ -114,10 +136,10 @@
     color: var(--cor-modal-conteudo);
 }
 
-label span{
+label span {
     color: var(--cor-modal-span);
     font-weight: bold;
-    margin-left:2px ;
+    margin-left: 2px;
 }
 
 .modal input[type="text"],
@@ -290,14 +312,14 @@ body.modal-aberto::after {
 
 
 
-.tabela_cadrel .acoes_excluir{
+.tabela_cadrel .acoes_excluir {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
 }
 
-.tabela_cadrel .delete{
+.tabela_cadrel .delete {
     text-align: center;
 }
 

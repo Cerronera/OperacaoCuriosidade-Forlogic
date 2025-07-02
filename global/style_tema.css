@@ -38,6 +38,8 @@
     --cor-modal-botao-cancelar: #f0f0f0;
     --cor-modal-botao-cancelar-hover: #e0e0e0;
     --cor-modal-span: rgb(255, 0, 0);
+    --cor-modal-scrollbar: #cccccc;
+    --cor-modal-scrollbar-hover: #a8a8a8;
 
     --cor-botao-excluir: rgb(136, 133, 133);
     --cor-botao-excluir-hover: #c82333;
@@ -103,7 +105,9 @@
     --cor-modal-fechar-hover: #6d6d6d;
     --cor-modal-botao-cancelar: #151a1f;
     --cor-modal-botao-cancelar-hover: #6d6b6b;
-    --cor-modal-span: rgb(204, 0, 0);
+    --cor-modal-span: rgb(247, 34, 34);
+    --cor-modal-scrollbar: #cccccc;
+    --cor-modal-scrollbar-hover: #a8a8a8;
 
     --cor-botao-excluir: #fff;
     --cor-botao-excluir-hover: #c82333;

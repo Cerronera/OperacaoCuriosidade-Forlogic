@@ -23,7 +23,7 @@
 .modal_shadow {
     position: fixed;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: var(--cor-avisos-shadow);
     z-index: 1;
     pointer-events: auto;
 }
@@ -68,9 +68,17 @@ body.modal-aviso-aberto {
 .modal_body {
     padding: 20px;
     font-family: 'Poppins', sans-serif;
+    font-size: 14px;
     color: var(--cor-avisos-fonte-body);
     border-bottom: 1px solid var(--cor-avisos-borda-separacao);
     line-height: 1.6;
+
+}
+
+.modal_header p,
+.modal_body {
+    margin: 0;
+
 }
 
 .modal_footer {
@@ -87,7 +95,7 @@ body.modal-aviso-aberto {
 .modal_footer button {
     padding: 8px 18px;
     font-family: 'Poppins', sans-serif;
-    color: white;
+    color: var(--cor-avisos-fonte);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -98,26 +106,26 @@ body.modal-aviso-aberto {
     opacity: 0.85;
 }
 
-.btn_fechar {
-    background-color: var(--cor-avisos-header-aviso);
-}
-
-.btn_confirmar {
+#modal_avisos.tipo-erro .modal_header,
+#modal_confirmacao .modal_header,
+#modal_confirmacao .btn_confirmar,
+#modal_avisos.tipo-erro .btn_fechar { 
     background-color: var(--cor-avisos-header-erro);
 }
 
-.btn_cancelar {
+#modal_avisos.tipo-aviso .modal_header,
+#modal_avisos.tipo-aviso .btn_fechar {
+    background-color: var(--cor-avisos-header-aviso);
+}
+
+#modal_confirmacao .btn_cancelar {
     background-color: var(--cor-avisos-botao-cancelar);
 }
 
-.tipo-erro .modal_header,
-.modal_header {
-    background-color: var(--cor-avisos-header-erro);
+#modal_avisos .btn_fechar {
+    background-color: var(--cor-avisos-header-aviso, #1e90ff);
 }
 
-.tipo-aviso .modal_header {
-    background-color: var(--cor-avisos-header-aviso);
-}
 
 @keyframes entrarModal {
     from {
