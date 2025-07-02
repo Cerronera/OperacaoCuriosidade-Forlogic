@@ -1,68 +1,58 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
 
-#modal_avisos {
-    position: fixed;
-    left: 50%;
-    top: 50px;
-    transform: translateX(-50%);
-    width: 400px;
-    max-width: 90vw;
-    z-index: 2000;
-
-    display: none;
-    flex-direction: column;
-
-    background-color: var(--cor-avisos-fundo);
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-
-
-    animation-duration: 0.5s;
-    animation-fill-mode: forwards;
-}
-
-#modal_shadow {
+.modal_wrapper {
     position: fixed;
     inset: 0;
-    z-index: 1000;
-
+    z-index: 2000;
     display: none;
-    background-color: var(--cor-avisos-shadow);
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
 
-    animation-duration: 0.5s;
-    animation-fill-mode: forwards;
+.modal_container {
+    background-color: var(--cor-avisos-fundo);
+    width: 420px;
+    max-width: 90vw;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px;
+    z-index: 2;
+    pointer-events: auto;
+}
+
+.modal_shadow {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    pointer-events: auto;
 }
 
 body.modal-aviso-aberto {
     overflow: hidden;
 }
 
-
-#modal_avisos.visivel {
+.modal_wrapper.visivel {
     display: flex;
 }
 
-#modal_shadow.visivel {
-    display: block;
-}
-
 .animacao-entrar {
-    animation-name: entrarModal;
+    animation: entrarModal 0.4s forwards;
 }
 
 .shadow-animacao-entrar {
-    animation-name: entrarShadow;
+    animation: entrarShadow 0.4s forwards;
 }
 
 .animacao-sair {
-    animation-name: sairModal;
+    animation: sairModal 0.4s forwards;
 }
 
 .shadow-animacao-sair {
-    animation-name: sairShadow;
+    animation: sairShadow 0.4s forwards;
 }
 
-#modal_header {
+.modal_header {
     padding: 12px 20px;
     display: flex;
     align-items: center;
@@ -71,67 +61,85 @@ body.modal-aviso-aberto {
     font-size: 20px;
     font-weight: 700;
     color: var(--cor-avisos-fonte);
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
 }
 
-#modal_body {
+.modal_body {
     padding: 20px;
     font-family: 'Poppins', sans-serif;
     color: var(--cor-avisos-fonte-body);
+    border-bottom: 1px solid var(--cor-avisos-borda-separacao);
     line-height: 1.6;
 }
 
-#modal_footer {
+.modal_footer {
     padding: 10px 20px 12px;
-    border-top: 1px solid var(--cor-avisos-borda-separacao);
-    text-align: right;
+    float: right;
 }
 
-#modal_footer button {
+.footer_confirmacao {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modal_footer button {
     padding: 8px 18px;
     font-family: 'Poppins', sans-serif;
-    color: var(--cor-avisos-fonte);
+    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: opacity 0.2s;
 }
 
-#modal_footer button:hover {
+.modal_footer button:hover {
     opacity: 0.85;
 }
 
-
-#modal_avisos.tipo-erro #modal_header,
-#modal_avisos.tipo-erro #modal_footer button {
-    background-color: var(--cor-avisos-header-erro);
-}
-
-#modal_avisos.tipo-aviso #modal_header,
-#modal_avisos.tipo-aviso #modal_footer button {
+.btn_fechar {
     background-color: var(--cor-avisos-header-aviso);
 }
 
+.btn_confirmar {
+    background-color: var(--cor-avisos-header-erro);
+}
+
+.btn_cancelar {
+    background-color: var(--cor-avisos-botao-cancelar);
+}
+
+.tipo-erro .modal_header,
+.modal_header {
+    background-color: var(--cor-avisos-header-erro);
+}
+
+.tipo-aviso .modal_header {
+    background-color: var(--cor-avisos-header-aviso);
+}
 
 @keyframes entrarModal {
     from {
-        transform: translate(-50%, -130%);
+        opacity: 0;
+        transform: translateY(-20px);
     }
 
     to {
-        transform: translate(-50%, 0);
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
 @keyframes sairModal {
     from {
-        transform: translate(-50%, 0);
-
+        opacity: 1;
+        transform: translateY(0);
     }
 
     to {
-        transform: translate(-50%, -130%);
+        opacity: 0;
+        transform: translateY(-20px);
     }
 }
 

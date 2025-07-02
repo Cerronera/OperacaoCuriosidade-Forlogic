@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tabelaSelector: '#tabela_usuarios tbody',
         paginacaoId: 'paginacao',
         campoPesquisaId: 'campoPesquisa',
-        linhasPorPagina: 20,
+        linhasPorPagina: 10,
         manterAlturaTabela: true
     };
 

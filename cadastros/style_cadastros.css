@@ -114,6 +114,12 @@
     color: var(--cor-modal-conteudo);
 }
 
+label span{
+    color: var(--cor-modal-span);
+    font-weight: bold;
+    margin-left:2px ;
+}
+
 .modal input[type="text"],
 .modal input[type="number"],
 .modal input[type="email"],

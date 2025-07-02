@@ -312,24 +312,32 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btnFecharCadastro) btnFecharCadastro.addEventListener('click', () => fecharModal(modalCadastro));
     }
 
-    function excluirUsuario(deletarUsuario) {
-        if (confirm(`Tem certeza que deseja excluir o cadastro de ${deletarUsuario.nome}?`)) {
+    async function excluirUsuario(deletarUsuario) {
+        try {
+            const confirmado = await ativarConfirmacao('Confirmar Exclusão', `Tem certeza que deseja excluir o cadastro de ${deletarUsuario.nome}?`);
+
+            if(!confirmado){
+                return;
+            }
+
             let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
             const novosUsuarios = usuarios.filter(user => user.email !== deletarUsuario.email);
             localStorage.setItem('usuarios', JSON.stringify(novosUsuarios));
             atualizarDadosParaExibicao();
+        } catch (error) {
+            console.error('Erro ao excluir usuário', error)
         }
     }
 
     const configTabelaPrincipal = {
-        tabelaSelector: '#tabela_usuarios tbody',
-        paginacaoId: 'paginacao',
-        campoPesquisaId: 'campoPesquisa',
-        linhasPorPagina: 10,
-        onRowClick: abrirModalEdicao,
-        mostrarColunaAcoes: true,
-        onDeleteClick: excluirUsuario,
-        manterAlturaFixa: true
-    };
-    inicializarTabela(configTabelaPrincipal);
+    tabelaSelector: '#tabela_usuarios tbody',
+    paginacaoId: 'paginacao',
+    campoPesquisaId: 'campoPesquisa',
+    linhasPorPagina: 10,
+    onRowClick: abrirModalEdicao,
+    mostrarColunaAcoes: true,
+    onDeleteClick: excluirUsuario,
+    manterAlturaTabela: true
+};
+inicializarTabela(configTabelaPrincipal);
 });

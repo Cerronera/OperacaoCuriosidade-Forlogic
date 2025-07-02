@@ -53,17 +53,28 @@
         </div>
     </div>
 
-    <div id="modal_avisos">
-        <header id="modal_header"> </header>
-
-        <div id="modal_body"> </div>
-
-        <footer id="modal_footer">
-            <button id="btn_fechar">Fechar</button>
-        </footer>
-
+    <div id="modal_avisos" class="modal_wrapper">
+        <div class="modal_container">
+            <header class="modal_header"></header>
+            <div class="modal_body"></div>
+            <footer class="modal_footer">
+                <button id="btn_fechar_aviso" class="btn_fechar">Fechar</button>
+            </footer>
+        </div>
+        <div class="modal_shadow"></div>
     </div>
-    <div id="modal_shadow"></div>
+
+    <div id="modal_confirmacao" class="modal_wrapper">
+        <div class="modal_container">
+            <header class="modal_header"></header>
+            <div class="modal_body"></div>
+            <footer class="modal_footer footer_confirmacao">
+                <button id="btn_cancelar" class="btn_cancelar">Cancelar</button>
+                <button id="btn_confirmar" class="btn_confirmar">Confirmar</button>
+            </footer>
+        </div>
+        <div class="modal_shadow"></div>
+    </div>
 
     <script src="/global/script_avisos.js"></script>
     <script src="script_login.js"></script>

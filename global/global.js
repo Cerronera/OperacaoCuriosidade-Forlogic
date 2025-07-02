@@ -1,10 +1,18 @@
 function voltar_login() {
-
-    const confirmar = confirm("Você tem certeza que deseja sair?")
-
-    if (confirmar) {
-        sessionStorage.removeItem('adminLogado')
-        window.location.href = '/login_cadastro/login.html'
+    if (window.ativarConfirmacao) {
+        ativarConfirmacao("Confirmar Saída", "Você tem certeza que deseja sair?")
+            .then(confirmado => {
+                if (confirmado) {
+                    sessionStorage.removeItem('adminLogado');
+                    window.location.href = '/login_cadastro/login.html';
+                }
+            })
+            .catch(() => {
+                if (confirm("Erro no sistema. Deseja sair mesmo assim?")) {
+                    sessionStorage.removeItem('adminLogado');
+                    window.location.href = '/login_cadastro/login.html';
+                }
+            });
     }
 }
 
