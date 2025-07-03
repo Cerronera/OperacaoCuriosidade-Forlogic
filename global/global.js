@@ -98,23 +98,30 @@ function carregarAdmin() {
 }
 
 function padronizarNome(nome) {
-
     if (!nome) {
         return ''
     }
-
     const palavras = nome.toLowerCase().split(' ')
-
     const palavrasNome = palavras.map(palavra => {
         if (['de', 'da', 'do', 'dos', 'e'].includes(palavra)) {
-
             return palavra
         }
-
         return palavra.charAt(0).toUpperCase() + palavra.slice(1)
     });
-
     return palavrasNome.join(' ')
+}
+
+function formatarData(dataString){
+    if(!dataString){
+        return ''
+    }
+    const data = new Date(dataString)
+
+    const dia = String(data.getUTCDate()).padStart(2, '0')
+    const mes = String(data.getUTCMonth() + 1).padStart(2, '0')
+    const ano = data.getUTCFullYear()
+
+    return `${dia}/${mes}/${ano}`
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -209,6 +216,12 @@ function renderizarLinhasTabela() {
             containerExcluir.appendChild(btnExcluir)
             acoesTd.appendChild(containerExcluir)
             tr.appendChild(acoesTd)
+        }
+
+        if(config.mostrarDataCadastro){
+            const dataTd = document.createElement('td')
+            dataTd.textContent = formatarData(usuario.dataCadastro)
+            tr.appendChild(dataTd)
         }
 
         if (config.onRowClick) {

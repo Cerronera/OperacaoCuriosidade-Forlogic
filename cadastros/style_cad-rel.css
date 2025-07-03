@@ -312,14 +312,14 @@ body.modal-aberto::after {
 
 
 
-.tabela_cadrel .acoes_excluir {
+.tabela_cad-rel .acoes_excluir {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
 }
 
-.tabela_cadrel .delete {
+.tabela_cad-rel .delete {
     text-align: center;
 }
 

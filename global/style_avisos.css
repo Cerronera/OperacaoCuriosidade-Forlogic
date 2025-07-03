@@ -67,7 +67,6 @@ body.modal-aviso-aberto {
 
 .modal_body {
     padding: 20px;
-    font-family: 'Poppins', sans-serif;
     font-size: 14px;
     color: var(--cor-avisos-fonte-body);
     border-bottom: 1px solid var(--cor-avisos-borda-separacao);

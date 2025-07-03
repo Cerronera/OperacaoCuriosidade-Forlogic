@@ -33,7 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
         paginacaoId: 'paginacao',
         campoPesquisaId: 'campoPesquisa',
         linhasPorPagina: 10,
-        manterAlturaTabela: true
+        manterAlturaTabela: true,
+        mostrarDataCadastro: true
     };
 
     inicializarTabela(configTabelaPrincipal)
