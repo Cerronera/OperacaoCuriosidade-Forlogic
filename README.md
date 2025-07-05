@@ -1,7 +1,5 @@
 # Operação Curiosidade - Sistema de Gerenciamento de Cadastros
 
-![Imagem de demonstração do dashboard do projeto](https://i.imgur.com/gYQ4pG0.png)
-
 ## 📝 Sobre o Projeto
 
 **Operação Curiosidade** é uma aplicação web front-end completa projetada para o gerenciamento de cadastros de usuários. A interface permite que administradores realizem operações de CRUD de forma intuitiva e eficiente.
