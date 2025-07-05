@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operação Curiosidade - Relatórios</title>
+    <script>
+        (function () {
+            const tema = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-theme: dark)').matches ? 'dark' : 'light')
+
+            if (tema === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark')
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="/global/style_tema.css">
+    <link rel="stylesheet" href="/global/style_layout.css">
+    <link rel="stylesheet" href="/global/style_avisos.css">
+    <link rel="stylesheet" href="/cadastros/style_cad-rel.css" media="screen">
+    <link rel="stylesheet" href="style_impressora.css" media="print">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="shortcut icon" href="/imagens/icon.png" type="image/x-icon">
+</head>
+
+<body>
+    <script src="/global/guardiao.js"></script>
+
+    <nav class="sidebar">
+        <div class="oc">
+            <h1>OC</h1>
+            <p>Operação Curiosidade</p>
+        </div>
+        <ul>
+            <li><a href="#" onclick="voltar_home()">
+                    <img src="/imagens/home.png" alt="Home">
+                    <span>Home</span>
+                </a></li>
+            <li><a href="#" onclick="ir_cadastros()">
+                    <img src="/imagens/add.png" alt="Cadastro">
+                    <span>Cadastro</span>
+                </a></li>
+            <li><a href="#" onclick="ir_relatorios()">
+                    <img src="/imagens/relatorio.png" alt="Relatorio">
+                    <span>Relatórios</span>
+                </a></li>
+        </ul>
+    </nav>
+    <div class="principal">
+        <header class="dashboard">
+            <button id="btn_mobile" aria-label="Abrir menu" aria-haspopup="true" aria-controls="sidebar-menu"
+                aria-expanded="false"><i class="fas fa-bars"></i> </button>
+
+            <div class="posicao_resultado">
+                <input type="text" placeholder="Pesquisar..." class="pesquisa" id="campoPesquisa">
+                <div id="resultadosPesquisa" class="resultados"></div>
+
+                <button id="btn_busca" aria-label="Abrir busca"> <i class="fas fa-search"> </i></button>
+                <button id="btn_fechar_busca" aria-label="Fechar busca"><i class="fas fa-times"> </i></button>
+            </div>
+
+
+            <div class="usuario">
+                <img src="/imagens/user.png" alt="Usuario">
+                <span class="usuario_nome">Nome do Usuário</span>
+                <span class="sair"><a href="#" onclick="voltar_login()"><img src="/imagens/logout.png"
+                            alt="Sair"></span></a>
+            </div>
+        </header>
+
+        <main>
+            <div class="cadastros-relatorios">
+                <div class="cadastros-relatorios-header">
+                    <h2>Relatórios</h2>
+                    <div class=btn_imp>
+                        <button class="btn" id="btn_imp">IMPRIMIR</button>
+                    </div>
+                </div>
+                <div class="tabela_cad-rel">
+                    <table id="tabela_usuarios">
+                        <thead>
+                            <tr>
+                                <th>NOME</th>
+                                <th>E-MAIL</th>
+                                <th>TELEFONE</th>
+                                <th>STATUS</th>
+                                <th>DATA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    <div id="paginacao" class="paginacao-container"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="modal_avisos" class="modal_wrapper">
+        <div class="modal_container">
+            <header class="modal_header"></header>
+            <div class="modal_body"></div>
+            <footer class="modal_footer">
+                <button id="btn_fechar_aviso" class="btn_fechar">Fechar</button>
+            </footer>
+        </div>
+        <div class="modal_shadow"></div>
+    </div>
+
+    <div id="modal_confirmacao" class="modal_wrapper">
+        <div class="modal_container">
+            <header class="modal_header"></header>
+            <div class="modal_body"></div>
+            <footer class="modal_footer footer_confirmacao">
+                <button id="btn_confirmar" class="btn_confirmar">Confirmar</button>
+                <button id="btn_cancelar" class="btn_cancelar">Cancelar</button>
+            </footer>
+        </div>
+        <div class="modal_shadow"></div>
+    </div>
+
+    <script src="/global/script_avisos.js"></script>
+    <script src="/global/global.js"></script>
+    <script src="script_relatorios.js"></script>
+    <script src="https://kit.fontawesome.com/6414134de6.js" crossorigin="anonymous"></script>
+</body>
+
+</html>

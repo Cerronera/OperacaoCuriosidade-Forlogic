@@ -1,0 +1,368 @@
+.cadastros-relatorios {
+    background-color: var(--cor-principal);
+    border-radius: 8px;
+    box-shadow: 0 1px 4px var(--cor-boxshadow-geral);
+    padding: 20px;
+}
+
+.cadastros-relatorios-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cadastros-relatorios h2 {
+    color: var(--cor-fonte-h2);
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.cadastros-relatorios .btn_cad button {
+    display: flex;
+    padding: 10px;
+    width: 200px;
+    justify-content: center;
+    background-color: var(--cor-cadastro-botao);
+    color: var(--cor-fonte-botao);
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.cadastros-relatorios .btn_cad button:hover {
+    background: var(--cor-cadastro-botao-hover);
+}
+
+.cadastros-relatorios .btn_imp button {
+    display: flex;
+    padding: 10px;
+    width: 200px;
+    justify-content: center;
+    background-color: var(--cor-imprimir-botao);
+    color: var(--cor-fonte-botao);
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.cadastros-relatorios .btn_imp button:hover {
+    background: var(--cor-imprimir-botao-hover);
+}
+
+
+
+.oculto {
+    display: none;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--cor-principal);
+    border: 1px solid var(--cor-borda-geral);
+    box-shadow: 0 2px 10px var(--cor-boxshadow-geral);
+    z-index: 1000;
+    padding: 25px 30px;
+    border-radius: 8px;
+    overflow-y: auto;
+
+}
+
+#modal_cadastro {
+    width: 550px;
+    max-height: 90vh;
+}
+
+#modal_edicao {
+    width: 550px;
+    max-height: 90vh;
+}
+
+.modal h2 {
+    color: var(--cor-fonte-h2);
+    font-size: 20px;
+    margin-top: 0;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.modal h3 {
+    color: var(--cor-fonte);
+    font-size: 16px;
+    border-bottom: 2px solid var(--cor-borda-geral);
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.form_cadastro,
+.form_modal {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.modal::-webkit-scrollbar {
+    width: 10px;
+}
+
+.modal::-webkit-scrollbar-track {
+    background: transparent;
+    margin-block: 5px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+    background-color: var(--cor-modal-scrollbar);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.modal::-webkit-scrollbar-thumb:hover{
+    background-color: var(--cor-modal-scrollbar-hover);
+}
+
+
+.modal label {
+    margin-top: 5px;
+    font-family: 'Roboto', 'sans-serif';
+    font-size: 14px;
+    padding-bottom: 5px;
+    color: var(--cor-modal-conteudo);
+}
+
+label span {
+    color: var(--cor-modal-span);
+    font-weight: bold;
+    margin-left: 2px;
+}
+
+.modal input[type="text"],
+.modal input[type="number"],
+.modal input[type="email"],
+.modal textarea {
+    width: 100%;
+    height: 38px;
+    border: 1px solid var(--cor-borda-geral);
+    color: var(--cor-fonte);
+    border-radius: 4px;
+    box-sizing: border-box;
+
+    background-color: var(--cor-modal-input);
+    padding: 0 10px;
+    font-size: 14px;
+}
+
+.modal input:focus,
+.modal textarea:focus {
+    outline: none;
+    border-color: var(--cor-modal-input-focus);
+}
+
+.modal input::placeholder {
+    color: var(--cor-login-placeholder)
+}
+
+.modal textarea {
+    height: 80px;
+    resize: none;
+    padding-top: 8px;
+}
+
+.form_linha {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+}
+
+.form_linha>.form_cadastro,
+.form_linha>.form_modal {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
+}
+
+.campo_ativo {
+    margin-top: 30px;
+}
+
+.form_cadastro a,
+.form_modal a {
+    display: block;
+    height: 18px;
+
+    font-size: 12px;
+    visibility: hidden;
+    transition: color 0.1s ease;
+
+    margin-left: 3px;
+    margin-top: 4px;
+}
+
+.form_cadastro.erro a,
+.form_modal.erro a {
+    visibility: visible;
+    color: var(--cor-modal-erro);
+}
+
+.checkbox {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.checkbox label {
+    padding: 0;
+    color: var(--cor-modal-conteudo);
+    margin-left: 10px;
+    order: 2;
+}
+
+.checkbox input {
+    accent-color: var(--cor-cadastro-botao);
+    order: 1;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.checkbox label input {
+    margin-right: 8px;
+}
+
+.fechar {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 50%;
+    line-height: 0;
+    transition: background-color 0.2s;
+}
+
+.fechar:hover {
+    background-color: var(--cor-modal-fechar-hover);
+}
+
+.modal_actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.modal_actions .btn_group {
+    display: flex;
+    gap: 10px;
+}
+
+body.modal-aberto {
+    overflow: hidden;
+}
+
+body.modal-aberto::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.btn_primary {
+    background-color: var(--cor-cadastro-botao);
+    color: var(--cor-fonte-botao);
+}
+
+.btn_primary:hover {
+    background: var(--cor-cadastro-botao-hover);
+}
+
+.btn_secondary {
+    background-color: var(--cor-modal-botao-cancelar);
+    color: var(--cor-modal-conteudo);
+    border-color: var(--cor-borda-geral);
+}
+
+.btn_secondary:hover {
+    background-color: var(--cor-modal-botao-cancelar-hover);
+}
+
+
+
+.tabela_cad-rel .acoes_excluir {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.tabela_cad-rel .delete {
+    text-align: center;
+}
+
+
+.btn_delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.btn_delete i {
+    color: var(--cor-botao-excluir);
+    font-size: 16px;
+}
+
+.btn_delete:hover i {
+    color: var(--cor-botao-excluir-hover)
+}
+
+#modal_cadastro .modal_actions {
+    justify-content: center;
+}
+
+
+
+@media(max-width: 480px) {
+
+    .modal {
+        width: 95%;
+        max-height: 90vh;
+
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        border-radius: 8px;
+    }
+
+
+    #modal_cadastro,
+    #modal_edicao {
+        width: 90%;
+    }
+
+}

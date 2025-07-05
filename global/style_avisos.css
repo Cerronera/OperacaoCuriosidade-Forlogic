@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+
+.modal_wrapper {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+
+.modal_container {
+    background-color: var(--cor-avisos-fundo);
+    width: 420px;
+    max-width: 90vw;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px;
+    z-index: 2;
+    pointer-events: auto;
+}
+
+.modal_shadow {
+    position: fixed;
+    inset: 0;
+    background-color: var(--cor-avisos-shadow);
+    z-index: 1;
+    pointer-events: auto;
+}
+
+body.modal-aviso-aberto {
+    overflow: hidden;
+}
+
+.modal_wrapper.visivel {
+    display: flex;
+}
+
+.animacao-entrar {
+    animation: entrarModal 0.4s forwards;
+}
+
+.shadow-animacao-entrar {
+    animation: entrarShadow 0.4s forwards;
+}
+
+.animacao-sair {
+    animation: sairModal 0.4s forwards;
+}
+
+.shadow-animacao-sair {
+    animation: sairShadow 0.4s forwards;
+}
+
+.modal_header {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--cor-avisos-fonte);
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+}
+
+.modal_body {
+    padding: 20px;
+    font-size: 14px;
+    color: var(--cor-avisos-fonte-body);
+    border-bottom: 1px solid var(--cor-avisos-borda-separacao);
+    line-height: 1.6;
+
+}
+
+.modal_header p,
+.modal_body {
+    margin: 0;
+
+}
+
+.modal_footer {
+    padding: 10px 20px 12px;
+    float: right;
+}
+
+.footer_confirmacao {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modal_footer button {
+    padding: 8px 18px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--cor-avisos-fonte);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.modal_footer button:hover {
+    opacity: 0.85;
+}
+
+#modal_avisos.tipo-erro .modal_header,
+#modal_confirmacao .modal_header,
+#modal_confirmacao .btn_confirmar,
+#modal_avisos.tipo-erro .btn_fechar { 
+    background-color: var(--cor-avisos-header-erro);
+}
+
+#modal_avisos.tipo-aviso .modal_header,
+#modal_avisos.tipo-aviso .btn_fechar {
+    background-color: var(--cor-avisos-header-aviso);
+}
+
+#modal_confirmacao .btn_cancelar {
+    background-color: var(--cor-avisos-botao-cancelar);
+}
+
+#modal_avisos .btn_fechar {
+    background-color: var(--cor-avisos-header-aviso, #1e90ff);
+}
+
+
+@keyframes entrarModal {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes sairModal {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes entrarShadow {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes sairShadow {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}

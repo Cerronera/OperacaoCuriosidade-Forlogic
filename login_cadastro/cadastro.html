@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operação Curiosidade - Cadastro Admin</title>
+    <script>
+        (function () {
+            const tema = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-theme: dark)').matches ? 'dark' : 'light')
+
+            if (tema === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark')
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="/global/style_avisos.css">
+    <link rel="stylesheet" href="/global/style_tema.css">
+    <link rel="stylesheet" href="style_cadastro.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/6414134de6.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="/imagens/icon.png" type="image/x-icon">
+    <style>
+        h1 {
+            font-family: 'Montserrat', Helvetica, sans-serif;
+            font-weight: normal;
+            font-size: 3em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cadastro">
+        <form id="form_dados" action="" method="post">
+            <h1>CADASTRO</h1>
+            <div class="form_cadastro">
+                <label for="inome">*Nome:</label>
+                <input type="text" id="inome" name="nome" required autofocus>
+                <a>erro</a>
+            </div>
+            <div class="form_cadastro">
+                <label for="iemail">*Email:</label>
+                <input type="email" id="iemail" name="email" required>
+                <a>erro</a>
+            </div>
+            <div class="form_cadastro">
+                <label for="isenha">*Senha:</label>
+                <input type="password" id="isenha" name="senha" required>
+                <a>erro</a>
+            </div>
+            <div class="form_cadastro">
+                <label for="iconfirmarsenha">*Confirmar Senha:</label>
+                <input type="password" id="iconfirmarsenha" name="confirmarsenha" required>
+                <a>erro</a>
+            </div>
+            <div class="btn">
+                <button type="submit" class="btn" id="submit">Registrar </button>
+            </div>
+        </form>
+    </div>
+
+    <div id="modal_avisos" class="modal_wrapper">
+        <div class="modal_container">
+            <header class="modal_header"></header>
+            <div class="modal_body"></div>
+            <footer class="modal_footer">
+                <button id="btn_fechar_aviso" class="btn_fechar">Fechar</button>
+            </footer>
+        </div>
+        <div class="modal_shadow"></div>
+    </div>
+
+    <div id="modal_confirmacao" class="modal_wrapper">
+        <div class="modal_container">
+            <header class="modal_header"></header>
+            <div class="modal_body"></div>
+            <footer class="modal_footer footer_confirmacao">
+                <button id="btn_cancelar" class="btn_cancelar">Cancelar</button>
+                <button id="btn_confirmar" class="btn_confirmar">Confirmar</button>
+            </footer>
+        </div>
+        <div class="modal_shadow"></div>
+    </div>
+
+    <script src="/global/script_avisos.js"></script>
+    <script src="script_cadastro.js"></script>
+</body>
+
+</html>

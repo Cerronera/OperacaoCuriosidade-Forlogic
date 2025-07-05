@@ -1,0 +1,128 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--cor-dashboard-principal);
+}
+
+.cadastro {
+    width: 100%;
+    max-width: 600px;
+    background-color: var(--cor-principal);
+    margin: 14px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--cor-boxshadow-geral);
+    overflow: hidden;
+    padding: 40px;
+}
+
+
+#form_dados h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--cor-tabela-conteudo);
+    font-size: 24px;
+}
+
+.form_cadastro {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: 0 auto 15px auto;
+}
+
+.form_cadastro label {
+    margin-bottom: 6px;
+    color: var(--cor-modal-conteudo);
+    font-weight: 500;
+}
+
+.form_cadastro input:not([type="checkbox"]) {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--cor-borda-geral);
+    background-color: var(--cor-modal-input);
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+    color: var(--cor-fonte);
+}
+
+.form_cadastro input:focus {
+    outline: none;
+    border-color: var(--cor-modal-input-focus);
+}
+
+.form_cadastro a {
+    font-size: 0.8em;
+    visibility: hidden;
+    transition: visibility 0s, color 0.3s ease;
+    height: 16px;
+    margin-top: 4px;
+    color: var(--cor-modal-erro);
+}
+
+.form_cadastro.erro a {
+    visibility: visible;
+}
+
+.form_cadastro.erro input {
+    border-color: #d93025;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.btn button {
+    width: 80%;
+    height: 45px;
+    background:  var(--cor-cadastro-botao);
+    color: var(--cor-fonte-botao);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 550;
+    transition: background-color 0.2s;
+}
+
+.btn button:hover {
+    background: var(--cor-cadastro-botao-hover);
+}
+
+
+
+@media (max-width: 600px){
+
+    .cadastro{
+        width: 100%;
+        min-height: 100vh;
+        margin: 0;
+        padding: 40px 25px;
+
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    #form_dados h1{
+        font-size: 2em;
+    }
+
+    .form_cadastro, .btn button{
+        width:100%
+    }
+}

@@ -1,0 +1,77 @@
+.todos_blocos {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.bloco {
+    flex: 1;
+    background-color: var(--cor-principal);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 1px 4px var(--cor-boxshadow-geral);
+    position: relative;
+    display: flex;
+    transition: transform 0.2s ease;
+    height: 200px;
+    align-items: center;
+    justify-content: center;
+}
+
+.bloco:hover {
+    transform: translateY(-5px);
+}
+
+.bloco h1 {
+    margin: 0;
+    font-size: 60px;
+    font-weight: 500;
+    font-size: 70px;
+}
+
+#bloco_1 {
+    color: var(--cor-bloco-1);
+}
+
+#bloco_2 {
+    color: var(--cor-bloco-2);
+}
+
+#bloco_3 {
+    color: var(--cor-bloco-3);
+}
+
+.bloco h2 {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: var(--cor-fonte-h2);
+    font-size: 16px;
+    font-weight: 300;
+    margin: 0;
+    text-align: end;
+}
+
+
+
+@media(max-width: 768px) {
+
+    .bloco h2 {
+        font-size: 14px;
+    }
+}
+
+
+
+@media(max-width: 480px) {
+
+    .bloco h1 {
+        font-size: 60px;
+    }
+
+    .bloco h2 {
+        font-size: 12px;
+    }
+}

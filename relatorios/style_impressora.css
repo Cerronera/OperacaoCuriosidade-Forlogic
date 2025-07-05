@@ -1,0 +1,139 @@
+#paginacao {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.paginacao-btn {
+    padding: 2px 3px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: 'Roboto', Helvetica, sans-serif;
+    cursor: pointer;
+}
+
+.paginacao-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.paginacao-btn:hover:not(:disabled) {
+    background-color: #e8e8e8;
+}
+
+@media print {
+
+    #paginacao,
+    #btn_imp,
+    .dashboard,
+    .sidebar,
+    .cadastros-relatorios-header h2,
+    header.dashboard {
+        display: none;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        width: 100%;
+    }
+
+    .principal {
+        display: flex;
+        justify-content: center;
+    }
+
+    .tabela_cad-rel {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    table {
+        width: 100%;
+        border-spacing: 0;
+        border-collapse: separate;
+        border: solid 1px black;
+        border-left: 0;
+        border-top: 0;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    th,
+    td {
+        border-left: 1px solid black;
+        border-top: 1px solid black;
+        padding: 8px;
+        font-size: 12px;
+        text-align: left;
+        background-clip: padding-box;
+
+        color: #333 !important;
+    }
+
+    thead th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+
+        color: #333 !important;
+    }
+
+    .status-ativo,
+    .status-inativo {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color: #333 !important;
+    }
+
+    th {
+        font-weight: bold;
+    }
+
+    tr:nth-child(even) td {
+        background-color: #f9f9f9;
+    }
+
+    tr {
+        page-break-inside: avoid;
+    }
+
+    html[data-theme="dark"] th,
+    html[data-theme="dark"] thead th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+}
+
+
+@page {
+    size: A4;
+    margin: 10mm;
+
+    @top-center {
+        content: "Relatórios > Lista de Usuários - " attr(data-print-date);
+        font-size: 10px;
+        color: #666;
+        padding-top: 5mm;
+    }
+
+    @bottom-right {
+        content: "Página " counter(page) " de " counter(pages);
+        font-size: 10px;
+        color: #666;
+    }
+
+    @bottom-left {
+        content: "Gerado em " attr(data-print-datetime);
+        font-size: 10px;
+        color: #666;
+    }
+}
