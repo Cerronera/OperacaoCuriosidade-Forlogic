@@ -119,6 +119,36 @@ label span {
     transition: background-color 0.2s;
 }
 
+.form_header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 60px;
+    margin-bottom: 20px;
+}
+
+.voltar{
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+    padding: 12px;
+    outline: none;
+    background-color: var(--cor-principal);
+    cursor: pointer;
+    border-radius: 50%;
+}
+.leftarrow{
+    font-size: 16px;
+    transition: transform 0.3 ease;
+    color: var(--cor-tabela-conteudo);
+}
+
+.voltar:hover{
+    background-color: var(--cor-hover);
+}
+
 .btn button:hover {
     background: var(--cor-cadastro-botao-hover);
 }

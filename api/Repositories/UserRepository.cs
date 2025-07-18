@@ -1,16 +1,57 @@
-﻿using OperacaoCuriosidadeAPI.Models;
+﻿using System.Text.Json;
+using OperacaoCuriosidadeAPI.Models;
 
 namespace OperacaoCuriosidadeAPI.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    private static readonly List<UserModel> _users = new();
+    private readonly string _dadosMockadosPath;
+
+    private static List<UserModel> _users;
     private static int _nextId = 1;
+
+    private static readonly object _locker = new object();
+    
+    public UserRepository()
+    {
+        _dadosMockadosPath = Path.Combine(AppContext.BaseDirectory, "data", "usuarios.json");
+
+        var directory = Path.GetDirectoryName(_dadosMockadosPath);
+        if (!Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
+        lock (_locker)
+        {
+            if (File.Exists(_dadosMockadosPath))
+            {
+                var json = File.ReadAllText(_dadosMockadosPath);
+                _users = JsonSerializer.Deserialize<List<UserModel>>(json) ?? new List<UserModel>();
+            }
+            else
+            {
+                _users = new List<UserModel>();
+            }
+        }
+
+        _nextId = _users.Any() ? _users.Max(u => u.Id) + 1 : 1;
+    }
+
+    private void SaveChanges()
+    {
+        lock (_locker)
+        {
+            var json = JsonSerializer.Serialize(_users, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(_dadosMockadosPath, json);
+        }
+    }
 
     public UserModel Create (UserModel user)
     {
         user.Id = _nextId++;
         _users.Add(user);
+        SaveChanges();
         return user;
     }
     public void Delete(int id)
@@ -19,6 +60,7 @@ public class UserRepository : IUserRepository
         if (user != null)
         {
             _users.Remove(user);
+            SaveChanges();
         }
     }
 
@@ -43,6 +85,7 @@ public class UserRepository : IUserRepository
             if(index != -1)
         {
             _users[index] = user;
+            SaveChanges();
             return user;
         }
         return null;

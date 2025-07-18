@@ -299,7 +299,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    const btnCancelar = document.getElementById('cancelar');
     if (btnCancelar) btnCancelar.addEventListener('click', () => fecharModal(modalEdicao));
     if (modalEdicao) {
         const btnFecharEdicao = modalEdicao.querySelector('.fechar');

@@ -5,6 +5,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const funcao = document.getElementById('ifuncao');
     const senhaInput = document.getElementById('isenha');
     const confirmarSenhaInput = document.getElementById('iconfirmarsenha');
+    const btn_voltar = document.getElementById('btn_voltar')
+
+    if (btn_voltar) {
+        btn_voltar.addEventListener('click', () => voltar());
+    }
+    function voltar() {
+        setTimeout(() => {
+            window.location.href = '/client/dashboard/dashboard.html'
+        });
+    }
 
     function erroInput(input, mensagem) {
         const formItem = input.parentElement;
@@ -45,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     confirmarSenhaInput.addEventListener("blur", () => checkCampoVazio(confirmarSenhaInput, "Campo Obrigatório"));
 
     function exibirErros(notificacoes) {
-       notificacoes.forEach(erro => {
+        notificacoes.forEach(erro => {
             let marcador = null
 
             switch (erro.message) {
