@@ -71,10 +71,24 @@
 
 
             <div class="usuario">
-                <img src="/client/imagens/user.png" alt="Usuario">
-                <span class="usuario_nome">Nome do Usuário</span>
-                <span class="sair"><a href="#" onclick="voltar_login()"><img src="/client/imagens/logout.png"
-                            alt="Sair"></span></a>
+                 <div class="perfil">
+                    <button id="perfil_trigger" class="perfil_trigger">
+                        <img src="/client/imagens/user.png" alt="Usuario">
+                        <span class="usuario_nome">Nome do Usuário</span>
+                        <i class="fas fa-chevron-down dropdown-arrow"></i>
+                    </button>
+
+                    <div id="perfil_conteudo" class="conteudo_dropdown">
+                        <a href="/client/login_cadastro/cadastro.html">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Novo Administrador</span>
+                        </a>
+                        <a href="#" onclick="voltar_login()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Desconectar</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -132,6 +146,7 @@
 
     <script src="/client/global/script_avisos.js"></script>
     <script src="/client/global/global.js"></script>
+    <script src="/client/global/funcoes/tabela.js"></script>
     <script src="script_relatorios.js"></script>
     <script src="https://kit.fontawesome.com/6414134de6.js" crossorigin="anonymous"></script>
 </body>

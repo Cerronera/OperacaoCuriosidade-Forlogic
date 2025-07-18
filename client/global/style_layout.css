@@ -112,6 +112,99 @@ body.autenticado .principal {
 
 }
 
+.perfil {
+    position: relative;
+    display: inline-block;
+}
+
+.perfil_trigger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+    color: var(--cor-texto);
+}
+
+.perfil_trigger:hover {
+    background-color: var(--cor-hover);
+}
+
+.usuario {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.usuario_nome {
+    font-weight: bold;
+    padding-right: 20px;
+    color: var(--cor-fonte);
+    white-space: nowrap;
+    font-size: 16px;
+}
+
+.dropdown-arrow {
+    font-size: 12px;
+    transition: transform 0.3 ease;
+    color: var(--cor-fonte);
+}
+
+.perfil.ativo .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.conteudo_dropdown {
+    display: none;
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background-color: var(--cor-principal);
+    min-width: 220px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--cor-borda-geral);
+    font-size: 14px;
+}
+
+.perfil.ativo .conteudo_dropdown {
+    display: block;
+}
+
+.conteudo_dropdown a {
+    color: var(--cor-fonte);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: background-color 0.2s;
+}
+
+.conteudo_dropdown a:hover{
+    background-color: var(--cor-hover);
+}
+
+.conteudo_dropdown a i{
+    width: 16px;
+    text-align: center;
+    color: var(--cor-fonte)
+}
+
+.usuario .sair {
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    border-left: 0.5px solid var(--cor-borda-geral);
+}
+
+
 .dashboard {
     display: flex;
     justify-content: space-between;
@@ -200,26 +293,6 @@ body.autenticado .principal {
 }
 
 
-.usuario {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.usuario_nome {
-    font-weight: bold;
-    padding-right: 20px;
-    color: var(--cor-fonte);
-}
-
-.usuario .sair {
-    display: flex;
-    align-items: center;
-    padding-left: 30px;
-    border-left: 0.5px solid var(--cor-borda-geral);
-}
-
-
 .tabela {
     background-color: var(--cor-principal);
     padding: 20px;
@@ -281,7 +354,7 @@ table .linha_fantasma td {
 
 table .linha_fantasma:hover {
     background-color: transparent;
-    cursor:default;
+    cursor: default;
 }
 
 
