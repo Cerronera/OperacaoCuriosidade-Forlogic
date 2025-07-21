@@ -87,7 +87,7 @@ async function carregarAdmin() {
     }
 
     try {
-        const resposta = await fetch(`${API_BASE_URL}/api/User/WhoAmI`, {
+        const resposta = await fetch(`${API_BASE_URL}/api/Admin/WhoAmI`, {
             method: 'GET',
             headers: getAuthenticationHeaders()
         });

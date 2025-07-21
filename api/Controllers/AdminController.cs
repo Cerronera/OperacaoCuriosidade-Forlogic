@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OperacaoCuriosidadeAPI.Models;
-using OperacaoCuriosidadeAPI.Services;
 using OperacaoCuriosidadeAPI.DTOs;
-using OperacaoCuriosidadeAPI.Validators;
+using OperacaoCuriosidadeAPI.Features.AdminFeatures.Commands;
+using OperacaoCuriosidadeAPI.Features.AdminFeatures.Queries;
+using OperacaoCuriosidadeAPI.Identity;
 using OperacaoCuriosidadeAPI.Notifications;
+using System.Security.Claims;
 
 namespace OperacaoCuriosidadeAPI.Controllers;
 
@@ -13,41 +15,28 @@ namespace OperacaoCuriosidadeAPI.Controllers;
 [Authorize]
 public class AdminController : ControllerBase
 {
-    private readonly IAdminService _adminService;
-    private readonly AdminValidator _adminValidator; 
+    private readonly IMediator _mediator;
     private readonly NotificationContext _notificationContext; 
 
-    public AdminController(IAdminService adminService, AdminValidator adminValidator, NotificationContext notificationContext)
+    public AdminController(IMediator mediator, NotificationContext notificationContext)
     {
-        _adminService = adminService;
-        _adminValidator = adminValidator;
+        _mediator = mediator;
         _notificationContext = notificationContext;
     }
 
     [HttpPost("create")]
     [Authorize(Policy = "Administrator")]
-    public IActionResult Create (AdminDTO dto)
+    public async Task<IActionResult> Create(AdminDTO dto)
     {
-        _adminValidator.Validate(dto);
-        if (_notificationContext.HasNotifications)
+        var command = new CreateAdminCommand(dto);
+        var createdAdmin = await _mediator.Send(command);
+
+        if(_notificationContext.HasNotifications)
         {
-            return BadRequest(_notificationContext.Notifications);
+            return _notificationContext.Notifications.Any(n => n.Message == "EmailAdmin")
+                ? Conflict(_notificationContext.Notifications)
+                : BadRequest(_notificationContext.Notifications);
         }
-
-        if (_adminService.EmailExists(dto.EmailAdmin))
-        {
-            return Conflict(new { message = "Este e-mail já está em uso." });
-        }
-
-        var newAdmin = new AdminModel
-        {
-            AdminName = dto.NomeAdmin,
-            AdminEmail = dto.EmailAdmin,
-            AdminPassword = dto.SenhaAdmin,
-            Role = dto.Role
-        };
-
-        var createdAdmin = _adminService.Create(newAdmin);
 
       var response = new
         {
@@ -57,5 +46,14 @@ public class AdminController : ControllerBase
             createdAdmin.Role
         };
         return CreatedAtAction(nameof(Create), new { id = createdAdmin.Id }, response);
+    }
+
+    [HttpGet("WhoAmI")]
+    public async Task<IActionResult> GetCurrentAdminInfo()
+    {
+        var query = new GetCurrentAdminInfoQuery(HttpContext.User);
+        var result = await _mediator.Send(query);
+
+        return result is null ? Unauthorized() : Ok(result);
     }
 }

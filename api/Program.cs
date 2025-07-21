@@ -1,11 +1,11 @@
 using System.Text;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OperacaoCuriosidadeAPI.Identity;
 using OperacaoCuriosidadeAPI.Notifications;
 using OperacaoCuriosidadeAPI.Repositories;
-using OperacaoCuriosidadeAPI.Services;
 using OperacaoCuriosidadeAPI.Swagger;
 using OperacaoCuriosidadeAPI.Validators;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -51,19 +51,19 @@ builder.Services.AddCors(options =>
                   .AllowAnyHeader();
         });
 });
-builder.Services.AddControllers();
 
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddMediatR(typeof(Program));
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
 builder.Services.AddScoped<NotificationContext>();
 builder.Services.AddScoped<UserValidator>();
 builder.Services.AddScoped<AdminValidator>();
-builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IAdminService, AdminService>();
-
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 
 var app = builder.Build();
 
@@ -76,10 +76,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

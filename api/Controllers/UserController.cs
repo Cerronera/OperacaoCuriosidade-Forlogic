@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OperacaoCuriosidadeAPI.Identity;
-using OperacaoCuriosidadeAPI.Models;
-using OperacaoCuriosidadeAPI.Services;
+using OperacaoCuriosidadeAPI.Features.UserFeatures.Commands;
+using OperacaoCuriosidadeAPI.Features.UserFeatures.Queries;
 using OperacaoCuriosidadeAPI.DTOs;
-using OperacaoCuriosidadeAPI.Validators;
 using OperacaoCuriosidadeAPI.Notifications;
+using MediatR;
 
 namespace OperacaoCuriosidadeAPI.Controllers;
 
@@ -15,132 +15,78 @@ namespace OperacaoCuriosidadeAPI.Controllers;
 [Authorize]
 public class UserController : ControllerBase
 {
-    private readonly IUserService _userService;
+    private readonly IMediator _mediator;
     private readonly NotificationContext _notificationContext;
-    private readonly UserValidator _userValidator;
-    
-    public UserController(IUserService userService, NotificationContext notificationContext, UserValidator userValidator)
+
+    public UserController(IMediator mediator, NotificationContext notificationContext)
     {
-        _userService = userService;
+        _mediator = mediator;
         _notificationContext = notificationContext;
-        _userValidator = userValidator; 
     }
 
     [Authorize(Policy = IdentityData.AdminCollabRoleName)]
     [HttpPost]
-    public IActionResult Create([FromBody]UserDTO dto)
+    public async Task<IActionResult> Create([FromBody] UserDTO dto)
     {
-        _userValidator.Validate(dto);
-
-        var user = new UserModel
-        {
-            NomeUsuario = dto.NomeUsuario,
-            EmailUsuario = dto.EmailUsuario,
-            IdadeUsuario = dto.IdadeUsuario,
-            TelefoneUsuario = dto.TelefoneUsuario,
-            EnderecoUsuario = dto.EnderecoUsuario,
-            OutrasInformacoesUsuario = dto.OutrasInformacoesUsuario,
-            InteressesUsuario = dto.InteressesUsuario,
-            ValoresUsuario = dto.ValoresUsuario,
-            SentimentosUsuario = dto.SentimentosUsuario,
-            DataCadastro = DateTime.UtcNow,
-            StatusUsuario = dto.StatusUsuario,
-            RevisadoUsuario = false
-        };
-        var createdUser = _userService.Create(user);
+        var command = new CreateUserCommand(dto);
+        var createdUser = await _mediator.Send(command);
 
         if (_notificationContext.HasNotifications)
         {
-            return Conflict(_notificationContext.Notifications);
+            return _notificationContext.Notifications.Any(n => n.Message.Contains("E-mail"))
+                ? Conflict(_notificationContext.Notifications)
+                : BadRequest(_notificationContext.Notifications);
         }
 
         return CreatedAtAction(nameof(Get), new { id = createdUser.Id }, createdUser);
     }
 
     [Authorize(Policy = IdentityData.AdminCollabRoleName)]
-    [HttpGet("{id}")]
-    public IActionResult Get(int id)
+    [HttpGet]
+    public async Task<IActionResult> List()
     {
-        var user = _userService.Get(id);
-
-        if (user is null) return NotFound("User not found");
+        var query = new GetAllUsersQuery();
+        var user = await _mediator.Send(query);
         return Ok(user);
     }
 
     [Authorize(Policy = IdentityData.AdminCollabRoleName)]
-    [HttpGet]
-    public IActionResult List()
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Get(int id)
     {
-        var users = _userService.List();
+        var query = new GetUserByIdQuery(id);
+        var user = await _mediator.Send(query);
 
-        return Ok(users);
+        return user is null ? NotFound() : Ok(user);
     }
-    
+
     [Authorize(Policy = IdentityData.AdminCollabRoleName)]
     [HttpPut("{id}")]
-    public IActionResult Update(int id, [FromBody]UserDTO dto)
+    public async Task<IActionResult> Update(int id, [FromBody] UserDTO dto)
     {
-        _userValidator.Validate(dto);
+        var command = new UpdateUserCommand(id, dto);
+        var updatedUser = await _mediator.Send(command);
+
         if (_notificationContext.HasNotifications)
         {
-            return BadRequest(_notificationContext.Notifications);
+            return NotFound(_notificationContext.Notifications);
         }
 
-        var existingUser = _userService.Get(id);
-
-        if(existingUser is null)
-        {
-            return NotFound("User not found");
-        }
-        existingUser.NomeUsuario = dto.NomeUsuario;
-        existingUser.EmailUsuario = dto.EmailUsuario;
-        existingUser.IdadeUsuario = dto.IdadeUsuario;
-        existingUser.TelefoneUsuario = dto.TelefoneUsuario;
-        existingUser.EnderecoUsuario = dto.EnderecoUsuario;
-        existingUser.OutrasInformacoesUsuario = dto.OutrasInformacoesUsuario;
-        existingUser.InteressesUsuario = dto.InteressesUsuario;
-        existingUser.ValoresUsuario = dto.ValoresUsuario;
-        existingUser.SentimentosUsuario = dto.SentimentosUsuario;
-        existingUser.StatusUsuario = dto.StatusUsuario;
-        existingUser.RevisadoUsuario = true;
-    
-
-        var updatedUser = _userService.Update(id, existingUser);
         return Ok(updatedUser);
     }
 
     [Authorize(Policy = IdentityData.AdministratorRoleName)]
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        var success = _userService.Delete(id);
-
+        var command = new DeleteUserCommand(id);
+        var success = await _mediator.Send(command);
         if (!success)
         {
-            return NotFound("User not found");
+            return NotFound(_notificationContext.Notifications);
         }
+
         return NoContent();
-     }
-
-
-    [HttpGet("WhoAmI")]
-    public IActionResult GetCurrentAdminInfo()
-    {
-        var identity = HttpContext.User.Identity as ClaimsIdentity;
-
-        if(identity != null)
-        {
-            var adminClaims = identity.Claims;
-
-            var adminInfo = new
-            {
-                Nome = adminClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value,
-                Email = adminClaims.FirstOrDefault(o => o.Type == ClaimTypes.Email)?.Value,
-                Role = adminClaims.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value
-            };
-
-            return Ok(adminInfo);
-        }
-        return Unauthorized();
     }
 }
+

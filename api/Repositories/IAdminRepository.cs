@@ -1,11 +1,12 @@
 ﻿using OperacaoCuriosidadeAPI.Models;
 
-namespace OperacaoCuriosidadeAPI.Services;
+namespace OperacaoCuriosidadeAPI.Repositories;
 
-public interface IAdminService
+public interface IAdminRepository
 {
     AdminModel Create(AdminModel admin);
     AdminModel? GetByEmail(string email);
-    List<AdminModel> ListAdmins();
     bool EmailExists(string email);
+    List<AdminModel> GetAll();
+
 }
