@@ -123,8 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     ativarModal('Dados Inválidos', 'Corrija os campos indicados', 'erro')
                 }
                 else if (resposta.status === 409) {
-                    ativarModal('E-mail em Uso', dadosErro.message, 'erro');
-                    erroInput(emailInput, dadosErro.message);
+                    ativarModal('E-mail em Uso', 'E-mail já cadastrado por outro administrador', 'erro');
+                    erroInput(emailInput, 'E-mail em uso');
                 } else {
                     ativarModal('Erro Inesperado', dadosErro.message || 'Ocorreu um erro no cadastro.', 'erro');
                 }

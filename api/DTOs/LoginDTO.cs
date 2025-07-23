@@ -2,6 +2,6 @@
 
 public class LoginDTO
 {
-    public string EmailDigitado { get; set; }
-    public string SenhaDigitada { get; set; }
+    public required string EmailDigitado { get; set; }
+    public required string SenhaDigitada { get; set; }
 }

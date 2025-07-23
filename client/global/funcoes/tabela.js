@@ -10,10 +10,15 @@ let estadoTabela = {
     elementoTabelaBody: null,
     elementoPaginacao: null,
     elementoCampoPesquisa: null,
+    config: {}
 };
 
 function renderizarLinhasTabela() {
     const tabelaBody = estadoTabela.elementoTabelaBody
+    if (!tabelaBody) {
+        return;
+    }
+
     tabelaBody.innerHTML = ''
 
     const usuariosDaPagina = estadoTabela.usuariosDaPagina;
@@ -22,81 +27,69 @@ function renderizarLinhasTabela() {
     if (usuariosDaPagina.length === 0) {
         const termoBusca = estadoTabela.elementoCampoPesquisa.value
         const mensagem = termoBusca ? 'Nenhum usuário encontrado' : 'Nenhum usuário cadastrado'
-        const numColunas = tabelaBody.parentElement.querySelector('thead tr').childElementCount || 4
+        const numColunas = tabelaBody.parentElement.querySelector('thead tr').childElementCount || 5
         tabelaBody.innerHTML = `
         <tr><td colspan="${numColunas}">${mensagem}</td></tr>`;
-        return;
-    }
+    } else {
+        usuariosDaPagina.forEach(usuario => {
+            const tr = document.createElement('tr')
+            const statusClass = usuario.statusUsuario ? 'status-ativo' : 'status-inativo';
+            const statusTexto = usuario.statusUsuario ? 'Ativo' : 'Inativo';
 
-    usuariosDaPagina.forEach(usuario => {
-        const tr = document.createElement('tr')
-        const status = usuario.status === 'Ativo' ? 'status-ativo' : 'status-inativo'
-
-        tr.innerHTML = `
-            <td>${usuario.nome}</td>
-            <td>${usuario.email}</td>
-            <td>${usuario.telefone}</td>
-            <td class="status-cell"><span class="${status}">${usuario.status}</span></td>
+            tr.innerHTML = `
+            <td>${usuario.nomeUsuario}</td>
+            <td>${usuario.emailUsuario}</td>
+            <td>${usuario.telefoneUsuario}</td>
+            <td class="status-cell"><span class="${statusClass}">${statusTexto}</span></td>
         `;
 
-        if (config.mostrarColunaAcoes) {
-            const acoesTd = document.createElement('td')
-            acoesTd.className = 'acoes_modal'
+            if (config.mostrarDataCadastro) {
+                const dataTd = document.createElement('td')
+                dataTd.textContent = formatarData(usuario.dataCadastro)
+                tr.appendChild(dataTd)
+            }
 
-            const containerExcluir = document.createElement('div')
-            containerExcluir.classList.add('acoes_excluir')
+            if (config.mostrarColunaAcoes) {
+                const acoesTd = document.createElement('td')
+                acoesTd.className = 'acoes_modal'
 
-            const btnExcluir = document.createElement('button')
-            btnExcluir.type = 'button'
-            btnExcluir.className = 'btn_delete'
-            btnExcluir.innerHTML = `<i class="fas fa-trash-alt"></i>`
+                const btnExcluir = document.createElement('button')
+                btnExcluir.type = 'button'
+                btnExcluir.className = 'btn_delete'
+                btnExcluir.innerHTML = `<i class="fas fa-trash-alt"></i>`
 
-            btnExcluir.addEventListener('click', (event) => {
-                event.stopPropagation()
+                btnExcluir.addEventListener('click', (event) => {
+                    event.stopPropagation()
 
-                if (typeof config.onDeleteClick === 'function') {
-                    config.onDeleteClick(usuario)
-                }
-            });
+                    if (typeof config.onDeleteClick === 'function') {
+                        config.onDeleteClick(usuario)
+                    }
+                });
+                acoesTd.appendChild(btnExcluir)
+                tr.appendChild(acoesTd)
+            }
 
-            containerExcluir.appendChild(btnExcluir)
-            acoesTd.appendChild(containerExcluir)
-            tr.appendChild(acoesTd)
-        }
-
-        if (config.mostrarDataCadastro) {
-            const dataTd = document.createElement('td')
-            dataTd.textContent = formatarData(usuario.dataCadastro)
-            tr.appendChild(dataTd)
-        }
-
-        if (config.onRowClick) {
-            const originalIndex = estadoTabela.listaCompletaDeUsuarios.findIndex(
-                u => u.email === usuario.email
-            );
-
-            tr.style.cursor = 'pointer'
-
-            tr.addEventListener('click', () => {
-                if (originalIndex !== -1) {
-                    config.onRowClick(usuario, originalIndex)
-                }
-            });
-        }
-        tabelaBody.appendChild(tr)
-    });
+            if (config.onRowClick) {
+                tr.style.cursor = 'pointer'
+                tr.addEventListener('click', () => {
+                    config.onRowClick(usuario);
+                });
+            }
+            tabelaBody.appendChild(tr)
+        });
+    }
 
     if (config.manterAlturaTabela) {
         const linhasRenderizadas = usuariosDaPagina.length
         const linhasPorPagina = estadoTabela.linhasPorPagina
-
         const linhasVazias = linhasPorPagina - linhasRenderizadas
 
         if (linhasVazias > 0) {
+            const numColunas = tabelaBody.parentElement.querySelector('thead tr').childElementCount || 5
             for (let i = 0; i < linhasVazias; i++) {
                 const trVazia = document.createElement('tr')
                 trVazia.classList.add('linha_fantasma')
-                trVazia.innerHTML = '<td colspan = "100%">&nbsp;</td>'
+                trVazia.innerHTML = `<td colspan="${numColunas}">&nbsp;</td>`;
                 trVazia.style.height = '38px';
                 tabelaBody.appendChild(trVazia)
             }
@@ -104,10 +97,10 @@ function renderizarLinhasTabela() {
     }
 }
 
-
 function renderizarBotoesDePaginacao() {
-    if (!estadoTabela.elementoPaginacao) return;
-
+    if (!estadoTabela.elementoPaginacao) {
+        return;
+    }
     estadoTabela.elementoPaginacao.innerHTML = ''
 
     const criarBotao = (texto, acao) => {
@@ -119,7 +112,7 @@ function renderizarBotoesDePaginacao() {
         } else {
             btn.addEventListener('click', () => {
                 acao()
-                atualizarDadosParaExibicao()
+                filtrarEPaginarDados();
             });
         }
         btn.classList.add('paginacao-btn')
@@ -140,20 +133,23 @@ function renderizarBotoesDePaginacao() {
     estadoTabela.elementoPaginacao.appendChild(criarBotao('>>', pag < total ? () => estadoTabela.paginaAtual = total : null))
 }
 
-function atualizarDadosParaExibicao() {
+function filtrarEPaginarDados() {
 
-    estadoTabela.listaCompletaDeUsuarios = JSON.parse(localStorage.getItem('usuarios')) || []
     const termoBusca = estadoTabela.elementoCampoPesquisa.value.toLowerCase().trim()
 
     if (termoBusca) {
         estadoTabela.usuariosFiltrados = estadoTabela.listaCompletaDeUsuarios.filter(usuario =>
-            usuario.nome.toLowerCase().includes(termoBusca)
+            usuario.nomeUsuario.toLowerCase().includes(termoBusca)
         );
     } else {
         estadoTabela.usuariosFiltrados = estadoTabela.listaCompletaDeUsuarios;
     }
 
     estadoTabela.totalPaginas = Math.ceil(estadoTabela.usuariosFiltrados.length / estadoTabela.linhasPorPagina);
+    if (estadoTabela.paginaAtual > estadoTabela.totalPaginas) {
+        estadoTabela.paginaAtual = estadoTabela.totalPaginas || 1
+    }
+
     const startIndex = (estadoTabela.paginaAtual - 1) * estadoTabela.linhasPorPagina;
     const endIndex = startIndex + estadoTabela.linhasPorPagina;
     estadoTabela.usuariosDaPagina = estadoTabela.usuariosFiltrados.slice(startIndex, endIndex);
@@ -162,9 +158,34 @@ function atualizarDadosParaExibicao() {
     renderizarBotoesDePaginacao();
 }
 
-function handlePesquisa() {
-    estadoTabela.paginaAtual = 1;
-    atualizarDadosParaExibicao();
+
+async function atualizarDadosParaExibicao(direcionamentoPagina = false) {
+    try {
+        const resposta = await fetch(`${API_BASE_URL}/api/User`, {
+            headers: getAuthenticationHeaders()
+        });
+
+        if (!resposta.ok) {
+            if (resposta.status === 401) {
+                ativarModal('Sessão Expirada', 'Por favor faça Login novamente', 'erro', () => {
+                    window.location.href = '/login_cadastro/login.html'
+                });
+            }
+            return;
+        }
+
+        estadoTabela.listaCompletaDeUsuarios = await resposta.json()
+
+       if (direcionamentoPagina) {
+            const totalPaginas = Math.ceil(estadoTabela.listaCompletaDeUsuarios.length / estadoTabela.linhasPorPagina)
+            estadoTabela.paginaAtual = totalPaginas || 1;
+        }
+        filtrarEPaginarDados();
+
+    } catch (error) {
+        console.error('Erro ao buscar usuários', error);
+        ativarModal('Erro de Conexão', 'Não foi possível buscar os dados da tabela.', 'erro');
+    }
 }
 
 function inicializarTabela(config) {
@@ -174,19 +195,13 @@ function inicializarTabela(config) {
     estadoTabela.elementoTabelaBody = document.querySelector(config.tabelaSelector);
     estadoTabela.elementoPaginacao = document.getElementById(config.paginacaoId);
     estadoTabela.elementoCampoPesquisa = document.getElementById(config.campoPesquisaId);
-
     estadoTabela.linhasPorPagina = config.linhasPorPagina || 10;
 
-    estadoTabela.listaCompletaDeUsuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-
     if (estadoTabela.elementoCampoPesquisa) {
-        estadoTabela.elementoCampoPesquisa.addEventListener('keyup', handlePesquisa);
+        estadoTabela.elementoCampoPesquisa.addEventListener('keyup', () => {
+            estadoTabela.paginaAtual = 1;
+            filtrarEPaginarDados();
+        });
     }
-
     atualizarDadosParaExibicao();
-
-    window.addEventListener('storage', () => {
-        estadoTabela.listaCompletaDeUsuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-        atualizarDadosParaExibicao();
-    });
 }
