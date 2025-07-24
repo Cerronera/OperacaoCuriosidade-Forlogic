@@ -94,7 +94,7 @@ async function carregarAdmin() {
         if (!resposta.ok) {
             sessionStorage.removeItem('jwtToken')
             sessionStorage.removeItem('adminLogado')
-            ativarModal('Sessão Inválida', 'Sua sessão expirou ou é inválida. Por favor, faça login novamente', 'erro', () => {
+            mostrarSnackbar('Sua sessão expirou ou é inválida. Por favor, faça login novamente', 'erro', () => {
                 window.location.replace('../login_cadastro/login.html')
             });
             return;
@@ -109,7 +109,6 @@ async function carregarAdmin() {
 
     } catch (error) {
         console.error('Erro ao carregar informações do admin:', error);
-        ativarModal('Erro de Conexão', 'Não foi possível buscar os dados do administrador.', 'erro');
     }
 }
 

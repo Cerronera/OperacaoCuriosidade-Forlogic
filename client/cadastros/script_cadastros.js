@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         form.querySelector('#edit_email').value = usuario.emailUsuario || '';
         form.querySelector('#edit_telefone').value = usuario.telefoneUsuario || '';
         form.querySelector('#edit_endereco').value = usuario.enderecoUsuario || '';
-        form.querySelector('#edit_outros').value = usuario.outrosUsuario || '';
+        form.querySelector('#edit_outros').value = usuario.outrasInformacoesUsuario || '';
         form.querySelector('#edit_interesses').value = usuario.interessesUsuario || '';
         form.querySelector('#edit_sentimentos').value = usuario.sentimentosUsuario || '';
         form.querySelector('#edit_valores').value = usuario.valoresUsuario || '';
@@ -138,7 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         async function handleCadastroSubmit(event) {
-            console.count('handleCadastroSubmit executado')
             event.preventDefault();
             event.stopPropagation();
 
@@ -152,30 +151,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (resposta.ok) {
-                    ativarModal('Cadastro Realizado', `${userDto.nomeUsuario} foi cadastrado(a) com sucesso`, 'aviso', () => {
-                        fecharFormModal(modalCadastro);
-                        atualizarDadosParaExibicao(true);
-                    });
+                    const snackbarData = {
+                        mensagem: `${userDto.nomeUsuario} foi cadastrado(a) com sucesso`,
+                        tipo: 'sucesso'
+                    };
+                    sessionStorage.setItem('snackbarData', JSON.stringify(snackbarData));
+                    fecharFormModal(modalCadastro);
                 } else {
                     const erros = await resposta.json();
                     if (resposta.status == 400) {
                         exibirErros(erros, 'criar');
-                        ativarModal('Dados inválidos', 'Corrija os campos indicados', 'erro');
                         primeiroErro(modalCadastro);
                     } else if (resposta.status == 409) {
-                        ativarModal('E-mail em uso', erros[0].message, 'erro')
                         erroInput(formCadastro.querySelector('#idemail'), erros[0].descricao);
                     } else {
-                        ativarModal('Erro inesperado', 'Ocorreu um erro no servidor', 'erro');
+                        console.error("Erro inesperado");
                     }
                 }
             } catch (error) {
                 console.error("Erro de rede ao criar usuário", error);
-                ativarModal('Erro de conexão', 'Não foi possível conectar ao servidor', 'erro');
             }
         }
-
         formCadastro.addEventListener('submit', handleCadastroSubmit);
+        atualizarDadosParaExibicao({ irParaUltimaPagina: true });
     }
 
     if (modalEdicao) {
@@ -193,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 interessesUsuario: formEdicao.querySelector('#edit_interesses').value.trim(),
                 sentimentosUsuario: formEdicao.querySelector('#edit_sentimentos').value.trim(),
                 valoresUsuario: formEdicao.querySelector('#edit_valores').value.trim(),
-                statusUsuario: formEdicao.querySelector('#edit_ativo').checked
+                statusUsuario: formEdicao.querySelector('#edit_ativo').checked,
             };
         }
 
@@ -213,22 +211,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (resposta.ok) {
-                    ativarModal('Dados Atualizados', 'Os dados foram atualizados', 'aviso')
+                    const snackbarData = {
+                        mensagem: `${userDto.nomeUsuario} foi atualizado(a) com sucesso`,
+                        tipo: 'sucesso'
+                    };
+                    sessionStorage.setItem('snackbarData', JSON.stringify(snackbarData));
                     fecharFormModal(modalEdicao);
-                    atualizarDadosParaExibicao();
+                    setTimeout(() => {
+                        atualizarDadosParaExibicao();
+                    }, 500);
+
                 } else {
                     const erros = await resposta.json();
                     if (resposta.status == 400) {
                         exibirErros(erros, 'editar')
-                        ativarModal('Dados inválidos', 'Corrija os campos indicados', 'erro')
                         primeiroErro(modalEdicao);
                     } else {
-                        ativarModal('Erro inesperado', 'Ocorreu um erro no servidor', 'erro')
+                        console.error("Erro inesperado");
                     }
                 }
             } catch (error) {
                 console.error("Erro de rede ao atualizar usuário", error)
-                ativarModal('Erro de conexão', 'Não foi possível conectar ao servidor', 'erro')
             }
         }
         if (btnSalvar) {
@@ -250,17 +253,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function excluirUsuario(deletarUsuario) {
         try {
-            await ativarConfirmacao('Confirmar Exclusão', `Tem certeza que deseja excluir o cadastro de ${deletarUsuario.nomeUsuario}?`)
-            const resposta = await fetch(`${API_BASE_URL}/api/User/${deletarUsuario.id}`, {
-                method: 'DELETE',
-                headers: getAuthenticationHeaders()
-            });
+            const confirmado = await ativarConfirmacao('Confirmar Exclusão', `Tem certeza que deseja excluir o cadastro de ${deletarUsuario.nomeUsuario}?`)
 
-            if (resposta.ok) {
-                ativarModal('Usuário Deletado', 'O Usuário foi excluído', 'erro')
-                atualizarDadosParaExibicao();
+            if (confirmado) {
+                const resposta = await fetch(`${API_BASE_URL}/api/User/${deletarUsuario.id}`, {
+                    method: 'DELETE',
+                    headers: getAuthenticationHeaders()
+                });
+
+                if (resposta.ok) {
+                    const snackbarData = {
+                        mensagem: `${deletarUsuario.nomeUsuario} foi excluído(a) com sucesso`,
+                        tipo: 'erro'
+                    };
+                    sessionStorage.setItem('snackbarData', JSON.stringify(snackbarData));
+
+                    setTimeout(() => {
+                        atualizarDadosParaExibicao();
+                    }, 500);
+                } else {
+                    mostrarSnackbar('Erro ao excluir. Tente novamente.', 'erro');
+                    console.error("Não foi possível excluir o usuário na API");
+                }
             } else {
-                ativarModal('Erro', 'Não foi possível excluir o usuário.', 'erro');
+                console.log("Exclusão cancelada")
             }
         } catch (error) {
             console.log("Exclusão cancelada pelo usuário.");

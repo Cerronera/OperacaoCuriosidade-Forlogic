@@ -1,5 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    const snackbarMessage = sessionStorage.getItem('snackbarMessage')
+
+    if (snackbarMessage) {
+        mostrarSnackbar(snackbarMessage, 'sucesso');
+        sessionStorage.removeItem('snackbarMessage')
+    }
+
     if (document.getElementById('bloco_1')) {
         atualizarBlocos();
     }

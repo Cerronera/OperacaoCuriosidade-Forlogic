@@ -105,24 +105,82 @@ body.modal-aviso-aberto {
     opacity: 0.85;
 }
 
-#modal_avisos.tipo-erro .modal_header,
-#modal_confirmacao .modal_header,
-#modal_confirmacao .btn_confirmar,
-#modal_avisos.tipo-erro .btn_fechar { 
-    background-color: var(--cor-avisos-header-erro);
-}
 
-#modal_avisos.tipo-aviso .modal_header,
-#modal_avisos.tipo-aviso .btn_fechar {
-    background-color: var(--cor-avisos-header-aviso);
+#modal_confirmacao .modal_header,
+#modal_confirmacao .btn_confirmar {
+    background-color: var(--cor-avisos-header-erro);
 }
 
 #modal_confirmacao .btn_cancelar {
     background-color: var(--cor-avisos-botao-cancelar);
 }
 
-#modal_avisos .btn_fechar {
-    background-color: var(--cor-avisos-header-aviso, #1e90ff);
+#snackbar_container {
+    position: fixed;
+    top: 20px; 
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.snackbar {
+    color: var(--cor-avisos-fonte);
+    padding: 14px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    pointer-events: auto;
+    animation: snackbarEntrar 0.5s forwards;
+
+}
+
+.snackbar.sair {
+    animation: snackbarSair 0.5s forwards;
+}
+
+.snackbar.sucesso {
+    background-color: var(--cor-avisos-header-aviso)
+}
+
+.snackbar.erro {
+    background-color: var(--cor-avisos-header-erro)
+}
+
+.snackbar i {
+    font-size: 18px;
+}
+
+@keyframes snackbarEntrar {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes snackbarSair {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
 }
 
 

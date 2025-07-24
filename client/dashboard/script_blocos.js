@@ -1,11 +1,9 @@
-function contarCadastros() {
-    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+function contarCadastros(usuarios) {
     return usuarios.length;
 }
 
-function contarCadastrosUltimoMes() {
-    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-    if (usuarios.length === 0) {
+function contarCadastrosUltimoMes(usuarios) {
+    if (!usuarios || usuarios.length === 0) {
         return 0;
     }
 
@@ -23,26 +21,47 @@ function contarCadastrosUltimoMes() {
     }).length;
 }
 
-function contarPendentes() {
-    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-    return usuarios.filter(usuario => {
-        return usuario.revisado === false || typeof usuario.revisado === 'undefined';
-    }).length;
+function contarPendentes(usuarios) {
+    if (!usuarios) return 0;
+    return usuarios.filter(usuario => !usuario.revisadoUsuario).length;
 }
 
 
-function atualizarBlocos() {
+async function atualizarBlocos() {
     const bloco1 = document.getElementById('bloco_1')
     const bloco2 = document.getElementById('bloco_2')
     const bloco3 = document.getElementById('bloco_3')
 
-    if(bloco1){
-        bloco1.textContent = contarCadastros();
-    }
-    if(bloco2){
-        bloco2.textContent = contarCadastrosUltimoMes();
-    }
-    if(bloco3){
-        bloco3.textContent = contarPendentes();
+    if (bloco1) bloco1.textContent = '...';
+    if (bloco2) bloco2.textContent = '...';
+    if (bloco3) bloco3.textContent = '...';
+
+    try {
+        const resposta = await fetch(`${API_BASE_URL}/api/User`, {
+            headers: getAuthenticationHeaders()
+        });
+
+        if (!resposta.ok) {
+            console.error('Falha ao buscar dados para o dashboard');
+            if (bloco1) bloco1.textContent = '-';
+            if (bloco2) bloco2.textContent = '-';
+            if (bloco3) bloco3.textContent = '-';
+            return;
+        }
+
+        const todosUsuarios = await resposta.json();
+
+        const totalCadastros = contarCadastros(todosUsuarios);
+        const totalUltimoMes = contarCadastrosUltimoMes(todosUsuarios);
+        const totalPendentes = contarPendentes(todosUsuarios);
+
+        if (bloco1) bloco1.textContent = totalCadastros;
+        if (bloco2) bloco2.textContent = totalUltimoMes;
+        if (bloco3) bloco3.textContent = totalPendentes;
+    } catch (error) {
+        console.error('Erro de rede ao atualizar blocos do dashboard:', error);
+        if (bloco1) bloco1.textContent = 'Erro';
+        if (bloco2) bloco2.textContent = 'Erro';
+        if (bloco3) bloco3.textContent = 'Erro';
     }
 }

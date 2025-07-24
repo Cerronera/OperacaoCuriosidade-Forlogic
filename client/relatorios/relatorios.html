@@ -34,7 +34,7 @@
 </head>
 
 <body>
-       <script src="/client/global/guardiao.js"></script>
+    <script src="/client/global/guardiao.js"></script>
 
     <nav class="sidebar">
         <div class="oc">
@@ -71,7 +71,7 @@
 
 
             <div class="usuario">
-                 <div class="perfil">
+                <div class="perfil">
                     <button id="perfil_trigger" class="perfil_trigger">
                         <img src="/client/imagens/user.png" alt="Usuario">
                         <span class="usuario_nome">Nome do Usuário</span>
@@ -121,17 +121,6 @@
         </main>
     </div>
 
-    <div id="modal_avisos" class="modal_wrapper">
-        <div class="modal_container">
-            <header class="modal_header"></header>
-            <div class="modal_body"></div>
-            <footer class="modal_footer">
-                <button id="btn_fechar_aviso" class="btn_fechar">Fechar</button>
-            </footer>
-        </div>
-        <div class="modal_shadow"></div>
-    </div>
-
     <div id="modal_confirmacao" class="modal_wrapper">
         <div class="modal_container">
             <header class="modal_header"></header>
@@ -143,6 +132,8 @@
         </div>
         <div class="modal_shadow"></div>
     </div>
+
+    <div id="snackbar_container"></div>
 
     <script src="/client/global/script_avisos.js"></script>
     <script src="/client/global/global.js"></script>

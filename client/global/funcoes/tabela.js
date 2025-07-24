@@ -159,7 +159,7 @@ function filtrarEPaginarDados() {
 }
 
 
-async function atualizarDadosParaExibicao(direcionamentoPagina = false) {
+async function atualizarDadosParaExibicao() {
     try {
         const resposta = await fetch(`${API_BASE_URL}/api/User`, {
             headers: getAuthenticationHeaders()
@@ -175,17 +175,15 @@ async function atualizarDadosParaExibicao(direcionamentoPagina = false) {
         }
 
         estadoTabela.listaCompletaDeUsuarios = await resposta.json()
-
-       if (direcionamentoPagina) {
-            const totalPaginas = Math.ceil(estadoTabela.listaCompletaDeUsuarios.length / estadoTabela.linhasPorPagina)
-            estadoTabela.paginaAtual = totalPaginas || 1;
-        }
+        
         filtrarEPaginarDados();
+        
 
     } catch (error) {
         console.error('Erro ao buscar usuários', error);
         ativarModal('Erro de Conexão', 'Não foi possível buscar os dados da tabela.', 'erro');
     }
+    checarSnackbar();
 }
 
 function inicializarTabela(config) {

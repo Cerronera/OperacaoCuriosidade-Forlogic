@@ -87,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
             confirmarSenhaInput.value !== '';
 
         if (!camposPreenchidos) {
-            ativarModal('Campos não preenchidos', 'Preencha todos os campos obrigatórios', 'erro')
             return;
         }
 
@@ -111,27 +110,22 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (resposta.ok) {
-                ativarModal('Cadastro Realizado!', 'Administrador cadastrado com sucesso.', 'aviso',
-                    () => {
-                        window.location.href = '/client/dashboard/dashboard.html';
-                    }
-                );
+                sessionStorage.setItem('snackbarMessage' ,'Cadastro realizado'); //alterar para adm ou colab
+                window.location.href = '/client/dashboard/dashboard.html';
+
             } else {
                 const dadosErro = await resposta.json()
                 if (resposta.status === 400 && Array.isArray(dadosErro)) {
                     exibirErros(dadosErro);
-                    ativarModal('Dados Inválidos', 'Corrija os campos indicados', 'erro')
                 }
                 else if (resposta.status === 409) {
-                    ativarModal('E-mail em Uso', 'E-mail já cadastrado por outro administrador', 'erro');
                     erroInput(emailInput, 'E-mail em uso');
                 } else {
-                    ativarModal('Erro Inesperado', dadosErro.message || 'Ocorreu um erro no cadastro.', 'erro');
+                   console.error(dadosErro.message);
                 }
             }
         } catch (erro) {
             console.error("Erro na requisição:", erro);
-            ativarModal('Erro Inesperado', 'Erro de conexão com o servidor', 'erro');
         }
     }
 
