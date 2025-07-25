@@ -187,11 +187,11 @@ body.autenticado .principal {
     transition: background-color 0.2s;
 }
 
-.conteudo_dropdown a:hover{
+.conteudo_dropdown a:hover {
     background-color: var(--cor-hover);
 }
 
-.conteudo_dropdown a i{
+.conteudo_dropdown a i {
     width: 16px;
     text-align: center;
     color: var(--cor-fonte)
@@ -391,6 +391,41 @@ table .linha_fantasma:hover {
     margin: 0 15px;
 }
 
+.ordenar-header {
+    cursor: pointer;
+    user-select: none;
+}
+
+.ordenar-conteudo {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.ordenar-header:hover {
+    background-color: var(--cor-hover);
+}
+
+.sort-icon::after {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    right: 10px;
+    opacity: 0.5;
+}
+
+.ordenar-header.asc .sort-icon::after {
+    content: "\f0de";
+}
+
+.ordenar-header.desc .sort-icon::after {
+    content: "\f0dd";
+}
+
+
+.ordenar-header.ativo .sort-icon::after {
+    opacity: 1;
+}
 
 
 @media (max-width: 1024px) {

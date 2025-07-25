@@ -31,7 +31,9 @@
     .dashboard,
     .sidebar,
     .cadastros-relatorios-header h2,
-    header.dashboard {
+    header.dashboard,
+    .linha_fantasma,
+    .sort-icon {
         display: none;
     }
 

@@ -13,6 +13,29 @@ function debounce(funcao, delay) {
     };
 }
 
+function ordenacao(sortBy){
+    if(estadoTabela.sortBy === sortBy){
+        estadoTabela.sortDirection = estadoTabela.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else{
+        estadoTabela.sortBy = sortBy;
+        estadoTabela.sortDirection = 'asc';
+    }
+
+    filtrarEPaginarDados();
+}
+
+function iconesDeOrdenacao(){
+    document.querySelectorAll('.ordenar-header').forEach(header => {
+        const sortBy = header.dataset.sortBy;
+        if(sortBy === estadoTabela.sortBy){
+            header.classList.add('ativo');
+            header.classList.toggle('asc', estadoTabela.sortDirection === 'asc');
+            header.classList.toggle('desc', estadoTabela.sortDirection === 'desc');
+        } else{
+            header.classList.remove('ativo', 'asc', 'desc')
+        }
+    });
+}
 
 let estadoTabela = {
     listaCompletaDeUsuarios: [],
@@ -26,7 +49,9 @@ let estadoTabela = {
     elementoTabelaBody: null,
     elementoPaginacao: null,
     elementoCampoPesquisa: null,
-    ordenarPor: null,
+    sortBy: null,
+    sortDirection: 'asc',
+    config: {}
 };
 
 function renderizarLinhasTabela() {
@@ -185,6 +210,29 @@ function filtrarEPaginarDados() {
         estadoTabela.usuariosFiltrados = usuariosFiltrados;
     }
 
+    if(estadoTabela.sortBy){
+        estadoTabela.usuariosFiltrados.sort((a,b) => {
+            let valorA, valorB;
+
+            if(estadoTabela.sortBy === 'nome'){
+                valorA = a.nomeUsuario.toLowerCase();
+                valorB = b.nomeUsuario.toLowerCase();
+                return valorA.localeCompare(valorB);
+            }
+
+            if(estadoTabela.sortBy === 'dataCadastro'){
+                valorA = new Date(a.dataCadastro);
+                valorB = new Date(b.dataCadastro);
+                return valorA - valorB
+            }
+            return 0;
+        });
+
+        if(estadoTabela.sortDirection === 'desc'){
+            estadoTabela.usuariosFiltrados.reverse();
+        }
+    }
+
     estadoTabela.totalPaginas = Math.ceil(estadoTabela.usuariosFiltrados.length / estadoTabela.linhasPorPagina);
     if (estadoTabela.paginaAtual > estadoTabela.totalPaginas) {
         estadoTabela.paginaAtual = estadoTabela.totalPaginas || 1
@@ -196,6 +244,7 @@ function filtrarEPaginarDados() {
 
     renderizarLinhasTabela();
     renderizarBotoesDePaginacao();
+    iconesDeOrdenacao();
 }
 
 
@@ -242,5 +291,13 @@ function inicializarTabela(config) {
         const pesquisaDebounced = debounce(acaoPesquisa, 500);
         estadoTabela.elementoCampoPesquisa.addEventListener('keyup', pesquisaDebounced)
     }
+
+    document.querySelectorAll('.ordenar-header').forEach(header => {
+        header.addEventListener('click', () => {
+            const sortBy = header.dataset.sortBy;
+            ordenacao(sortBy);
+        });
+    });
+
     atualizarDadosParaExibicao();
 }

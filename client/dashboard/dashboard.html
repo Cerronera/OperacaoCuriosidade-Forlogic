@@ -101,7 +101,7 @@
 
         <main>
             <div class="todos_blocos">
-                <div id="bloco_1"class="bloco">
+                <div id="bloco_1" class="bloco">
                     <h1>0</h1>
                     <h2>Total de cadastros</h2>
                 </div>
@@ -109,7 +109,7 @@
                     <h1>0</h1>
                     <h2>Cadastros nos últimos 30 dias</h2>
                 </div>
-                <div  id="bloco_3" class="bloco">
+                <div id="bloco_3" class="bloco">
                     <h1>0</h1>
                     <h2>Cadastros com pendência de revisão</h2>
                 </div>
@@ -120,11 +120,19 @@
                 <table id="tabela_usuarios">
                     <thead>
                         <tr>
-                            <th>NOME</th>
+                            <th class="ordenar-header" data-sort-by="nome">
+                                <div class="ordenar-conteudo">
+                                    NOME <span class="sort-icon"></span>
+                                </div>
+                            </th>
                             <th>E-MAIL</th>
                             <th>TELEFONE</th>
                             <th>STATUS</th>
-                            <th>DATA</th>
+                            <th class="ordenar-header" data-sort-by="dataCadastro">
+                                <div class="ordenar-conteudo">
+                                    DATA <span class="sort-icon"></span>
+                                </div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
