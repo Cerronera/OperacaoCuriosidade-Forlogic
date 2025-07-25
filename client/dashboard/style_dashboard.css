@@ -14,14 +14,21 @@
     box-shadow: 0 1px 4px var(--cor-boxshadow-geral);
     position: relative;
     display: flex;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     height: 200px;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 .bloco:hover {
     transform: translateY(-5px);
+}
+
+.bloco.bloco-ativo {
+    transform: scale(1.01);
+    box-shadow: 0 0 6px var(--cor-boxshadow-blocos);
+    border: 1px solid var(--cor-borda-blocos)
 }
 
 .bloco h1 {
@@ -43,7 +50,7 @@
     color: var(--cor-bloco-3);
 }
 
-.bloco h2 {
+.bloco h2{
     position: absolute;
     bottom: 10px;
     right: 10px;
@@ -55,15 +62,12 @@
 }
 
 
-
 @media(max-width: 768px) {
 
     .bloco h2 {
         font-size: 14px;
     }
 }
-
-
 
 @media(max-width: 480px) {
 

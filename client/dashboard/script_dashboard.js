@@ -1,16 +1,50 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const snackbarMessage = sessionStorage.getItem('snackbarMessage')
+    function filtroBlocos() {
+        const filtroAtivo = sessionStorage.getItem('filtroTabela') || 'todos';
 
+        document.querySelectorAll('.bloco').forEach(bloco => {
+            bloco.classList.remove('bloco-ativo')
+        });
+
+        if (filtroAtivo === 'todos') {
+            document.getElementById('bloco_1')?.classList.add('bloco-ativo');
+        } else if (filtroAtivo === 'ultimoMes') {
+            document.getElementById('bloco_2')?.classList.add('bloco-ativo');
+        } else if (filtroAtivo === 'pendentes') {
+            document.getElementById('bloco_3')?.classList.add('bloco-ativo');
+        }
+    }
+
+    function definirFiltro(filtro) {
+        sessionStorage.setItem('filtroTabela', filtro);
+        filtroBlocos();
+
+        if (typeof filtrarEPaginarDados === 'function') {
+            filtrarEPaginarDados();
+        } else {
+            console.error('Função não encontrada');
+        }
+    }
+
+    const bloco1 = document.getElementById('bloco_1');
+    const bloco2 = document.getElementById('bloco_2');
+    const bloco3 = document.getElementById('bloco_3');
+
+    if (bloco1) {
+        bloco1.addEventListener('click', () => definirFiltro('todos'));
+        bloco2.addEventListener('click', () => definirFiltro('ultimoMes'));
+        bloco3.addEventListener('click', () => definirFiltro('pendentes'));
+        atualizarBlocos();
+        filtroBlocos();
+    }
+
+
+    const snackbarMessage = sessionStorage.getItem('snackbarMessage')
     if (snackbarMessage) {
         mostrarSnackbar(snackbarMessage, 'sucesso');
         sessionStorage.removeItem('snackbarMessage')
     }
-
-    if (document.getElementById('bloco_1')) {
-        atualizarBlocos();
-    }
-
 
     const trocarTemaCheckbox = document.getElementById('chk')
 
@@ -40,7 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
         paginacaoId: 'paginacao',
         campoPesquisaId: 'campoPesquisa',
         linhasPorPagina: 10,
-        manterAlturaTabela: true
+        manterAlturaTabela: true,
+        mostrarDataCadastro: true
     };
 
     inicializarTabela(configTabelaPrincipal)

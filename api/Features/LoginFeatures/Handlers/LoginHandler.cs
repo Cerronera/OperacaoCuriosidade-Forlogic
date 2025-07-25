@@ -43,7 +43,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, string?>
             _config["JwtSettings:Issuer"],
             _config["JwtSettings:Audience"],
             claims,
-            expires: DateTime.Now.AddMinutes(15),
+            expires: DateTime.Now.AddMinutes(30),
             signingCredentials: credentials);
         
         var tokenString = new JwtSecurityTokenHandler().WriteToken(token);

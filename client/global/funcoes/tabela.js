@@ -1,3 +1,19 @@
+function debounce(funcao, delay) {
+    let debounceTimer;
+
+    return function () {
+        const context = this;
+        const args = arguments;
+
+        clearTimeout(debounceTimer);
+
+        debounceTimer = setTimeout(() => {
+            funcao.apply(context, args);
+        }, delay)
+    };
+}
+
+
 let estadoTabela = {
     listaCompletaDeUsuarios: [],
     usuariosFiltrados: [],
@@ -10,7 +26,7 @@ let estadoTabela = {
     elementoTabelaBody: null,
     elementoPaginacao: null,
     elementoCampoPesquisa: null,
-    config: {}
+    ordenarPor: null,
 };
 
 function renderizarLinhasTabela() {
@@ -134,15 +150,39 @@ function renderizarBotoesDePaginacao() {
 }
 
 function filtrarEPaginarDados() {
+    const filtroAtivo = sessionStorage.getItem('filtroTabela') || 'todos';
+    let usuariosFiltrados = [];
+
+    switch (filtroAtivo) {
+        case 'ultimoMes':
+            const hoje = new Date();
+            const mesAtras = new Date(hoje);
+            mesAtras.setMonth(mesAtras.getMonth() - 1);
+            usuariosFiltrados = estadoTabela.listaCompletaDeUsuarios.filter(usuario => {
+                if (!usuario.dataCadastro) return false;
+                const dataCadastro = new Date(usuario.dataCadastro);
+                return dataCadastro >= mesAtras && dataCadastro <= hoje;
+            });
+            break;
+
+        case 'pendentes':
+            usuariosFiltrados = estadoTabela.listaCompletaDeUsuarios.filter(usuario => !usuario.revisadoUsuario);
+            break;
+
+        case 'todos':
+        default:
+            usuariosFiltrados = estadoTabela.listaCompletaDeUsuarios;
+            break;
+    }
 
     const termoBusca = estadoTabela.elementoCampoPesquisa.value.toLowerCase().trim()
 
     if (termoBusca) {
-        estadoTabela.usuariosFiltrados = estadoTabela.listaCompletaDeUsuarios.filter(usuario =>
+        estadoTabela.usuariosFiltrados = usuariosFiltrados.filter(usuario =>
             usuario.nomeUsuario.toLowerCase().includes(termoBusca)
         );
     } else {
-        estadoTabela.usuariosFiltrados = estadoTabela.listaCompletaDeUsuarios;
+        estadoTabela.usuariosFiltrados = usuariosFiltrados;
     }
 
     estadoTabela.totalPaginas = Math.ceil(estadoTabela.usuariosFiltrados.length / estadoTabela.linhasPorPagina);
@@ -167,7 +207,7 @@ async function atualizarDadosParaExibicao() {
 
         if (!resposta.ok) {
             if (resposta.status === 401) {
-                ativarModal('Sessão Expirada', 'Por favor faça Login novamente', 'erro', () => {
+                mostrarSnackbar('Sessão Expirada ,Por favor faça Login novamente', 'erro', () => {
                     window.location.href = '/login_cadastro/login.html'
                 });
             }
@@ -175,13 +215,13 @@ async function atualizarDadosParaExibicao() {
         }
 
         estadoTabela.listaCompletaDeUsuarios = await resposta.json()
-        
+
         filtrarEPaginarDados();
-        
+
 
     } catch (error) {
         console.error('Erro ao buscar usuários', error);
-        ativarModal('Erro de Conexão', 'Não foi possível buscar os dados da tabela.', 'erro');
+        mostrarSnackbar('Não foi possível buscar os dados da tabela.', 'erro');
     }
     checarSnackbar();
 }
@@ -196,10 +236,11 @@ function inicializarTabela(config) {
     estadoTabela.linhasPorPagina = config.linhasPorPagina || 10;
 
     if (estadoTabela.elementoCampoPesquisa) {
-        estadoTabela.elementoCampoPesquisa.addEventListener('keyup', () => {
-            estadoTabela.paginaAtual = 1;
+        const acaoPesquisa = () => {
             filtrarEPaginarDados();
-        });
+        };
+        const pesquisaDebounced = debounce(acaoPesquisa, 500);
+        estadoTabela.elementoCampoPesquisa.addEventListener('keyup', pesquisaDebounced)
     }
     atualizarDadosParaExibicao();
 }

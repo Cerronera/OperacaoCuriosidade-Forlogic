@@ -28,9 +28,9 @@ function contarPendentes(usuarios) {
 
 
 async function atualizarBlocos() {
-    const bloco1 = document.getElementById('bloco_1')
-    const bloco2 = document.getElementById('bloco_2')
-    const bloco3 = document.getElementById('bloco_3')
+    const bloco1 = document.querySelector('#bloco_1 h1')
+    const bloco2 = document.querySelector('#bloco_2 h1')
+    const bloco3 = document.querySelector('#bloco_3 h1')
 
     if (bloco1) bloco1.textContent = '...';
     if (bloco2) bloco2.textContent = '...';
@@ -58,6 +58,7 @@ async function atualizarBlocos() {
         if (bloco1) bloco1.textContent = totalCadastros;
         if (bloco2) bloco2.textContent = totalUltimoMes;
         if (bloco3) bloco3.textContent = totalPendentes;
+        
     } catch (error) {
         console.error('Erro de rede ao atualizar blocos do dashboard:', error);
         if (bloco1) bloco1.textContent = 'Erro';
