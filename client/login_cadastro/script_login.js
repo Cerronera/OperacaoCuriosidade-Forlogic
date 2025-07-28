@@ -35,13 +35,27 @@ async function realizarLogin(event) {
     const token = await resposta.text();
 
     sessionStorage.setItem('jwtToken', token)
-    sessionStorage.setItem('adminLogado', emailDigitado)
-    window.location.href = '../dashboard/dashboard.html'
 
+    const respostaWhoAmI = await fetch(`${API_BASE_URL}/api/Admin/WhoAmI`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!respostaWhoAmI.ok) {
+      throw new Error('Falha ao buscar dados do administrador')
+    }
+
+    const adminInfo = await respostaWhoAmI.json();
+    sessionStorage.setItem('adminInfo', JSON.stringify(adminInfo));
+
+    window.location.href = '/client/dashboard/dashboard.html';
+    
   } catch (error) {
-    console.error('Erro ao logar:', error);
+    console.error("Erro após o login:", error);
   }
 }
+
 if (form) {
   form.addEventListener('submit', realizarLogin)
 }

@@ -283,15 +283,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    const adminInfoString = sessionStorage.getItem('adminInfo')
+    if (!adminInfoString) return;
+
+    const adminInfo = JSON.parse(adminInfoString);
+    const isAdmin = (adminInfo.role === 'Administrator');
+
+    const colunaExcluir = document.getElementById('coluna_delete');
+    if (colunaExcluir) {
+        colunaExcluir.style.display = isAdmin ? 'table-cell' : 'none';
+    }
     const configTabelaPrincipal = {
         tabelaSelector: '#tabela_usuarios tbody',
         paginacaoId: 'paginacao',
         campoPesquisaId: 'campoPesquisa',
         linhasPorPagina: 10,
         onRowClick: abrirModalEdicao,
-        mostrarColunaAcoes: true,
-        onDeleteClick: excluirUsuario,
+        mostrarColunaAcoes: isAdmin,
+        onDeleteClick: isAdmin ? excluirUsuario : null,
         manterAlturaTabela: true
     };
+
     inicializarTabela(configTabelaPrincipal);
 });

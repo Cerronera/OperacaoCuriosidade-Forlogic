@@ -1,6 +1,7 @@
 (function () {
-    const emailLogado = sessionStorage.getItem('adminLogado');
-    if (!emailLogado) {
+    const token = sessionStorage.getItem('jwtToken');
+    if (!token) {
+        sessionStorage.clear();
         window.location.replace('../login_cadastro/login.html');
     } else {
         document.body.classList.add('autenticado');

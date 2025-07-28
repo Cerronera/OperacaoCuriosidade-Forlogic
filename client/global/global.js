@@ -1,13 +1,10 @@
 async function voltar_login() {
     try {
-        await ativarConfirmacao("Confirmar Saída", "Você tem certeza que deseja sair?")
-            .then(confirmado => {
-                if (confirmado) {
-                    sessionStorage.removeItem('jwtToken')
-                    sessionStorage.removeItem('adminLogado')
-                    window.location.href = '/client/login_cadastro/login.html';
-                }
-            })
+        const confirmado = await ativarConfirmacao("Confirmar Saída", "Você tem certeza que deseja sair?")
+        if (confirmado) {
+            sessionStorage.clear();
+            window.location.href = '/client/login_cadastro/login.html';
+        }
     } catch (error) {
         console.log("Logout cancelado pelo usuário")
     }
@@ -31,87 +28,6 @@ function ir_cadastros() {
     }, 200);
 }
 
-const btnMobile = document.getElementById('btn_mobile')
-const sidebar = document.querySelector('.sidebar')
-const body = document.body
-
-function toggleMenu(event) {
-
-    if (event.type === 'touchstart') {
-        event.preventDefault()
-    }
-
-    sidebar.classList.toggle('aberta')
-    body.classList.toggle('menu-aberto')
-
-    const menuAberto = sidebar.classList.contains('aberta')
-    event.currentTarget.setAttribute('aria-expanded', menuAberto)
-}
-
-if (btnMobile) {
-    btnMobile.addEventListener('click', toggleMenu)
-    btnMobile.addEventListener('touchstart', toggleMenu)
-}
-
-body.addEventListener('click', (event) => {
-
-    if (sidebar.classList.contains('aberta') && !sidebar.contains(event.target) && !btnMobile.contains(event.target)) {
-        toggleMenu(event)
-    }
-});
-
-const header = document.querySelector('header.dashboard')
-const btnBusca = document.getElementById('btn_busca')
-const btnFecharBusca = document.getElementById('btn_fechar_busca')
-
-if (btnBusca) {
-    btnBusca.addEventListener('click', () => {
-
-        header.classList.add('busca-ativa')
-        campoPesquisa.focus()
-    });
-}
-
-if (btnFecharBusca) {
-    btnFecharBusca.addEventListener('click', () => {
-        header.classList.remove('busca-ativa')
-    });
-}
-
-async function carregarAdmin() {
-    const token = sessionStorage.getItem('jwtToken');
-
-    if (!token) {
-        window.location.replace('../client/login_cadastro/login.html')
-        return;
-    }
-
-    try {
-        const resposta = await fetch(`${API_BASE_URL}/api/Admin/WhoAmI`, {
-            method: 'GET',
-            headers: getAuthenticationHeaders()
-        });
-        if (!resposta.ok) {
-            sessionStorage.removeItem('jwtToken')
-            sessionStorage.removeItem('adminLogado')
-            mostrarSnackbar('Sua sessão expirou ou é inválida. Por favor, faça login novamente', 'erro', () => {
-                window.location.replace('../login_cadastro/login.html')
-            });
-            return;
-        }
-
-        const adminInfo = await resposta.json();
-
-        const nomeUsuarioElement = document.querySelector('.usuario_nome')
-        if (nomeUsuarioElement && adminInfo.nome) {
-            nomeUsuarioElement.textContent = adminInfo.nome
-        }
-
-    } catch (error) {
-        console.error('Erro ao carregar informações do admin:', error);
-    }
-}
-
 function formatarData(dataString) {
     if (!dataString) {
         return ''
@@ -127,7 +43,25 @@ function formatarData(dataString) {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    carregarAdmin()
+    function gerenciarLayoutGlobal() {
+        const adminInfoString = sessionStorage.getItem('adminInfo');
+        if (!adminInfoString) {
+            return;
+        }
+
+        const adminInfo = JSON.parse(adminInfoString);
+        const isAdministrador = (adminInfo.role === 'Administrator');
+
+        const nomeUsuarioElement = document.querySelector('.usuario_nome');
+        if (nomeUsuarioElement && adminInfo.nome) {
+            nomeUsuarioElement.textContent = adminInfo.nome;
+        }
+
+        const btn_novoAdmin = document.getElementById('btn_novo_administrador');
+        if (btn_novoAdmin) {
+            btn_novoAdmin.style.display = isAdministrador ? 'flex' : 'none';
+        }
+    }
 
     function paginaAtiva() {
 
@@ -135,34 +69,75 @@ document.addEventListener('DOMContentLoaded', () => {
         const linkSidebar = document.querySelectorAll('.sidebar li a')
 
         linkSidebar.forEach(link => {
-            const aoAtivar = link.getAttribute('onclick')
-
-            if (aoAtivar) {
-                if (aoAtivar.includes('voltar_home') && paginaAtual.includes('dashboard.html')) {
-                    link.classList.add('ativo')
-                } else if (aoAtivar.includes('ir_cadastros') && paginaAtual.includes('cadastros.html')) {
-                    link.classList.add('ativo')
-                } else if (aoAtivar.includes('ir_relatorios') && paginaAtual.includes('relatorios.html')) {
-                    link.classList.add('ativo')
-                }
+            const href = link.getAttribute('href')
+            if (href && paginaAtual.includes(href)) {
+                link.classList.add('ativo');
             }
         });
     }
-    paginaAtiva()
 
     const perfilMenu = document.querySelector('.perfil')
     const trigger = document.getElementById('perfil_trigger')
 
-    if (trigger) {
+    if (trigger && perfilMenu) {
         trigger.addEventListener('click', (event) => {
             event.stopPropagation();
             perfilMenu.classList.toggle('ativo')
         });
     }
 
-    window.addEventListener('click', (event) =>{
-        if(perfilMenu && !perfilMenu.contains(event.target)){
+    window.addEventListener('click', (event) => {
+        if (perfilMenu && !perfilMenu.contains(event.target)) {
             perfilMenu.classList.remove('ativo')
         }
     });
+
+    const btnMobile = document.getElementById('btn_mobile')
+    const sidebar = document.querySelector('.sidebar')
+    const body = document.body
+
+    function toggleMenu(event) {
+
+        if (event.type === 'touchstart') {
+            event.preventDefault()
+        }
+
+        sidebar.classList.toggle('aberta')
+        body.classList.toggle('menu-aberto')
+
+        const menuAberto = sidebar.classList.contains('aberta')
+        event.currentTarget.setAttribute('aria-expanded', menuAberto)
+    }
+
+    if (btnMobile) {
+        btnMobile.addEventListener('click', toggleMenu)
+        btnMobile.addEventListener('touchstart', toggleMenu)
+    }
+
+    if (sidebar && body) {
+        body.addEventListener('click', (event) => {
+            if (sidebar.classList.contains('aberta') && !sidebar.contains(event.target) && !btnMobile.contains(event.target)) {
+                toggleMenu(event);
+            }
+        });
+    }
+    const header = document.querySelector('header.dashboard')
+    const btnBusca = document.getElementById('btn_busca')
+    const btnFecharBusca = document.getElementById('btn_fechar_busca')
+
+    if (btnBusca) {
+        btnBusca.addEventListener('click', () => {
+
+            header.classList.add('busca-ativa')
+            campoPesquisa.focus()
+        });
+    }
+
+    if (btnFecharBusca) {
+        btnFecharBusca.addEventListener('click', () => {
+            header.classList.remove('busca-ativa')
+        });
+    }
+    gerenciarLayoutGlobal();
+    paginaAtiva();
 });
