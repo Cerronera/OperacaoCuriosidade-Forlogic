@@ -16,18 +16,6 @@ function voltar_home() {
     }, 200);
 }
 
-function ir_relatorios() {
-    setTimeout(() => {
-        window.location.href = '/client/relatorios/relatorios.html'
-    }, 200);
-}
-
-function ir_cadastros() {
-    setTimeout(() => {
-        window.location.href = '/client/cadastros/cadastros.html'
-    }, 200);
-}
-
 function formatarData(dataString) {
     if (!dataString) {
         return ''
@@ -39,6 +27,19 @@ function formatarData(dataString) {
     const ano = data.getUTCFullYear()
 
     return `${dia}/${mes}/${ano}`
+}
+
+function paginaAtiva(){
+    const caminhoAtual = window.location.pathname;
+    const linkSidebar = document.querySelectorAll('.sidebar a');
+    
+    linkSidebar.forEach(link => {
+        link.classList.remove('ativo');
+
+        if(link.pathname === caminhoAtual){
+            link.classList.add('ativo');
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -61,19 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btn_novoAdmin) {
             btn_novoAdmin.style.display = isAdministrador ? 'flex' : 'none';
         }
-    }
-
-    function paginaAtiva() {
-
-        const paginaAtual = window.location.pathname
-        const linkSidebar = document.querySelectorAll('.sidebar li a')
-
-        linkSidebar.forEach(link => {
-            const href = link.getAttribute('href')
-            if (href && paginaAtual.includes(href)) {
-                link.classList.add('ativo');
-            }
-        });
     }
 
     const perfilMenu = document.querySelector('.perfil')

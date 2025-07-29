@@ -68,12 +68,14 @@ body.transicao-ativa {
     color: var(--cor-fonte);
     text-decoration: none;
     transition: background-color 0.2s ease-in-out;
+    outline: none;
 }
 
-.sidebar li a:hover,
-.sidebar li a.ativo {
+.sidebar a:hover,
+.sidebar a.ativo {
     background-color: var(--cor-hover);
     cursor: pointer;
+    font-weight: bold;
 }
 
 .principal {

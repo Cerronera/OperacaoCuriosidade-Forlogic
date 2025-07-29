@@ -24,9 +24,19 @@ public class UserValidator
             _notificationContext.AddNotification("nome","O campo Nome deve ter entre 3 e 100 caracteres ");
         }
 
-        if(dto.IdadeUsuario <= 16 || dto.IdadeUsuario >= 80)
+        if(!string.IsNullOrWhiteSpace(dto.NomeUsuario) && dto.NomeUsuario.Any(char.IsDigit))
         {
-            _notificationContext.AddNotification("idade","A idade deve ser entre 16 e 80 anos");
+            _notificationContext.AddNotification("nome", "O campo Nome não pode conter números");
+        }
+
+        if(dto.IdadeUsuario <= 16 || dto.IdadeUsuario >= 100)
+        {
+            _notificationContext.AddNotification("idade","A idade deve ser entre 16 e 100 anos");
+        }
+
+        if(dto.EmailUsuario.Length <=3 || dto.EmailUsuario.Length >= 70)
+        {
+            _notificationContext.AddNotification("email", "O campo Email deve ter entre 3 e 70 caracteres ");
         }
 
         if (string.IsNullOrWhiteSpace(dto.EmailUsuario))
@@ -59,5 +69,31 @@ public class UserValidator
         {
             _notificationContext.AddNotification("endereco","O campo Endereço é obrigatório");
         }
+
+        if(dto.EnderecoUsuario.Length <= 3 || dto.EnderecoUsuario.Length >= 500)
+        {
+            _notificationContext.AddNotification("endereco", "O campo Endereço deve ter entre 3 e 500 caracteres ");
+        }
+
+        if(!string.IsNullOrEmpty(dto.OutrasInformacoesUsuario) && dto.OutrasInformacoesUsuario.Length > 500)
+        {
+            _notificationContext.AddNotification("outras", "O campo Outras Informações deve ter no máximo 500 caracteres ");
+        }
+
+        if (!string.IsNullOrEmpty(dto.InteressesUsuario) && dto.InteressesUsuario.Length > 500)
+        {
+            _notificationContext.AddNotification("interesses", "O campo Interesses deve ter no máximo 500 caracteres ");
+        }
+
+        if (!string.IsNullOrEmpty(dto.ValoresUsuario) && dto.ValoresUsuario.Length > 500)
+        {
+            _notificationContext.AddNotification("valores", "O campo Valores deve ter no máximo 500 caracteres ");
+        }
+
+        if (!string.IsNullOrEmpty(dto.SentimentosUsuario) && dto.SentimentosUsuario.Length > 500)
+        {
+            _notificationContext.AddNotification("sentimentos", "O campo Sentimentos deve ter no máximo 500 caracteres ");
+        }
+
     }
 }

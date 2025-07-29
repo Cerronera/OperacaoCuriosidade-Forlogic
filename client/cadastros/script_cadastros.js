@@ -82,6 +82,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    const campoIdade = document.getElementById('ididade');
+    const editIdade = document.getElementById('edit_idade')
+
+    const bloquearCaracteres = (event) => {
+        const teclasBloqueadas = ['e', 'E', '+', '-', '.', ','];
+
+        if(teclasBloqueadas.includes(event.key)){
+            event.preventDefault();
+        }
+    }
+    if(campoIdade) campoIdade.addEventListener('keydown', bloquearCaracteres);
+    if(editIdade) editIdade.addEventListener('keydown', bloquearCaracteres) 
 
     function abrirModalCadastro() {
         const form = modalCadastro.querySelector('form')
