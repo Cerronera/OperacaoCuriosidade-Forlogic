@@ -294,6 +294,8 @@ body.autenticado .principal {
 
 
 .tabela {
+    min-height: 520px;
+    position: relative;
     background-color: var(--cor-principal);
     padding: 20px;
     border-radius: 8px;
@@ -311,6 +313,26 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
     position: relative;
+}
+
+.tabela_cad-rel {
+    min-height: 500px;
+    position: relative;
+}
+
+.carregando{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--cor-fundo-ofuscado);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    color: var(--cor-fonte);
+    z-index: 10;
 }
 
 thead>tr>th {

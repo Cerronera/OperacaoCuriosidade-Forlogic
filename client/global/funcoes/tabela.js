@@ -13,33 +13,7 @@ function debounce(funcao, delay) {
     };
 }
 
-function ordenacao(sortBy){
-    if(estadoTabela.sortBy === sortBy){
-        estadoTabela.sortDirection = estadoTabela.sortDirection === 'asc' ? 'desc' : 'asc';
-    } else{
-        estadoTabela.sortBy = sortBy;
-        estadoTabela.sortDirection = 'asc';
-    }
-
-    filtrarEPaginarDados();
-}
-
-function iconesDeOrdenacao(){
-    document.querySelectorAll('.ordenar-header').forEach(header => {
-        const sortBy = header.dataset.sortBy;
-        if(sortBy === estadoTabela.sortBy){
-            header.classList.add('ativo');
-            header.classList.toggle('asc', estadoTabela.sortDirection === 'asc');
-            header.classList.toggle('desc', estadoTabela.sortDirection === 'desc');
-        } else{
-            header.classList.remove('ativo', 'asc', 'desc')
-        }
-    });
-}
-
 let estadoTabela = {
-    listaCompletaDeUsuarios: [],
-    usuariosFiltrados: [],
     usuariosDaPagina: [],
 
     paginaAtual: 1,
@@ -66,7 +40,7 @@ function renderizarLinhasTabela() {
     const config = estadoTabela.config;
 
     if (usuariosDaPagina.length === 0) {
-        const termoBusca = estadoTabela.elementoCampoPesquisa.value
+        const termoBusca = estadoTabela.elementoCampoPesquisa ? estadoTabela.elementoCampoPesquisa.value : '';
         const mensagem = termoBusca ? 'Nenhum usuário encontrado' : 'Nenhum usuário cadastrado'
         const numColunas = tabelaBody.parentElement.querySelector('thead tr').childElementCount || 5
         tabelaBody.innerHTML = `
@@ -144,160 +118,151 @@ function renderizarBotoesDePaginacao() {
     }
     estadoTabela.elementoPaginacao.innerHTML = ''
 
-    const criarBotao = (texto, acao) => {
-        const btn = document.createElement('button')
-        btn.innerHTML = texto
+    const criarBotao = (texto, acao, novaPagina) => {
+        const btn = document.createElement('button');
+        btn.innerHTML = texto;
 
         if (!acao) {
-            btn.disabled = true
+            btn.disabled = true;
         } else {
             btn.addEventListener('click', () => {
-                acao()
-                filtrarEPaginarDados();
+                estadoTabela.paginaAtual = novaPagina;
+                localStorage.setItem('paginaAtualTabela', estadoTabela.paginaAtual);
+                atualizarDadosParaExibicao();
             });
         }
-        btn.classList.add('paginacao-btn')
-        return btn
+        btn.classList.add('paginacao-btn');
+        return btn;
     };
 
-    const pag = estadoTabela.paginaAtual
-    const total = estadoTabela.totalPaginas
+    const pag = estadoTabela.paginaAtual;
+    const total = estadoTabela.totalPaginas;
 
-    estadoTabela.elementoPaginacao.appendChild(criarBotao('<<', pag > 1 ? () => estadoTabela.paginaAtual = 1 : null))
-    estadoTabela.elementoPaginacao.appendChild(criarBotao('<', pag > 1 ? () => estadoTabela.paginaAtual-- : null))
+    estadoTabela.elementoPaginacao.appendChild(criarBotao('<<', pag > 1, 1))
+    estadoTabela.elementoPaginacao.appendChild(criarBotao('<', pag > 1, pag - 1));
 
     const info = document.createElement('span')
     info.textContent = `Página ${pag} de ${total || 1}`
     estadoTabela.elementoPaginacao.appendChild(info)
 
-    estadoTabela.elementoPaginacao.appendChild(criarBotao('>', pag < total ? () => estadoTabela.paginaAtual++ : null))
-    estadoTabela.elementoPaginacao.appendChild(criarBotao('>>', pag < total ? () => estadoTabela.paginaAtual = total : null))
+    estadoTabela.elementoPaginacao.appendChild(criarBotao('>', pag < total, pag + 1));
+    estadoTabela.elementoPaginacao.appendChild(criarBotao('>>', pag < total, total));
 }
 
-function filtrarEPaginarDados() {
-    const filtroAtivo = sessionStorage.getItem('filtroTabela') || 'todos';
-    let usuariosFiltrados = [];
-
-    switch (filtroAtivo) {
-        case 'ultimoMes':
-            const hoje = new Date();
-            const mesAtras = new Date(hoje);
-            mesAtras.setMonth(mesAtras.getMonth() - 1);
-            usuariosFiltrados = estadoTabela.listaCompletaDeUsuarios.filter(usuario => {
-                if (!usuario.dataCadastro) return false;
-                const dataCadastro = new Date(usuario.dataCadastro);
-                return dataCadastro >= mesAtras && dataCadastro <= hoje;
-            });
-            break;
-
-        case 'pendentes':
-            usuariosFiltrados = estadoTabela.listaCompletaDeUsuarios.filter(usuario => !usuario.revisadoUsuario);
-            break;
-
-        case 'todos':
-        default:
-            usuariosFiltrados = estadoTabela.listaCompletaDeUsuarios;
-            break;
-    }
-
-    const termoBusca = estadoTabela.elementoCampoPesquisa.value.toLowerCase().trim()
-
-    if (termoBusca) {
-        estadoTabela.usuariosFiltrados = usuariosFiltrados.filter(usuario =>
-            usuario.nomeUsuario.toLowerCase().includes(termoBusca)
-        );
-    } else {
-        estadoTabela.usuariosFiltrados = usuariosFiltrados;
-    }
-
-    if(estadoTabela.sortBy){
-        estadoTabela.usuariosFiltrados.sort((a,b) => {
-            let valorA, valorB;
-
-            if(estadoTabela.sortBy === 'nome'){
-                valorA = a.nomeUsuario.toLowerCase();
-                valorB = b.nomeUsuario.toLowerCase();
-                return valorA.localeCompare(valorB);
-            }
-
-            if(estadoTabela.sortBy === 'dataCadastro'){
-                valorA = new Date(a.dataCadastro);
-                valorB = new Date(b.dataCadastro);
-                return valorA - valorB
-            }
-            return 0;
-        });
-
-        if(estadoTabela.sortDirection === 'desc'){
-            estadoTabela.usuariosFiltrados.reverse();
+function atualizarIconesDeOrdenacao() {
+    document.querySelectorAll('.ordenar-header').forEach(header => {
+        const sortBy = header.dataset.sortBy;
+        if (sortBy === estadoTabela.sortBy) {
+            header.classList.add('ativo');
+            header.classList.toggle('asc', estadoTabela.sortDirection === 'asc');
+            header.classList.toggle('desc', estadoTabela.sortDirection === 'desc');
+        } else {
+            header.classList.remove('ativo', 'asc', 'desc')
         }
-    }
-
-    estadoTabela.totalPaginas = Math.ceil(estadoTabela.usuariosFiltrados.length / estadoTabela.linhasPorPagina);
-    if (estadoTabela.paginaAtual > estadoTabela.totalPaginas) {
-        estadoTabela.paginaAtual = estadoTabela.totalPaginas || 1
-    }
-
-    const startIndex = (estadoTabela.paginaAtual - 1) * estadoTabela.linhasPorPagina;
-    const endIndex = startIndex + estadoTabela.linhasPorPagina;
-    estadoTabela.usuariosDaPagina = estadoTabela.usuariosFiltrados.slice(startIndex, endIndex);
-
-    renderizarLinhasTabela();
-    renderizarBotoesDePaginacao();
-    iconesDeOrdenacao();
+    });
 }
-
 
 async function atualizarDadosParaExibicao() {
+    if (!estadoTabela.elementoTabelaBody) return;
+
+    const tabela = document.querySelector('.tabela, .tabela_cad-rel');
+    if(tabela){
+        const carregando = document.createElement('div');
+        carregando.className = 'carregando';
+        carregando.innerText = 'Carregando...';
+        tabela.appendChild(carregando);
+    }
+
     try {
-        const resposta = await fetch(`${API_BASE_URL}/api/User`, {
+
+        const parametros = new URLSearchParams({
+            numeroPag: estadoTabela.paginaAtual,
+            registrosPag: estadoTabela.linhasPorPagina
+        });
+
+        const filtro = sessionStorage.getItem('filtroTabela');
+        if (filtro && filtro !== 'todos') {
+            parametros.append('filtro', filtro);
+        }
+
+        const busca = estadoTabela.elementoCampoPesquisa ? estadoTabela.elementoCampoPesquisa.value : '';
+        if (busca) {
+            parametros.append('busca', busca);
+        }
+
+        if (estadoTabela.sortBy) {
+            parametros.append('sortBy', estadoTabela.sortBy);
+            parametros.append('sortDirection', estadoTabela.sortDirection);
+        }
+
+        const resposta = await fetch(`${API_BASE_URL}/api/User?${parametros.toString()}`, {
             headers: getAuthenticationHeaders()
         });
 
         if (!resposta.ok) {
-            if (resposta.status === 401) {
-                mostrarSnackbar('Sessão Expirada ,Por favor faça Login novamente', 'erro', () => {
-                    window.location.href = '/login_cadastro/login.html'
-                });
-            }
-            return;
+            throw new Error("Falha ao buscar dados da tabela.");
         }
 
-        estadoTabela.listaCompletaDeUsuarios = await resposta.json()
+        const dadosPaginados = await resposta.json();
 
-        filtrarEPaginarDados();
+        estadoTabela.usuariosDaPagina = dadosPaginados.itens || [];
+        estadoTabela.totalPaginas = dadosPaginados.totalPag;
+        estadoTabela.paginaAtual = dadosPaginados.numeroPag;
 
+        renderizarLinhasTabela();
+        renderizarBotoesDePaginacao();
+        atualizarIconesDeOrdenacao();
 
     } catch (error) {
         console.error('Erro ao buscar usuários', error);
         mostrarSnackbar('Não foi possível buscar os dados da tabela.', 'erro');
+        estadoTabela.elementoTabelaBody.innerHTML = '<tr><td colspan="5">Erro ao carregar dados.</td></tr>';
+    } finally {
+        tabela?.querySelector('.carregando')?.remove();
+        checarSnackbar();
+       
     }
-    checarSnackbar();
 }
+
+function handleSortClick(sortBy) {
+    if (estadoTabela.sortBy === sortBy) {
+        estadoTabela.sortDirection = estadoTabela.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+        estadoTabela.sortBy = sortBy;
+        estadoTabela.sortDirection = 'asc';
+    }
+
+    estadoTabela.paginaAtual = 1;
+    localStorage.setItem('paginaAtualTabela', 1);
+    atualizarDadosParaExibicao();
+}
+
 
 function inicializarTabela(config) {
 
     estadoTabela.config = config
-
     estadoTabela.elementoTabelaBody = document.querySelector(config.tabelaSelector);
     estadoTabela.elementoPaginacao = document.getElementById(config.paginacaoId);
     estadoTabela.elementoCampoPesquisa = document.getElementById(config.campoPesquisaId);
     estadoTabela.linhasPorPagina = config.linhasPorPagina || 10;
+    estadoTabela.paginaAtual = parseInt(localStorage.getItem('paginaAtualTabela')) || 1;
 
     if (estadoTabela.elementoCampoPesquisa) {
         const acaoPesquisa = () => {
-            filtrarEPaginarDados();
+            estadoTabela.paginaAtual = 1;
+            localStorage.setItem('paginaAtualTabela', 1);
+            atualizarDadosParaExibicao();
         };
+
         const pesquisaDebounced = debounce(acaoPesquisa, 500);
         estadoTabela.elementoCampoPesquisa.addEventListener('keyup', pesquisaDebounced)
     }
 
     document.querySelectorAll('.ordenar-header').forEach(header => {
         header.addEventListener('click', () => {
-            const sortBy = header.dataset.sortBy;
-            ordenacao(sortBy);
+            handleSortClick(header.dataset.sortBy);
         });
     });
 
-    atualizarDadosParaExibicao();
+    atualizarDadosParaExibicao(config.opcoesIniciais || {});
 }

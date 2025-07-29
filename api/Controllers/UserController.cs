@@ -43,9 +43,16 @@ public class UserController : ControllerBase
 
     [Authorize(Policy = IdentityData.AdminCollabRoleName)]
     [HttpGet]
-    public async Task<IActionResult> List()
+    public async Task<IActionResult> List(
+        [FromQuery] int numeroPag = 1,
+        [FromQuery] int registrosPag = 10,
+        [FromQuery] string? filtro = null,
+        [FromQuery] string? sortBy = null,
+        [FromQuery] string? sortDirection = "asc",
+        [FromQuery] string? busca = null
+        )
     {
-        var query = new GetAllUsersQuery();
+        var query = new GetAllUsersQuery(numeroPag, registrosPag, filtro, sortBy, sortDirection, busca);
         var user = await _mediator.Send(query);
         return Ok(user);
     }

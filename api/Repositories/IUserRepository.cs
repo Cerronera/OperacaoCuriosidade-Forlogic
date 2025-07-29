@@ -1,4 +1,6 @@
-﻿using OperacaoCuriosidadeAPI.Models;
+﻿using System.Globalization;
+using OperacaoCuriosidadeAPI.DTOs;
+using OperacaoCuriosidadeAPI.Models;
 
 namespace OperacaoCuriosidadeAPI.Repositories;
 
@@ -10,4 +12,5 @@ public interface IUserRepository
     UserModel? Update(UserModel user);
     void Delete(int id);
     bool EmailExists(string email);
+    PaginacaoDTO<UserModel> GetPaginacaoUsers(int numeroPag, int registrosPag, string filtro, string sortBy, string sortDirection, string busca);
 }

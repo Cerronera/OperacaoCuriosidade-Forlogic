@@ -66,6 +66,8 @@
     --cor-avisos-header-aviso: rgb(14, 201, 207);
     --cor-avisos-botao-cancelar: #61686b;
 
+    --cor-fundo-ofuscado: rgba(255, 255, 255, 0.7);
+
 }
 
 
@@ -104,7 +106,7 @@
     --cor-fonte-botao: #fff;
 
     --cor-modal-conteudo: rgb(207, 214, 214);
-    --cor-modal-input: rgb(131, 131, 131);
+    --cor-modal-input:none;
     --cor-modal-input-focus: #007bff;
     --cor-modal-erro: rgb(236, 42, 42);
     --cor-modal-checkbox: rgb(7, 150, 7);
@@ -124,7 +126,7 @@
     --cor-login-fonte: #fff;
     --cor-login-oc: #232c35;
     --cor-borda-login: #000;
-    --cor-login-placeholder: rgb(51, 51, 51);
+    --cor-login-placeholder: rgb(212, 212, 212);
 
 
     --cor-avisos-fundo: #3b3b3b;
@@ -136,6 +138,8 @@
     --cor-avisos-header-erro: rgb(196, 39, 39);
     --cor-avisos-header-aviso: rgb(18, 88, 168);
     --cor-avisos-botao-cancelar: #767a7c;
+
+    --cor-fundo-ofuscado: rgb(59, 59, 59, 0.7);
 
 }
 

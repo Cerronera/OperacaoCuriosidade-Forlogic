@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using OperacaoCuriosidadeAPI.DTOs;
 using OperacaoCuriosidadeAPI.Models;
 
 namespace OperacaoCuriosidadeAPI.Repositories;
@@ -91,4 +92,70 @@ public class UserRepository : IUserRepository
         return null;
     }
 
+    public PaginacaoDTO<UserModel> GetPaginacaoUsers(int numeroPag, int registrosPag, string filtro, string sortBy, string sortDirection, string busca)
+    {
+        IEnumerable<UserModel> query = _users;
+
+        if (!string.IsNullOrEmpty(filtro))  
+        {
+            switch (filtro.ToLower()) 
+            {
+                case "pendentes":
+                    query = query.Where(u => u.RevisadoUsuario == false);
+                    break;
+                case "ultimomes": 
+                    var trintaDiasAtras = DateTime.UtcNow.AddDays(-30);
+                    query = query.Where(u => u.DataCadastro >= trintaDiasAtras);
+                    break;
+            }
+        }
+
+        if (!string.IsNullOrEmpty(busca))
+        {
+            query = query.Where(u => u.NomeUsuario.ToLower().Contains(busca.ToLower()));
+        }
+
+        if (!string.IsNullOrEmpty(sortBy))
+        {
+            bool isDesc = sortDirection.ToLower() == "desc";
+
+            if(sortBy.ToLower() == "nome")
+            {
+                query = isDesc
+                    ? query.OrderByDescending(u => u.NomeUsuario)
+                    : query.OrderBy(u => u.NomeUsuario);
+            }
+
+            else if(sortBy.ToLower() == "datacadastro")
+            {
+                query = isDesc
+                   ? query.OrderByDescending(u => u.DataCadastro)
+                   : query.OrderBy(u => u.DataCadastro);
+            }
+        }
+
+        var usuariosFiltrados = query.ToList();
+        var totalCount = usuariosFiltrados.Count();
+        List<UserModel> itens;
+        int totalPag;
+
+        if(registrosPag <= 0)
+        {
+            itens = usuariosFiltrados;
+            totalPag = 1;
+        }
+        else
+        {
+            itens = usuariosFiltrados.Skip((numeroPag - 1) * registrosPag).Take(registrosPag).ToList();
+            totalPag = (int)Math.Ceiling(totalCount / (double)registrosPag);
+        }
+
+            return new PaginacaoDTO<UserModel>
+            {
+                Itens = itens,
+                NumeroPag = numeroPag,
+                TotalCount = totalCount,
+                TotalPag = totalPag
+            };
+    }
 }

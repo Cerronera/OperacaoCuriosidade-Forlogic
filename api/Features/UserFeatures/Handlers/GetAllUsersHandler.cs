@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using OperacaoCuriosidadeAPI.DTOs;
 using OperacaoCuriosidadeAPI.Features.UserFeatures.Queries;
 using OperacaoCuriosidadeAPI.Models;
 using OperacaoCuriosidadeAPI.Repositories;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OperacaoCuriosidadeAPI.Features.UserFeatures.Handlers;
 
-public class GetAllUsersHandler : IRequestHandler<GetAllUsersQuery, IEnumerable<UserModel>>
+public class GetAllUsersHandler : IRequestHandler<GetAllUsersQuery, PaginacaoDTO<UserModel>>
 {
     private readonly IUserRepository _userRepository;
     public GetAllUsersHandler(IUserRepository userRepository)
@@ -16,9 +17,16 @@ public class GetAllUsersHandler : IRequestHandler<GetAllUsersQuery, IEnumerable<
         _userRepository = userRepository;
     }
 
-    public Task<IEnumerable<UserModel>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+    public Task<PaginacaoDTO<UserModel>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
-        var users = _userRepository.GetAll();
-        return Task.FromResult(users);
+        var usersPaginados = _userRepository.GetPaginacaoUsers(
+            request.NumeroPag,
+            request.RegistrosPag,
+            request.Filtro,
+            request.SortBy,
+            request.SortDirection,
+            request.Busca
+            );
+        return Task.FromResult(usersPaginados);
     }
 }

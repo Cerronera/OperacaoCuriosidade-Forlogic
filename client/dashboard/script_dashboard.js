@@ -20,8 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionStorage.setItem('filtroTabela', filtro);
         filtroBlocos();
 
-        if (typeof filtrarEPaginarDados === 'function') {
-            filtrarEPaginarDados();
+        if (typeof estadoTabela !== 'undefined') {
+            estadoTabela.paginaAtual = 1;
+            localStorage.setItem('paginaAtualTabela', 1);
+        }
+
+        if (typeof atualizarDadosParaExibicao === 'function') {
+            atualizarDadosParaExibicao();
         } else {
             console.error('Função não encontrada');
         }
