@@ -1,5 +1,4 @@
-﻿using MediatR;
-using OperacaoCuriosidadeAPI.Features.UserFeatures.Queries;
+﻿using OperacaoCuriosidadeAPI.Features.UserFeatures.Queries;
 using OperacaoCuriosidadeAPI.Models;
 using OperacaoCuriosidadeAPI.Repositories;
 using System.Threading;
@@ -7,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OperacaoCuriosidadeAPI.Features.UserFeatures.Handlers;
 
-public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UserModel?>
+public class GetUserByIdHandler : IGetUserByIdHandler
 {
     private readonly IUserRepository _userRepository;
 
@@ -16,9 +15,9 @@ public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UserModel?>
         _userRepository = userRepository;
     }
 
-    public Task<UserModel?> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+    public async Task<UserModel?> Handle(GetUserByIdQuery query, CancellationToken cancellationToken)
     {
-        var user = _userRepository.GetById(request.Id);
-        return Task.FromResult(user);
+        var user = _userRepository.GetById(query.Id);
+        return await Task.FromResult(user);
     }
 }

@@ -1,5 +1,4 @@
-﻿using MediatR;
-using OperacaoCuriosidadeAPI.Features.UserFeatures.Commands;
+﻿using OperacaoCuriosidadeAPI.Features.UserFeatures.Commands;
 using OperacaoCuriosidadeAPI.Models;
 using OperacaoCuriosidadeAPI.Notifications;
 using OperacaoCuriosidadeAPI.Repositories;
@@ -7,7 +6,7 @@ using OperacaoCuriosidadeAPI.Validators;
 
 namespace OperacaoCuriosidadeAPI.Features.UserFeatures.Handlers;
 
-public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UserModel>
+public class UpdateUserHandler : IUpdateUserHandler
 {
     private readonly IUserRepository _userRepository;
     private readonly UserValidator _validator;
@@ -19,34 +18,34 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UserModel>
         _validator = validator;
     }
 
-    public Task<UserModel> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    public async Task<UserModel> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
     {
-        _validator.Validate(request.dto);
+        _validator.Validate(command.dto);
         if (_notificationContext.HasNotifications)
         {
-            return Task.FromResult<UserModel>(null);
+            return null;
         }
 
-        var existingUser = _userRepository.GetById(request.Id);
+        var existingUser = _userRepository.GetById(command.Id);
         if (existingUser == null)
         {
             _notificationContext.AddNotification("User", "Usuário não encontrado");
-            return Task.FromResult<UserModel?>(null);
+            return null;
         }
 
-        existingUser.NomeUsuario = request.dto.NomeUsuario;
-        existingUser.EmailUsuario = request.dto.EmailUsuario;
-        existingUser.IdadeUsuario = request.dto.IdadeUsuario;
-        existingUser.TelefoneUsuario = request.dto.TelefoneUsuario;
-        existingUser.EnderecoUsuario = request.dto.EnderecoUsuario;
-        existingUser.OutrasInformacoesUsuario = request.dto.OutrasInformacoesUsuario;
-        existingUser.InteressesUsuario = request.dto.InteressesUsuario;
-        existingUser.ValoresUsuario = request.dto.ValoresUsuario;
-        existingUser.SentimentosUsuario = request.dto.SentimentosUsuario;
-        existingUser.StatusUsuario = request.dto.StatusUsuario;
+        existingUser.NomeUsuario = command.dto.NomeUsuario;
+        existingUser.EmailUsuario = command.dto.EmailUsuario;
+        existingUser.IdadeUsuario = command.dto.IdadeUsuario;
+        existingUser.TelefoneUsuario = command.dto.TelefoneUsuario;
+        existingUser.EnderecoUsuario = command.dto.EnderecoUsuario;
+        existingUser.OutrasInformacoesUsuario = command.dto.OutrasInformacoesUsuario;
+        existingUser.InteressesUsuario = command.dto.InteressesUsuario;
+        existingUser.ValoresUsuario = command.dto.ValoresUsuario;
+        existingUser.SentimentosUsuario = command.dto.SentimentosUsuario;
+        existingUser.StatusUsuario = command.dto.StatusUsuario;
         existingUser.RevisadoUsuario = true;
 
         var updatedUser = _userRepository.Update(existingUser);
-        return Task.FromResult(updatedUser);
+        return updatedUser;
     }
 }

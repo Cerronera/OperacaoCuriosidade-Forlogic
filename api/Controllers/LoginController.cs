@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OperacaoCuriosidadeAPI.DTOs;
 using OperacaoCuriosidadeAPI.Features.LoginFeatures.Commands;
@@ -11,10 +10,10 @@ namespace OperacaoCuriosidadeAPI.Controllers;
 [ApiController]
 public class LoginController : ControllerBase
 {
-    private readonly IMediator _mediator;
-    public LoginController(IMediator mediator)
+    private readonly ILoginHandler _loginHandler;
+    public LoginController(ILoginHandler loginHandler)
     {
-        _mediator = mediator;
+        _loginHandler = loginHandler;
     }
 
     [AllowAnonymous]
@@ -22,7 +21,7 @@ public class LoginController : ControllerBase
     public async Task<IActionResult> Login([FromBody] LoginDTO dto)
     {
         var command = new LoginCommand(dto);
-        var token = await _mediator.Send(command);
+        var token = await _loginHandler.Handle(command, CancellationToken.None);
         if(token is null)
         {
             return Unauthorized("E-mail ou Senha incorretos");

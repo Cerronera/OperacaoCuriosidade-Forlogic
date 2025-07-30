@@ -1,11 +1,10 @@
-﻿using MediatR;
-using OperacaoCuriosidadeAPI.Features.DashboardFeatures.Queries;
+﻿using OperacaoCuriosidadeAPI.Features.DashboardFeatures.Queries;
 using OperacaoCuriosidadeAPI.Repositories;
 using System.Linq;
 
 namespace OperacaoCuriosidadeAPI.Features.DashboardFeatures.Handlers;
 
-public class GetPendenciaRevisadosHandler : IRequestHandler<GetPendenciaRevisadosQuery, int>
+public class GetPendenciaRevisadosHandler :IGetPendenciaRevisadosHandler
 {
     private readonly IUserRepository _userRepository;
 
@@ -14,7 +13,7 @@ public class GetPendenciaRevisadosHandler : IRequestHandler<GetPendenciaRevisado
         _userRepository = userRepository;
     }
 
-    public Task<int> Handle(GetPendenciaRevisadosQuery request, CancellationToken cancellationToken)
+    public Task<int> Handle(GetPendenciaRevisadosQuery query, CancellationToken cancellationToken)
     {
         var total = _userRepository.GetAll().Count(u => !u.RevisadoUsuario);
         return Task.FromResult(total);

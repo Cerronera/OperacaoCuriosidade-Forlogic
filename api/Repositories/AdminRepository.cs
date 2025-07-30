@@ -14,10 +14,10 @@ public class AdminRepository : IAdminRepository
             _admins.Add(new AdminModel
             {
                 Id = _nextId++,
-                AdminName = "Administrador",
-                AdminEmail = "admin@email.com",
-                AdminPassword = "admin123",
-                Role = RoleEnum.Administrator
+                NomeAdmin = "Administrador",
+                EmailAdmin = "admin@email.com",
+                SenhaAdmin = "admin123",
+                Role = RoleEnum.Administrador
             });
         }
     }
@@ -30,7 +30,7 @@ public class AdminRepository : IAdminRepository
 
     public bool EmailExists(string email)
     {
-        return _admins.Any(a => a.AdminEmail.ToLower() == email.ToLower());
+        return _admins.Any(a => a.EmailAdmin.ToLower() == email.ToLower());
     }
 
     public List<AdminModel> GetAll()
@@ -40,6 +40,6 @@ public class AdminRepository : IAdminRepository
 
     public AdminModel? GetByEmail(string email)
     {
-        return _admins.FirstOrDefault(a => a.AdminEmail.ToLower() == email.ToLower());
+        return _admins.FirstOrDefault(a => a.EmailAdmin.ToLower() == email.ToLower());
     }
 }

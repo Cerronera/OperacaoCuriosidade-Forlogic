@@ -2,6 +2,6 @@
 
 public enum RoleEnum
 {
-    Administrator,
-    Collaborator
+    Administrador,
+    Colaborador
 }

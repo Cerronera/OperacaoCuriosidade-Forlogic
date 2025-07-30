@@ -1,5 +1,4 @@
-﻿using MediatR;
-using OperacaoCuriosidadeAPI.Features.AdminFeatures.Commands;
+﻿using OperacaoCuriosidadeAPI.Features.AdminFeatures.Commands;
 using OperacaoCuriosidadeAPI.Models;
 using OperacaoCuriosidadeAPI.Notifications;
 using OperacaoCuriosidadeAPI.Repositories; 
@@ -7,7 +6,7 @@ using OperacaoCuriosidadeAPI.Validators;
 
 namespace OperacaoCuriosidadeAPI.Features.AdminFeatures.Handlers;
 
-public class CreateAdminHandler : IRequestHandler<CreateAdminCommand, AdminModel>
+public class CreateAdminHandler : ICreateAdminHandler
 {
     private readonly IAdminRepository _adminRepository;
     private readonly AdminValidator _validator;
@@ -20,29 +19,29 @@ public class CreateAdminHandler : IRequestHandler<CreateAdminCommand, AdminModel
         _notificationContext = notificationContext;
     }
 
-    public Task<AdminModel> Handle(CreateAdminCommand request, CancellationToken cancellationToken)
+    public async Task<AdminModel> Handle(CreateAdminCommand command, CancellationToken cancellationToken)
     {
-        _validator.Validate(request.dto);
+        _validator.Validate(command.dto);
         if (_notificationContext.HasNotifications)
         {
-            return Task.FromResult<AdminModel>(null);
+            return null;
         }
 
-        if (_adminRepository.EmailExists(request.dto.EmailAdmin))
+        if (_adminRepository.EmailExists(command.dto.EmailAdmin))
         {
             _notificationContext.AddNotification("EmailAdmin", "Este e-mail já está em uso.");
-            return Task.FromResult<AdminModel>(null);
+            return null;
         }
 
         var newAdmin = new AdminModel
         {
-            AdminName = request.dto.NomeAdmin,
-            AdminEmail = request.dto.EmailAdmin,
-            AdminPassword = request.dto.SenhaAdmin,
-            Role = request.dto.Role
+            NomeAdmin = command.dto.NomeAdmin,
+            EmailAdmin = command.dto.EmailAdmin,
+            SenhaAdmin = command.dto.SenhaAdmin,
+            Role = command.dto.Role
         };
 
         var createdAdmin = _adminRepository.Create(newAdmin);
-        return Task.FromResult(createdAdmin);
+        return createdAdmin;
     }
 }

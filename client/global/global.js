@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const adminInfo = JSON.parse(adminInfoString);
-        const isAdministrador = (adminInfo.role === 'Administrator');
+        const isAdministrador = (adminInfo.role === 'Administrador');
 
         const nomeUsuarioElement = document.querySelector('.usuario_nome');
         if (nomeUsuarioElement && adminInfo.nome) {

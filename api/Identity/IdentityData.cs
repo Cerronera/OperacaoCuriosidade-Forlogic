@@ -2,7 +2,7 @@
 
 public class IdentityData
 {
-    public const string AdministratorRoleName = "Administrator";
-    public const string CollaboratorRoleName = "Collaborator";
-    public const string AdminCollabRoleName = "AdminCollab";
+    public const string RoleAdministrador = "Administrador";
+    public const string RoleColaborador = "Colaborador";
+    public const string RoleAdminColab = "AdminColab";
 }

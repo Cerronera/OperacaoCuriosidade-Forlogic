@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!adminInfoString) return;
 
     const adminInfo = JSON.parse(adminInfoString);
-    const isAdmin = (adminInfo.role === 'Administrator');
+    const isAdmin = (adminInfo.role === 'Administrador');
 
     const colunaExcluir = document.getElementById('coluna_delete');
     if (colunaExcluir) {

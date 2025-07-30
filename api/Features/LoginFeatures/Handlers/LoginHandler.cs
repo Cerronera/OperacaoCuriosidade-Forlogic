@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using OperacaoCuriosidadeAPI.Features.LoginFeatures.Commands;
 using OperacaoCuriosidadeAPI.Repositories;
 using System.IdentityModel.Tokens.Jwt;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OperacaoCuriosidadeAPI.Features.LoginFeatures.Handlers;
 
-public class LoginHandler : IRequestHandler<LoginCommand, string?>
+public class LoginHandler :ILoginHandler
 {
     private readonly IAdminRepository _adminRepository;
     private readonly IConfiguration _config;
@@ -21,12 +20,12 @@ public class LoginHandler : IRequestHandler<LoginCommand, string?>
         _config = config;
     }
 
-    public Task<string?> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<string?> Handle(LoginCommand command, CancellationToken cancellationToken)
     {
-        var currentAdmin = _adminRepository.GetByEmail(request.dto.EmailDigitado);
-        if (currentAdmin == null || currentAdmin.AdminPassword != request.dto.SenhaDigitada)
+        var currentAdmin = _adminRepository.GetByEmail(command.dto.EmailDigitado);
+        if (currentAdmin == null || currentAdmin.SenhaAdmin != command.dto.SenhaDigitada)
         {
-            return Task.FromResult<string?>(null);
+            return null;
         }
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:Key"]!));
@@ -34,8 +33,8 @@ public class LoginHandler : IRequestHandler<LoginCommand, string?>
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, currentAdmin.AdminName),
-            new Claim(ClaimTypes.Email, currentAdmin.AdminEmail),
+            new Claim(ClaimTypes.NameIdentifier, currentAdmin.NomeAdmin),
+            new Claim(ClaimTypes.Email, currentAdmin.EmailAdmin),
             new Claim(ClaimTypes.Role, currentAdmin.Role.ToString())
         };
 
@@ -47,7 +46,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, string?>
             signingCredentials: credentials);
         
         var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-        return Task.FromResult<string?>(tokenString);
+        return tokenString;
     }
 
 

@@ -1,5 +1,4 @@
-﻿using MediatR;
-using OperacaoCuriosidadeAPI.Features.UserFeatures.Commands;
+﻿using OperacaoCuriosidadeAPI.Features.UserFeatures.Commands;
 using OperacaoCuriosidadeAPI.Models;
 using OperacaoCuriosidadeAPI.Notifications;
 using OperacaoCuriosidadeAPI.Repositories;
@@ -7,7 +6,7 @@ using OperacaoCuriosidadeAPI.Validators;
 
 namespace OperacaoCuriosidadeAPI.Features.UserFeatures.Handlers;
 
-public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserModel>
+public class CreateUserHandler : ICreateUserHandler
 {
     private readonly IUserRepository _userRepository;
     private readonly UserValidator _validator;
@@ -19,37 +18,37 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserModel>
         _validator = validator;
     }
 
-    public Task<UserModel> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<UserModel> Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
-        _validator.Validate(request.dto);
+        _validator.Validate(command.dto);
         if (_notificationContext.HasNotifications)
         {
-            return Task.FromResult<UserModel>(null);
+            return null;
         }
 
-        if (_userRepository.EmailExists(request.dto.EmailUsuario))
+        if (_userRepository.EmailExists(command.dto.EmailUsuario))
         {
             _notificationContext.AddNotification("Email", "O e-mail fornecido já está em uso.");
-            return Task.FromResult<UserModel>(null);
+            return null;
         }
 
         var user = new UserModel
         {
-            NomeUsuario = request.dto.NomeUsuario,
-            EmailUsuario = request.dto.EmailUsuario,
-            IdadeUsuario = request.dto.IdadeUsuario,
-            TelefoneUsuario = request.dto.TelefoneUsuario,
-            EnderecoUsuario = request.dto.EnderecoUsuario,
-            OutrasInformacoesUsuario = request.dto.OutrasInformacoesUsuario,
-            InteressesUsuario = request.dto.InteressesUsuario,
-            ValoresUsuario = request.dto.ValoresUsuario,
-            SentimentosUsuario = request.dto.SentimentosUsuario,
+            NomeUsuario = command.dto.NomeUsuario,
+            EmailUsuario = command.dto.EmailUsuario,
+            IdadeUsuario = command.dto.IdadeUsuario,
+            TelefoneUsuario = command.dto.TelefoneUsuario,
+            EnderecoUsuario = command.dto.EnderecoUsuario,
+            OutrasInformacoesUsuario = command.dto.OutrasInformacoesUsuario,
+            InteressesUsuario = command.dto.InteressesUsuario,
+            ValoresUsuario = command.dto.ValoresUsuario,
+            SentimentosUsuario = command.dto.SentimentosUsuario,
             DataCadastro = DateTime.UtcNow,
-            StatusUsuario = request.dto.StatusUsuario,
+            StatusUsuario = command.dto.StatusUsuario,
             RevisadoUsuario = false
         };
 
         var createdUser = _userRepository.Create(user);
-        return Task.FromResult(createdUser);
+        return createdUser;
     }
 }

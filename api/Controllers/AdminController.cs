@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OperacaoCuriosidadeAPI.DTOs;
 using OperacaoCuriosidadeAPI.Features.AdminFeatures.Commands;
@@ -15,21 +14,26 @@ namespace OperacaoCuriosidadeAPI.Controllers;
 [Authorize]
 public class AdminController : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly ICreateAdminHandler _createAdminHandler;
+    private readonly IGetCurrentAdminInfoHandler _getCurrentAdminInfoHandler;
     private readonly NotificationContext _notificationContext; 
 
-    public AdminController(IMediator mediator, NotificationContext notificationContext)
+    public AdminController(
+        ICreateAdminHandler createAdminHandler, 
+        IGetCurrentAdminInfoHandler getCurrentAdminInfoHandler, 
+        NotificationContext notificationContext)
     {
-        _mediator = mediator;
+        _createAdminHandler = createAdminHandler;
+        _getCurrentAdminInfoHandler = getCurrentAdminInfoHandler;
         _notificationContext = notificationContext;
     }
 
     [HttpPost("create")]
-    [Authorize(Policy = "Administrator")]
+    [Authorize(Policy = "Administrador")]
     public async Task<IActionResult> Create(AdminDTO dto)
     {
         var command = new CreateAdminCommand(dto);
-        var createdAdmin = await _mediator.Send(command);
+        var createdAdmin = await _createAdminHandler.Handle(command, CancellationToken.None);
 
         if(_notificationContext.HasNotifications)
         {
@@ -41,8 +45,8 @@ public class AdminController : ControllerBase
       var response = new
         {
             createdAdmin.Id,
-            createdAdmin.AdminName,
-            createdAdmin.AdminEmail,
+            createdAdmin.NomeAdmin,
+            createdAdmin.EmailAdmin,
             createdAdmin.Role
         };
         return CreatedAtAction(nameof(Create), new { id = createdAdmin.Id }, response);
@@ -52,7 +56,7 @@ public class AdminController : ControllerBase
     public async Task<IActionResult> GetCurrentAdminInfo()
     {
         var query = new GetCurrentAdminInfoQuery(HttpContext.User);
-        var result = await _mediator.Send(query);
+        var result = await _getCurrentAdminInfoHandler.Handle(query, CancellationToken.None);
 
         return result is null ? Unauthorized() : Ok(result);
     }

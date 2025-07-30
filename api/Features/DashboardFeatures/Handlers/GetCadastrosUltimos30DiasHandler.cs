@@ -1,5 +1,4 @@
-﻿using MediatR;
-using OperacaoCuriosidadeAPI.Features.DashboardFeatures.Queries;
+﻿using OperacaoCuriosidadeAPI.Features.DashboardFeatures.Queries;
 using OperacaoCuriosidadeAPI.Repositories;
 using System;
 using System.Linq;
@@ -7,7 +6,7 @@ using System.Linq;
 
 namespace OperacaoCuriosidadeAPI.Features.DashboardFeatures.Handlers;
 
-public class GetCadastrosUltimos30DiasHandler : IRequestHandler<GetCadastrosUltimos30DiasQuery, int>
+public class GetCadastrosUltimos30DiasHandler : IGetCadastrosUltimos30DiasHandler
 {
     private readonly IUserRepository _userRepository;
 
@@ -16,7 +15,7 @@ public class GetCadastrosUltimos30DiasHandler : IRequestHandler<GetCadastrosUlti
         _userRepository = userRepository;
     }
 
-    public Task<int> Handle(GetCadastrosUltimos30DiasQuery request, CancellationToken cancellationToken)
+    public Task<int> Handle(GetCadastrosUltimos30DiasQuery query, CancellationToken cancellationToken)
     {
         var trintaDiasAtras = DateTime.UtcNow.AddDays(-30);
         var total = _userRepository.GetAll().Count(u => u.DataCadastro >= trintaDiasAtras);
