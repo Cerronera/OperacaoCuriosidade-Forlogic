@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using OperacaoCuriosidadeAPI.Common;
 using OperacaoCuriosidadeAPI.Features.LoginFeatures.Commands;
 using OperacaoCuriosidadeAPI.Repositories;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OperacaoCuriosidadeAPI.Features.LoginFeatures.Handlers;
 
-public class LoginHandler :ILoginHandler
+public class LoginHandler : ICommandHandler<LoginCommand, string?>
 {
     private readonly IAdminRepository _adminRepository;
     private readonly IConfiguration _config;

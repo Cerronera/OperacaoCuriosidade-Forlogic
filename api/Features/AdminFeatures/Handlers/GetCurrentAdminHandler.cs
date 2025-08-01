@@ -1,11 +1,12 @@
-﻿using OperacaoCuriosidadeAPI.Features.AdminFeatures.Queries;
+﻿using OperacaoCuriosidadeAPI.Common;
+using OperacaoCuriosidadeAPI.Features.AdminFeatures.Queries;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace OperacaoCuriosidadeAPI.Features.AdminFeatures.Handlers;
 
-public class GetCurrentAdminHandler : IGetCurrentAdminInfoHandler
+public class GetCurrentAdminHandler : IQueryHandler<GetCurrentAdminInfoQuery, object?>
 {
     public async Task<object?> Handle(GetCurrentAdminInfoQuery command, CancellationToken cancellationToken)
     {

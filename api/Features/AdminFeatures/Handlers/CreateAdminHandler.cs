@@ -1,4 +1,5 @@
-﻿using OperacaoCuriosidadeAPI.Features.AdminFeatures.Commands;
+﻿using OperacaoCuriosidadeAPI.Common;
+using OperacaoCuriosidadeAPI.Features.AdminFeatures.Commands;
 using OperacaoCuriosidadeAPI.Models;
 using OperacaoCuriosidadeAPI.Notifications;
 using OperacaoCuriosidadeAPI.Repositories; 
@@ -6,7 +7,7 @@ using OperacaoCuriosidadeAPI.Validators;
 
 namespace OperacaoCuriosidadeAPI.Features.AdminFeatures.Handlers;
 
-public class CreateAdminHandler : ICreateAdminHandler
+public class CreateAdminHandler : ICommandHandler<CreateAdminCommand, AdminModel>
 {
     private readonly IAdminRepository _adminRepository;
     private readonly AdminValidator _validator;

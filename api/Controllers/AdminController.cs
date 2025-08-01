@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OperacaoCuriosidadeAPI.Common;
 using OperacaoCuriosidadeAPI.DTOs;
 using OperacaoCuriosidadeAPI.Features.AdminFeatures.Commands;
 using OperacaoCuriosidadeAPI.Features.AdminFeatures.Queries;
@@ -14,17 +15,14 @@ namespace OperacaoCuriosidadeAPI.Controllers;
 [Authorize]
 public class AdminController : ControllerBase
 {
-    private readonly ICreateAdminHandler _createAdminHandler;
-    private readonly IGetCurrentAdminInfoHandler _getCurrentAdminInfoHandler;
+    private readonly IDispatcher _dispatcher;
     private readonly NotificationContext _notificationContext; 
 
     public AdminController(
-        ICreateAdminHandler createAdminHandler, 
-        IGetCurrentAdminInfoHandler getCurrentAdminInfoHandler, 
+        IDispatcher dispatcher,
         NotificationContext notificationContext)
     {
-        _createAdminHandler = createAdminHandler;
-        _getCurrentAdminInfoHandler = getCurrentAdminInfoHandler;
+        _dispatcher = dispatcher;
         _notificationContext = notificationContext;
     }
 
@@ -33,7 +31,7 @@ public class AdminController : ControllerBase
     public async Task<IActionResult> Create(AdminDTO dto)
     {
         var command = new CreateAdminCommand(dto);
-        var createdAdmin = await _createAdminHandler.Handle(command, CancellationToken.None);
+        var createdAdmin = await _dispatcher.SendAsync(command);
 
         if(_notificationContext.HasNotifications)
         {
@@ -56,7 +54,7 @@ public class AdminController : ControllerBase
     public async Task<IActionResult> GetCurrentAdminInfo()
     {
         var query = new GetCurrentAdminInfoQuery(HttpContext.User);
-        var result = await _getCurrentAdminInfoHandler.Handle(query, CancellationToken.None);
+        var result = await _dispatcher.QueryAsync(query, CancellationToken.None);
 
         return result is null ? Unauthorized() : Ok(result);
     }

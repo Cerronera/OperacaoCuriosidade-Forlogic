@@ -1,4 +1,5 @@
-﻿using OperacaoCuriosidadeAPI.Features.UserFeatures.Queries;
+﻿using OperacaoCuriosidadeAPI.Common;
+using OperacaoCuriosidadeAPI.Features.UserFeatures.Queries;
 using OperacaoCuriosidadeAPI.Models;
 using OperacaoCuriosidadeAPI.Repositories;
 using System.Threading;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OperacaoCuriosidadeAPI.Features.UserFeatures.Handlers;
 
-public class GetUserByIdHandler : IGetUserByIdHandler
+public class GetUserByIdHandler : IQueryHandler<GetUserByIdQuery, UserModel>
 {
     private readonly IUserRepository _userRepository;
 

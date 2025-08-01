@@ -2,6 +2,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using OperacaoCuriosidadeAPI.Common;
+using OperacaoCuriosidadeAPI.DTOs;
 using OperacaoCuriosidadeAPI.Features.AdminFeatures.Commands;
 using OperacaoCuriosidadeAPI.Features.AdminFeatures.Handlers;
 using OperacaoCuriosidadeAPI.Features.AdminFeatures.Queries;
@@ -13,6 +15,7 @@ using OperacaoCuriosidadeAPI.Features.UserFeatures.Commands;
 using OperacaoCuriosidadeAPI.Features.UserFeatures.Handlers;
 using OperacaoCuriosidadeAPI.Features.UserFeatures.Queries;
 using OperacaoCuriosidadeAPI.Identity;
+using OperacaoCuriosidadeAPI.Models;
 using OperacaoCuriosidadeAPI.Notifications;
 using OperacaoCuriosidadeAPI.Repositories;
 using OperacaoCuriosidadeAPI.Swagger;
@@ -67,26 +70,28 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
+builder.Services.AddScoped<IDispatcher, Dispatcher>();
+
 builder.Services.AddScoped<NotificationContext>();
 builder.Services.AddScoped<UserValidator>();
 builder.Services.AddScoped<AdminValidator>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 
-builder.Services.AddScoped<ICreateUserHandler, CreateUserHandler>();
-builder.Services.AddScoped<IUpdateUserHandler, UpdateUserHandler>();
-builder.Services.AddScoped<IDeleteUserHandler, DeleteUserHandler>();
-builder.Services.AddScoped<IGetAllUsersHandler, GetAllUsersHandler>();
-builder.Services.AddScoped<IGetUserByIdHandler, GetUserByIdHandler>();
+builder.Services.AddScoped<ICommandHandler<CreateUserCommand, UserModel>, CreateUserHandler>();
+builder.Services.AddScoped<ICommandHandler<UpdateUserCommand, UserModel>, UpdateUserHandler>();
+builder.Services.AddScoped<ICommandHandler<DeleteUserCommand, bool>, DeleteUserHandler>();
+builder.Services.AddScoped<IQueryHandler<GetAllUsersQuery, PaginacaoDTO<UserModel>>, GetAllUsersHandler>();
+builder.Services.AddScoped<IQueryHandler<GetUserByIdQuery, UserModel>, GetUserByIdHandler>();
 
-builder.Services.AddScoped<ICreateAdminHandler, CreateAdminHandler>();
-builder.Services.AddScoped<IGetCurrentAdminInfoHandler, GetCurrentAdminHandler>();
+builder.Services.AddScoped<ICommandHandler<CreateAdminCommand, AdminModel>, CreateAdminHandler>();
+builder.Services.AddScoped<IQueryHandler<GetCurrentAdminInfoQuery, object?>, GetCurrentAdminHandler>();
 
-builder.Services.AddScoped<ILoginHandler, LoginHandler>();
+builder.Services.AddScoped<ICommandHandler<LoginCommand, string?>, LoginHandler>();
 
-builder.Services.AddScoped<IGetCadastrosUltimos30DiasHandler, GetCadastrosUltimos30DiasHandler>();
-builder.Services.AddScoped<IGetPendenciaRevisadosHandler, GetPendenciaRevisadosHandler>();
-builder.Services.AddScoped<IGetTotalCadastrosHandler, GetTotalCadastrosHandler>();
+builder.Services.AddScoped<IQueryHandler<GetCadastrosUltimos30DiasQuery, int>, GetCadastrosUltimos30DiasHandler>();
+builder.Services.AddScoped<IQueryHandler<GetPendenciaRevisadosQuery, int>, GetPendenciaRevisadosHandler>();
+builder.Services.AddScoped<IQueryHandler<GetTotalCadastrosQuery, int>, GetTotalCadastrosHandler>();
 
 
 var app = builder.Build();

@@ -1,4 +1,5 @@
-﻿using OperacaoCuriosidadeAPI.Features.UserFeatures.Commands;
+﻿using OperacaoCuriosidadeAPI.Common;
+using OperacaoCuriosidadeAPI.Features.UserFeatures.Commands;
 using OperacaoCuriosidadeAPI.Models;
 using OperacaoCuriosidadeAPI.Notifications;
 using OperacaoCuriosidadeAPI.Repositories;
@@ -6,7 +7,7 @@ using OperacaoCuriosidadeAPI.Validators;
 
 namespace OperacaoCuriosidadeAPI.Features.UserFeatures.Handlers;
 
-public class UpdateUserHandler : IUpdateUserHandler
+public class UpdateUserHandler : ICommandHandler<UpdateUserCommand, UserModel>
 {
     private readonly IUserRepository _userRepository;
     private readonly UserValidator _validator;

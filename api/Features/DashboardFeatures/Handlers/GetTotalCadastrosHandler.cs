@@ -1,4 +1,5 @@
-﻿using OperacaoCuriosidadeAPI.Features.DashboardFeatures.Queries;
+﻿using OperacaoCuriosidadeAPI.Common;
+using OperacaoCuriosidadeAPI.Features.DashboardFeatures.Queries;
 using OperacaoCuriosidadeAPI.Repositories;
 using System.Linq;
 using System.Threading;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OperacaoCuriosidadeAPI.Features.DashboardFeatures.Handlers;
 
-public class GetTotalCadastrosHandler : IGetTotalCadastrosHandler
+public class GetTotalCadastrosHandler : IQueryHandler<GetTotalCadastrosQuery, int>
 {
     private readonly IUserRepository _userRepository;
 

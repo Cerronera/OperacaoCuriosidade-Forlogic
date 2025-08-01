@@ -1,5 +1,6 @@
 ﻿using OperacaoCuriosidadeAPI.Models;
 using OperacaoCuriosidadeAPI.DTOs;
+using OperacaoCuriosidadeAPI.Common;
 
 namespace OperacaoCuriosidadeAPI.Features.UserFeatures.Queries;
 
@@ -10,5 +11,5 @@ public record GetAllUsersQuery(
     string? SortBy = null,
     string? SortDirection = "asc",
     string? Busca = null
-    );
+    ) : IQuery<PaginacaoDTO<UserModel>>;
 

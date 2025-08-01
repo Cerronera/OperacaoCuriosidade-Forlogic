@@ -6,6 +6,7 @@ using OperacaoCuriosidadeAPI.Features.UserFeatures.Commands;
 using OperacaoCuriosidadeAPI.Features.UserFeatures.Queries;
 using OperacaoCuriosidadeAPI.DTOs;
 using OperacaoCuriosidadeAPI.Notifications;
+using OperacaoCuriosidadeAPI.Common;
 
 namespace OperacaoCuriosidadeAPI.Controllers;
 
@@ -14,26 +15,16 @@ namespace OperacaoCuriosidadeAPI.Controllers;
 [Authorize]
 public class UserController : ControllerBase
 {
-    private readonly ICreateUserHandler _createUserHandler;
-    private readonly IUpdateUserHandler _updateUserHandler;
-    private readonly IDeleteUserHandler _deleteUserHandler;
-    private readonly IGetUserByIdHandler _getUserByIdHandler;
-    private readonly IGetAllUsersHandler _getAllUsersHandler;
+
+    private readonly IDispatcher _dispatcher;
     private readonly NotificationContext _notificationContext;
 
     public UserController(
-        ICreateUserHandler createUserHandler,
-        IUpdateUserHandler updateUserHandler,
-        IDeleteUserHandler deleteUserHandler,
-        IGetUserByIdHandler getUserByIdHandler,
-        IGetAllUsersHandler getAllUsersHandler,
+       
+        IDispatcher dispatcher,
         NotificationContext notificationContext)
     {
-        _createUserHandler = createUserHandler;
-        _updateUserHandler = updateUserHandler;
-        _deleteUserHandler = deleteUserHandler;
-        _getUserByIdHandler = getUserByIdHandler;
-        _getAllUsersHandler = getAllUsersHandler;
+        _dispatcher = dispatcher;
         _notificationContext = notificationContext;
     }
 
@@ -42,7 +33,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Create([FromBody] UserDTO dto)
     {
         var command = new CreateUserCommand(dto);
-        var createdUser = await _createUserHandler.Handle(command, CancellationToken.None);
+        var createdUser = await _dispatcher.SendAsync(command);
 
         if (_notificationContext.HasNotifications)
         {
@@ -66,7 +57,7 @@ public class UserController : ControllerBase
         )
     {
         var query = new GetAllUsersQuery(numeroPag, registrosPag, filtro, sortBy, sortDirection, busca);
-        var users = await _getAllUsersHandler.Handle(query, CancellationToken.None);
+        var users = await _dispatcher.QueryAsync(query);
         return Ok(users);
     }
 
@@ -75,7 +66,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var query = new GetUserByIdQuery(id);
-        var user = await _getUserByIdHandler.Handle(query, CancellationToken.None);
+        var user = await _dispatcher.QueryAsync(query);
 
         return user is null ? NotFound() : Ok(user);
     }
@@ -85,7 +76,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromBody] UserDTO dto)
     {
         var command = new UpdateUserCommand(id, dto);
-        var updatedUser = await _updateUserHandler.Handle(command, CancellationToken.None);
+        var updatedUser = await _dispatcher.SendAsync(command);
 
         if (_notificationContext.HasNotifications)
         {
@@ -100,7 +91,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         var command = new DeleteUserCommand(id);
-        var success = await _deleteUserHandler.Handle(command, CancellationToken.None);
+        var success = await _dispatcher.SendAsync(command);
 
         if (!success)
         {

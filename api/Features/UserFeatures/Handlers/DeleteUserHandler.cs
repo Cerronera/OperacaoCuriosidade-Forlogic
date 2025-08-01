@@ -1,4 +1,6 @@
-﻿using OperacaoCuriosidadeAPI.Features.UserFeatures.Commands; 
+﻿using OperacaoCuriosidadeAPI.Common;
+using OperacaoCuriosidadeAPI.Features.UserFeatures.Commands;
+using OperacaoCuriosidadeAPI.Models;
 using OperacaoCuriosidadeAPI.Notifications;
 using OperacaoCuriosidadeAPI.Repositories;
 using System.Threading;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OperacaoCuriosidadeAPI.Features.UserFeatures.Handlers;
 
-public class DeleteUserHandler : IDeleteUserHandler
+public class DeleteUserHandler : ICommandHandler<DeleteUserCommand, bool>
 {
     private readonly IUserRepository _userRepository;
     private readonly NotificationContext _notificationContext;

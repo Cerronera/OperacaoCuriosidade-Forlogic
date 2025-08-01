@@ -1,10 +1,11 @@
-﻿using OperacaoCuriosidadeAPI.Features.DashboardFeatures.Queries;
+﻿using OperacaoCuriosidadeAPI.Common;
+using OperacaoCuriosidadeAPI.Features.DashboardFeatures.Queries;
 using OperacaoCuriosidadeAPI.Repositories;
 using System.Linq;
 
 namespace OperacaoCuriosidadeAPI.Features.DashboardFeatures.Handlers;
 
-public class GetPendenciaRevisadosHandler :IGetPendenciaRevisadosHandler
+public class GetPendenciaRevisadosHandler :IQueryHandler<GetPendenciaRevisadosQuery, int>
 {
     private readonly IUserRepository _userRepository;
 

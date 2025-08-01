@@ -1,4 +1,5 @@
-﻿using OperacaoCuriosidadeAPI.Features.DashboardFeatures.Queries;
+﻿using OperacaoCuriosidadeAPI.Common;
+using OperacaoCuriosidadeAPI.Features.DashboardFeatures.Queries;
 using OperacaoCuriosidadeAPI.Repositories;
 using System;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Linq;
 
 namespace OperacaoCuriosidadeAPI.Features.DashboardFeatures.Handlers;
 
-public class GetCadastrosUltimos30DiasHandler : IGetCadastrosUltimos30DiasHandler
+public class GetCadastrosUltimos30DiasHandler : IQueryHandler<GetCadastrosUltimos30DiasQuery, int>
 {
     private readonly IUserRepository _userRepository;
 

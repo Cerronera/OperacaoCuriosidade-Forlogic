@@ -1,5 +1,7 @@
 ﻿
+using OperacaoCuriosidadeAPI.Common;
+
 namespace OperacaoCuriosidadeAPI.Features.DashboardFeatures.Queries;
 
-public record GetPendenciaRevisadosQuery();
+public record GetPendenciaRevisadosQuery() : IQuery<int>;
 

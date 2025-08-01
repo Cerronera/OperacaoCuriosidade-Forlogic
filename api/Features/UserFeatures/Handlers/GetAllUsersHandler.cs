@@ -1,4 +1,5 @@
-﻿using OperacaoCuriosidadeAPI.DTOs;
+﻿using OperacaoCuriosidadeAPI.Common;
+using OperacaoCuriosidadeAPI.DTOs;
 using OperacaoCuriosidadeAPI.Features.UserFeatures.Queries;
 using OperacaoCuriosidadeAPI.Models;
 using OperacaoCuriosidadeAPI.Repositories;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OperacaoCuriosidadeAPI.Features.UserFeatures.Handlers;
 
-public class GetAllUsersHandler : IGetAllUsersHandler
+public class GetAllUsersHandler : IQueryHandler<GetAllUsersQuery, PaginacaoDTO<UserModel>>
 {
     private readonly IUserRepository _userRepository;
     public GetAllUsersHandler(IUserRepository userRepository)

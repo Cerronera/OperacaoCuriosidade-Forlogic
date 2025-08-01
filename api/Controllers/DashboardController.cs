@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OperacaoCuriosidadeAPI.Features.DashboardFeatures.Handlers;
+using OperacaoCuriosidadeAPI.Common;
 using OperacaoCuriosidadeAPI.Features.DashboardFeatures.Queries;
 
 namespace OperacaoCuriosidadeAPI.Controllers;
@@ -10,38 +10,31 @@ namespace OperacaoCuriosidadeAPI.Controllers;
 [Authorize]
 public class DashboardController : ControllerBase
 {
-    private readonly IGetTotalCadastrosHandler _getTotalCadastrosHandler;
-    private readonly IGetPendenciaRevisadosHandler _getPendenciaRevisadosHandler;
-    private readonly IGetCadastrosUltimos30DiasHandler _getCadastrosUltimos30DiasHandler;
+    private readonly IDispatcher _dispatcher;
 
-    public DashboardController(
-        IGetTotalCadastrosHandler getTotalCadastrosHandler,
-        IGetPendenciaRevisadosHandler getPendenciaRevisadosHandler,
-        IGetCadastrosUltimos30DiasHandler getCadastrosUltimos30DiasHandler)
+    public DashboardController(IDispatcher dispatcher)
     {
-        _getTotalCadastrosHandler = getTotalCadastrosHandler;
-        _getPendenciaRevisadosHandler = getPendenciaRevisadosHandler;
-        _getCadastrosUltimos30DiasHandler = getCadastrosUltimos30DiasHandler;
+       _dispatcher = dispatcher;
     }
 
     [HttpGet("totalCadastros")]
     public async Task<IActionResult> GetTotalCadastros()
     {
-        var result = await _getTotalCadastrosHandler.Handle(new GetTotalCadastrosQuery(), CancellationToken.None);
+        var result = await _dispatcher.QueryAsync(new GetTotalCadastrosQuery());
         return Ok(result);
     }
 
     [HttpGet("cadastrosUltimos30Dias")]
     public async Task<IActionResult> GetCadastrosUltimos30Dias()
     {
-        var result = await _getCadastrosUltimos30DiasHandler.Handle(new GetCadastrosUltimos30DiasQuery(), CancellationToken.None);
+        var result = await _dispatcher.QueryAsync(new GetCadastrosUltimos30DiasQuery());
         return Ok(result);
     }
 
     [HttpGet("pendenciaRevisados")]
     public async Task<IActionResult> GetPendenciaRevisados()
     {
-        var result = await _getPendenciaRevisadosHandler.Handle(new GetPendenciaRevisadosQuery(), CancellationToken.None);
+        var result = await _dispatcher.QueryAsync(new GetPendenciaRevisadosQuery());
         return Ok(result);
     }
 }
