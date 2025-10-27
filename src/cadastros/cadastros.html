@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operação Curiosidade - Cadastros</title>
+    <script>
+        (function () {
+            const tema = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-theme: dark)').matches ? 'dark' : 'light')
+
+            if (tema === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark')
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="/client/global/style_tema.css">
+    <link rel="stylesheet" href="/client/global/style_layout.css">
+    <link rel="stylesheet" href="/client/cadastros/style_cad-rel.css">
+    <link rel="stylesheet" href="/client/global/style_avisos.css">
+    <script src="https://kit.fontawesome.com/6414134de6.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="/client/imagens/icon.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <script src="/client/global/guardiao.js"></script>
+
+    <nav class="sidebar">
+        <div class="oc">
+            <h1>OC</h1>
+            <p>Operação Curiosidade</p>
+        </div>
+         <ul>
+            <li><a href="/client/dashboard/dashboard.html">
+                    <img src="/client/imagens/home.png" alt="Home">
+                    <span>Home</span>
+                </a></li>
+            <li><a href="/client/cadastros/cadastros.html">
+                    <img src="/client/imagens/add.png" alt="Cadastro">
+                    <span>Cadastro</span>
+                </a></li>
+            <li><a href="/client/relatorios/relatorios.html">
+                    <img src="/client/imagens/relatorio.png" alt="Relatorio">
+                    <span>Relatórios</span>
+                </a></li>
+        </ul>
+    </nav>
+    <div class="principal">
+        <header class="dashboard">
+
+            <button id="btn_mobile" aria-label="Abrir menu" aria-haspopup="true" aria-controls="sidebar-menu"
+                aria-expanded="false"><i class="fas fa-bars"></i> </button>
+
+            <div class="posicao_resultado">
+                <input type="text" placeholder="Pesquisar..." class="pesquisa" id="campoPesquisa">
+                <div id="resultadosPesquisa" class="resultados"></div>
+
+                <button id="btn_busca" aria-label="Abrir busca"> <i class="fas fa-search"> </i></button>
+                <button id="btn_fechar_busca" aria-label="Fechar busca"><i class="fas fa-times"> </i></button>
+            </div>
+
+
+            <div class="usuario">
+                <div class="perfil">
+                    <button id="perfil_trigger" class="perfil_trigger">
+                        <img src="/client/imagens/user.png" alt="Usuario">
+                        <span class="usuario_nome">Nome do Usuário</span>
+                        <i class="fas fa-chevron-down dropdown-arrow"></i>
+                    </button>
+
+                    <div id="perfil_conteudo" class="conteudo_dropdown">
+                        <a href="/client/login_cadastro/cadastro.html" id="btn_novo_administrador">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Novo Administrador</span>
+                        </a>
+                        <a href="#" onclick="voltar_login()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Desconectar</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="cadastros-relatorios">
+                <div class="cadastros-relatorios-header">
+                    <h2>Cadastros</h2>
+                    <div class=btn_cad>
+                        <button type="button" class="btn" id="btn_cad">NOVO CADASTRO</button>
+                    </div>
+                </div>
+                <div class="tabela_cad-rel">
+                    <table id="tabela_usuarios">
+                        <thead>
+                            <tr>
+                                <th class="ordenar-header" data-sort-by="nome">
+                                    <div class="ordenar-conteudo">
+                                        NOME <span class="sort-icon"></span>
+                                    </div>
+                                </th>
+                                <th>E-MAIL</th>
+                                <th>TELEFONE</th>
+                                <th>STATUS</th>
+                                <th id="coluna_delete" class="delete"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    <div id="paginacao" class="paginacao-container"></div>
+                </div>
+            </div>
+
+            <div id="modal_cadastro" class="modal oculto">
+
+                <h2>Novo Cadastro</h2>
+
+                <form id="modal_novocadastro">
+
+                    <h3>1° Fatos e Dados</h3>
+
+                    <button type="button" class="fechar" onclick="fecharFormModal()"><img
+                            src="/client/imagens/fechar.png" alt="fechar">
+                    </button>
+
+                    <div class="form_linha">
+                        <div class="form_cadastro">
+                            <label for="idnome">Nome<span>*</span></label>
+                            <input type="text" id="idnome" name="nome" required>
+                            <a>erro</a>
+                        </div>
+                        <div class="checkbox campo_ativo">
+                            <label><input type="checkbox" id="idativo">Ativo</label>
+                        </div>
+                    </div>
+
+                    <div class="form_linha">
+                        <div class="form_cadastro">
+                            <label for="ididade">Idade<span>*</span></label>
+                            <input type="number" id="ididade" name="idade" required>
+                            <a>erro</a>
+                        </div>
+                        <div class="form_cadastro">
+                            <label for="idtelefone">Telefone<span>*</span></label>
+                            <input type="text" id="idtelefone" name="telefone" maxlength="15"
+                                placeholder="99 999999999">
+                            <a>erro</a>
+                        </div>
+                    </div>
+
+                    <div class="form_cadastro">
+                        <label for="idemail">E-mail<span>*</span></label>
+                        <input type="email" id="idemail" name="email" required>
+                        <a>erro</a>
+                    </div>
+
+                    <div class="form_cadastro">
+                        <label for="idendereco">Endereço<span>*</span></label>
+                        <input type="text" name="endereo" id="idendereco" required>
+                        <a>erro</a>
+                    </div>
+
+                    <div class="form_cadastro">
+                        <label for="idoutros">Outras Informações</label>
+                        <textarea name="outrasinformacoes" id="idoutros"></textarea>
+                        <a>erro</a>
+                    </div>
+
+                    <h3>2° Interesses</h3>
+                    <div class="form_cadastro">
+                        <textarea name="interesses" id="idinteresses"></textarea>
+                        <a>erro</a>
+                    </div>
+
+                    <h3>3° Sentimentos</h3>
+                    <div class="form_cadastro">
+                        <textarea name="Sentimentos" id="idsentimentos"></textarea>
+                        <a>erro</a>
+                    </div>
+
+                    <h3>4° Valores</h3>
+                    <div class="form_cadastro">
+                        <textarea name="valores" id="idvalores"></textarea>
+                        <a>erro</a>
+                    </div>
+                    <div class="modal_actions">
+                        <button type="submit" class="btn btn_primary" id="submit" style="width: 200px;">GRAVAR</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="modal_edicao" class="modal oculto">
+
+                <h2>Edição de Usuário</h2>
+
+                <h3> </h3>
+
+                <form id="form_edicao">
+                    <button type="button" class="fechar" onclick="fecharFormModal()"><img
+                            src="/client/imagens/fechar.png" alt="fechar"></button>
+
+                    <div class="form_linha">
+                        <div class="form_modal">
+                            <label for="edit_nome">Nome<span>*</span></label>
+                            <input type="text" id="edit_nome" required>
+                            <a>erro</a>
+                        </div>
+                        <div class="checkbox campo_ativo">
+                            <label><input type="checkbox" id="edit_ativo">Ativo</label>
+                        </div>
+                    </div>
+
+                    <div class="form_linha">
+                        <div class="form_modal">
+                            <label for="edit_idade">Idade<span>*</span></label>
+                            <input type="number" id="edit_idade" required>
+                            <a>erro</a>
+                        </div>
+                        <div class="form_modal">
+                            <label for="edit_telefone">Telefone<span>*</span></label>
+                            <input type="text" id="edit_telefone" placeholder="99 99999999" required>
+                            <a>erro</a>
+                        </div>
+                    </div>
+
+                    <div class="form_modal">
+                        <label for="edit_email">E-mail<span>*</span></label>
+                        <input type="email" id="edit_email" required>
+                        <a>erro</a>
+                    </div>
+
+                    <div class="form_modal">
+                        <label for="edit_endereco">Endereço<span>*</span></label>
+                        <input type="text" id="edit_endereco" required>
+                        <a>erro</a>
+                    </div>
+
+                    <div class="form_modal">
+                        <label for="edit_outros">Outras Informações</label>
+                        <textarea id="edit_outros" required></textarea>
+                        <a>erro</a>
+                    </div>
+                    <div class="form_modal">
+                        <label for="edit_interesses">Interesses</label>
+                        <textarea id="edit_interesses" required></textarea>
+                        <a>erro</a>
+                    </div>
+
+                    <div class="form_modal">
+                        <label for="edit_sentimentos">Sentimentos</label>
+                        <textarea id="edit_sentimentos" required></textarea>
+                        <a>erro</a>
+                    </div>
+                    <div class="form_modal">
+                        <label for="edit_valores">Valores</label>
+                        <textarea id="edit_valores" required></textarea>
+                        <a>erro</a>
+                    </div>
+
+                    <div class="modal_actions">
+                        <div class="btn_group">
+                            <button type="button" id="cancelar" class="btn btn_secondary">Cancelar</button>
+                            <button type="button" id="salvar" class="btn btn_primary">Salvar Alterações</button>
+                        </div>
+                    </div>
+            </div>
+            </form>
+        </main>
+    </div>
+    <div id="snackbar_container"></div>
+    <div id="modal_confirmacao" class="modal_wrapper">
+        <div class="modal_container">
+            <header class="modal_header"></header>
+            <div class="modal_body"></div>
+            <footer class="modal_footer footer_confirmacao">
+                <button id="btn_confirmar" class="btn_confirmar">Confirmar</button>
+                <button id="btn_cancelar" class="btn_cancelar">Cancelar</button>
+            </footer>
+        </div>
+        <div class="modal_shadow"></div>
+    </div>
+
+
+
+    <script src="/client/global/script_avisos.js"></script>
+    <script src="/client/global/global.js"></script>
+    <script src="/client/global/funcoes/tabela.js"></script>
+    <script src="/client/global/funcoes/padraoNome.js"></script>
+    <script src="/client/global/main.js"></script>
+    <script src="script_cadastros.js"></script>
+    <script src="/client/dashboard/script_blocos.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+# Arquivo .gitignore universal para projetos .NET + Node.js
+
+# --- GERAL ---
+# Logs e arquivos de cache
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Arquivos de ambiente - NUNCA ENVIE SUAS SENHAS!
+.env
+.env.local
+.env.*.local
+
+# Arquivos gerados pelo Sistema Operacional
+.DS_Store
+Thumbs.db
+
+
+# --- .NET / Visual Studio ---
+# Pastas de build geradas pelo .NET
+[Oo]bj/
+[Bb]in/
+
+# Configurações do Visual Studio específicas do usuário
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+
+# --- FRONTEND (Node.js) ---
+# Pasta de dependências do Node.js
+node_modules/
+
+# Pastas de build do frontend
+dist/
+.out/
+build/
+
+# Arquivos de cache
+.npm/
+.next/
+.nuxt/
+.vuepress/
+.cache/
